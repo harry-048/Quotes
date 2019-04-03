@@ -34,10 +34,10 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
 
 
-    public QuotesTypes(ArrayList<QuotesNames> dataSet, Context mContext, String jsonurl) {
+    public QuotesTypes(ArrayList<QuotesNames> dataSet, Context mContext) {
         this.dataSet = dataSet;
         this.mContext = mContext;
-        this.jsonurl = jsonurl;
+       // this.jsonurl = jsonurl;
         Log.d("inside contructor","here,"+dataSet);
         Log.d("inside contructors","here,"+mContext);
     }
@@ -60,19 +60,21 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
         Log.d("data viewholder",quotesNames.getQuoteName()+",aa");
         try{
             Log.d("vannundo ","unde");
-            JSONObject jsonObject = new JSONObject(jsonurl);
+            quotesViewHolder.quotesname.setText(quotesNames.getQuoteName());
+            Glide.with(mContext).load(quotesNames.getQuoteId()).
+                    into(quotesViewHolder.imageView);
+           /* JSONObject jsonObject = new JSONObject(jsonurl);
             String category = jsonObject.getString("category");
             if (category!=null){
                 JSONArray arr = new JSONArray(category);
 
                     JSONObject jsonpart = arr.getJSONObject(i);
-                    quotesViewHolder.quotesname.setText(jsonpart.getString("author"));
+
                     Log.d("Author "+i,jsonpart.getString("author"));
                     Log.d("Image "+i,jsonpart.getString("url"));
 
-                Glide.with(mContext).load(jsonpart.getString("url")).
-                        into(quotesViewHolder.imageView);
-            }
+
+            }*/
         }
         catch (Exception e){
             e.printStackTrace();

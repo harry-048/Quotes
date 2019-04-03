@@ -33,11 +33,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    Fragment homeFragment = new HomeFragment();
+    String url="";
+    String jsonurl="";
+    HomeFragment homeFragment = new HomeFragment();
     Fragment favoriteFragment = new FavoriteFragment();
     Fragment searchFragment = new SearchFragment();
     Fragment selectedFragment = homeFragment;
     private DrawerLayout drawerLayout;
+    ArrayList<QuotesNames> quotesNames;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        quotesNames = new ArrayList<>();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -101,35 +104,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         NavigationView navigationView =(NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+
+
+
+
     }
-
-    /*            new NavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            // set item as selected to persist highlight
-            int id = menuItem.getItemId();
-            if (id == R.id.nav_camera) {
-                Toast.makeText(getBaseContext(), "camera", Toast.LENGTH_SHORT).show();
-                // Handle the camera action
-            } else if (id == R.id.nav_gallery) {
-                Toast.makeText(getBaseContext(), "gallery", Toast.LENGTH_SHORT).show();
-
-            }
-            menuItem.setChecked(true);
-            // close drawer when item is tapped
-            drawerLayout.closeDrawers();
-
-            // Add code here to update the UI based on the item selected
-            // For example, swap UI fragments here
-
-            return true;
-        }
-    }
-*/
-
-
-
 
 
 
