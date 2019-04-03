@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Quotes</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Favorites</string>
+    <string name="title_notifications">Search</string>
+    <string name="quotes">Quotes</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+</resources>
