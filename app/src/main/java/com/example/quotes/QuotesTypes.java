@@ -32,13 +32,14 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
     private ArrayList<String> quotesImages;
     Context mContext;
-    String jsonurl;
+    String motivationName;
 
 
-    public QuotesTypes(Context mContext, ArrayList<String> quotesImages) {
+    public QuotesTypes(Context mContext, ArrayList<String> quotesImages,String motivationName) {
 //        Log.d("inside quotestypes","here, "+quotesImages.get(0).getImageurl());
         this.mContext = mContext;
         this.quotesImages=quotesImages;
+        this.motivationName=motivationName;
     }
 
     @NonNull
@@ -55,8 +56,9 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
     public void onBindViewHolder(@NonNull final QuotesViewHolder quotesViewHolder, int i) {
        // final QuotesNames quotesNames = dataSet.get(i);
 //        final QuotesImages quotesimage = quotesImages.get(i);
-        String imgUrl="http://riafyme.com/app/quotes/"+"happy"+"/"+ quotesImages.get(i);
-        Log.d("data viewholder","aa, "+imgUrl);
+        Log.d("from onbindviewholder",motivationName);
+        String imgUrl=mContext.getString(R.string.imagelink)+motivationName+"/"+ quotesImages.get(i);
+        Log.d("data_viewholder","aa, "+imgUrl);
         try{
             Log.d("vannundo ","unde");
             //quotesViewHolder.quotesname.setText(quotesNames.getQuoteName());

@@ -110,6 +110,7 @@ public class HomeFragment extends Fragment {
     }
 
 
+
   /*  public class DownloadQuote extends AsyncTask<String,Void,String> {
         @Override
         protected void onPreExecute() {

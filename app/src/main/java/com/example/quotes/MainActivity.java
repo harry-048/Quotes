@@ -47,6 +47,7 @@ import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
+    JSONObject data;
     ArrayList<String> listItems;
     ArrayAdapter<String> adapter;
     ListView listView;
@@ -141,14 +142,16 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationView navigationView =(NavigationView) findViewById(R.id.nav_view);
 
-
-
+       /* motivaitionnName=quoteskeyvalue.get(0).getQuoteKey();
+        putImagetoArray();
+        setRecycleView();*/
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 clicked=true;
                 QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
                 motivaitionnName=quotesKeyVal.quoteKey;
+                putImagetoArray();
                 Toast.makeText(MainActivity.this,quotesKeyVal.getFormatedName()+","+quotesKeyVal.quoteKey , Toast.LENGTH_SHORT).show();
 
                 setRecycleView();
@@ -173,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(getBaseContext());
         recyclerView.setLayoutManager(layoutManager);
         Log.d("Quote image",quotesImages.toString()+",");
-        final QuotesTypes quotesTypes = new QuotesTypes(getBaseContext(),images);
+        final QuotesTypes quotesTypes = new QuotesTypes(getBaseContext(),images,motivaitionnName);
         recyclerView.setAdapter(quotesTypes);
     }
 
@@ -201,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
         String jsonString = writer.toString();
         try {
-            JSONObject data = new JSONObject(jsonString);
+            data = new JSONObject(jsonString);
             Iterator<String> iter = data.keys();
             while (iter.hasNext()) {
                 String key = iter.next();
@@ -221,11 +224,6 @@ public class MainActivity extends AppCompatActivity {
 
                         clicked=false;
                     }*/
-                    JSONArray imagesArray = data.getJSONArray("happy");
-                    images = new ArrayList();
-                    for (int i=0;i<imagesArray.length();i++){
-                        images.add(imagesArray.getString(i));
-                    }
                   //  String[] imgurl=data.get("happy").toString();
                     //String[] imgurl = Arrays.copyOf(data.get("happy"), data.get("happy").l, String[].class);
                     quoteskeyvalue.add(new QuotesKeyVal(name,key));
@@ -233,14 +231,32 @@ public class MainActivity extends AppCompatActivity {
 
                     Object value = data.get(key);
                     listItems.add(name);
-                    Log.d("category",key);
+                    Log.d("categoryin",key+","+motivaitionnName);
                     Log.d(key,data.get(key).toString());
+                    Log.d("motivationinparse",motivaitionnName);
+                    motivaitionnName=quoteskeyvalue.get(0).quoteKey;
+                    putImagetoArray();
                 } catch (JSONException ee) {
                     // Something went wrong!
                     ee.printStackTrace();
                 }
             }
             searchFragment.setListItems(listItems);
+            motivaitionnName=quoteskeyvalue.get(0).quoteKey;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void putImagetoArray() {
+        JSONArray imagesArray = null;
+        try {
+            imagesArray = data.getJSONArray(motivaitionnName);
+            images = new ArrayList();
+            for (int i=0;i<imagesArray.length();i++){
+                images.add(imagesArray.getString(i));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
