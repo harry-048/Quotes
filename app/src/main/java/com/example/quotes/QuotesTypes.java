@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -28,21 +29,17 @@ import static android.support.constraint.Constraints.TAG;
 
 public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
-    private ArrayList<QuotesNames> dataSet;
+
+    private ArrayList<String> quotesImages;
     Context mContext;
     String jsonurl;
 
 
-
-    public QuotesTypes(ArrayList<QuotesNames> dataSet, Context mContext) {
-        this.dataSet = dataSet;
+    public QuotesTypes(Context mContext, ArrayList<String> quotesImages) {
+//        Log.d("inside quotestypes","here, "+quotesImages.get(0).getImageurl());
         this.mContext = mContext;
-       // this.jsonurl = jsonurl;
-        Log.d("inside contructor","here,"+dataSet);
-        Log.d("inside contructors","here,"+mContext);
+        this.quotesImages=quotesImages;
     }
-
-
 
     @NonNull
     @Override
@@ -56,27 +53,19 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final QuotesViewHolder quotesViewHolder, int i) {
-        final QuotesNames quotesNames = dataSet.get(i);
-        Log.d("data viewholder",quotesNames.getQuoteName()+",aa");
+       // final QuotesNames quotesNames = dataSet.get(i);
+//        final QuotesImages quotesimage = quotesImages.get(i);
+        String imgUrl="http://riafyme.com/app/quotes/"+"happy"+"/"+ quotesImages.get(i);
+        Log.d("data viewholder","aa, "+imgUrl);
         try{
             Log.d("vannundo ","unde");
-            quotesViewHolder.quotesname.setText(quotesNames.getQuoteName());
-            Glide.with(mContext).load(quotesNames.getQuoteId()).
+            //quotesViewHolder.quotesname.setText(quotesNames.getQuoteName());
+            Glide.with(mContext).load(imgUrl).
                     into(quotesViewHolder.imageView);
-           /* JSONObject jsonObject = new JSONObject(jsonurl);
-            String category = jsonObject.getString("category");
-            if (category!=null){
-                JSONArray arr = new JSONArray(category);
 
-                    JSONObject jsonpart = arr.getJSONObject(i);
-
-                    Log.d("Author "+i,jsonpart.getString("author"));
-                    Log.d("Image "+i,jsonpart.getString("url"));
-
-
-            }*/
         }
         catch (Exception e){
+            Toast.makeText(mContext, "No image found", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 
@@ -89,6 +78,6 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
     @Override
     public int getItemCount()
     {
-        return dataSet.size();
+        return quotesImages.size();
     }
 }
