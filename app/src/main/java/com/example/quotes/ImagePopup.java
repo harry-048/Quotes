@@ -26,6 +26,7 @@ public class ImagePopup extends AppCompatActivity {
     ImageView imageView;
     ImageView likeImageView;
     String imgUrl;
+    int f=2;
     SharedPreferences sharedPreferences;
 
     @Override
@@ -41,11 +42,15 @@ public class ImagePopup extends AppCompatActivity {
         quotesImages = getIntent().getStringArrayListExtra("imageslist");
         motivationType = getIntent().getStringExtra("Type");
         imagePosition = Integer.parseInt(getIntent().getStringExtra("clickedImage"));
-
+        set = new HashSet<String>();
         set= sharedPreferences.getStringSet("likedImages",null);
+        f= sharedPreferences.getInt("flag",0);
         if (set==null){
            // Toast.makeText(this, "its null", Toast.LENGTH_SHORT).show();
             set = new HashSet<String>();
+        }
+        else {
+            Toast.makeText(this, set.size()+" , "+f, Toast.LENGTH_SHORT).show();
         }
         showImage(imagePosition);
         checkLike();
@@ -90,16 +95,29 @@ public class ImagePopup extends AppCompatActivity {
             public void onClick(View v) {
                 if (!checkLike()){
                     Log.d("Error","is here");
+                    Log.d("imagebefore",sharedPreferences.getStringSet("likedImages",null)+"");
+                    Log.d("imagebeforeset",set+"");
                     set.add(imgUrl);
+                    f++;
+                    sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
-                  //  Log.d("valuesets",set.size()+"");
+                    Toast.makeText(ImagePopup.this, "flag="+f+"shf="+sharedPreferences.getInt("flag",0), Toast.LENGTH_SHORT).show();
+                    Log.d("imageafter",sharedPreferences.getStringSet("likedImages",null)+"");
+                    Log.d("imageafterset",set+"");
+                    Log.d("valuesets",set.size()+","+imgUrl);
                     //likedImages.add(imgUrl);
                     likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red_24dp));
                 }
                 else {
+                    Log.d("imagebefore",sharedPreferences.getStringSet("likedImages",null)+"");
+                    Log.d("imagebeforeset",set+"");
                     set.remove(imgUrl);
-                   // Log.d("valueset",set.size()+"");
+                    f--;
+                    Log.d("valueset",set.size()+","+imgUrl);
+                    sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
+                    Log.d("imageafter",sharedPreferences.getStringSet("likedImages",null)+"");
+                    Log.d("imageafterset",set+"");
                     likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
                 }
             }

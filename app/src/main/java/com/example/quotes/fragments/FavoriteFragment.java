@@ -11,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.quotes.FavoriteQuotes;
+import com.example.quotes.MainActivity;
+import com.example.quotes.QuotesTypes;
 import com.example.quotes.R;
 
 import java.util.ArrayList;
@@ -26,10 +29,8 @@ public class FavoriteFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    SharedPreferences sharedPreferences;
-    Set<String> set;
-   /* List<String> quotesList = new ArrayList<String>();
-        mainList.addAll(set);*/
+
+
 
     private View rootView;
 
@@ -48,12 +49,9 @@ public class FavoriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        sharedPreferences = getActivity().getSharedPreferences("prefs.xml",MODE_PRIVATE);
-        set= sharedPreferences.getStringSet("likedImages",null);
-        if (set==null){
-            set = new HashSet<String>();
-        }
+        rootView = inflater.inflate(R.layout.fragment_favorite, container, false);
+
+
         setRecycleView();
 
         return rootView;
@@ -67,6 +65,7 @@ public class FavoriteFragment extends Fragment {
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-       // recyclerView.setAdapter(set);
+        final FavoriteQuotes favoriteQuotes = new FavoriteQuotes(getActivity());
+        recyclerView.setAdapter(favoriteQuotes);
     }
 }
