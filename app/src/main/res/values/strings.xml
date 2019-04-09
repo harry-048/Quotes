@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Quotes</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Favorites</string>
-    <string name="title_notifications">Search</string>
+    <string name="title_favorite">Favorites</string>
+    <string name="title_categories">Categories</string>
     <string name="quotes">Quotes</string>
     <string name="imagelink">http://riafyme.com/app/quotes/</string>
 

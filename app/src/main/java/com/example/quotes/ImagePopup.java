@@ -50,7 +50,7 @@ public class ImagePopup extends AppCompatActivity {
             set = new HashSet<String>();
         }
         else {
-            Toast.makeText(this, set.size()+" , "+f, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, set.size()+" , "+f, Toast.LENGTH_SHORT).show();
         }
         showImage(imagePosition);
         checkLike();
@@ -101,7 +101,7 @@ public class ImagePopup extends AppCompatActivity {
                     f++;
                     sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
-                    Toast.makeText(ImagePopup.this, "flag="+f+"shf="+sharedPreferences.getInt("flag",0), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(ImagePopup.this, "flag="+f+"shf="+sharedPreferences.getInt("flag",0), Toast.LENGTH_SHORT).show();
                     Log.d("imageafter",sharedPreferences.getStringSet("likedImages",null)+"");
                     Log.d("imageafterset",set+"");
                     Log.d("valuesets",set.size()+","+imgUrl);
