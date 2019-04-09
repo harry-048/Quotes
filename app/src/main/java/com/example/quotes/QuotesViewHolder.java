@@ -13,7 +13,6 @@ public class QuotesViewHolder extends RecyclerView.ViewHolder {
 
     public QuotesViewHolder(@NonNull View itemView) {
         super(itemView);
-        Log.d("anything","here");
         imageView=itemView.findViewById(R.id.imageView);
     }
 }

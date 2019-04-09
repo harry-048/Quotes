@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.quotes.MainActivity;
 import com.example.quotes.QuotesNames;
 import com.example.quotes.QuotesTypes;
 import com.example.quotes.R;
@@ -41,10 +42,13 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     ProgressBar progressBar;
 
+    private View rootView;
+
     ArrayList<QuotesNames> quotesNames;
 
     public HomeFragment() {
         // Required empty public constructor
+        Log.d("HomeFragment","Created");
     }
 
     @Override
@@ -59,16 +63,30 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        rootView = inflater.inflate(R.layout.fragment_home, container, false);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
+        setRecycleView();
 
+
+      /*  recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        quotesNames = new ArrayList<>();
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        Log.d("Quote image",quotesImages.toString()+",");
+        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),images,motivaitionnName);
+        recyclerView.setAdapter(quotesTypes);*/
 
 
         try{
-            Log.d("in oncreate","yes");
-              /*  recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+              /* recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setItemViewCacheSize(20);
                 recyclerView.setDrawingCacheEnabled(true);
@@ -107,6 +125,23 @@ public class HomeFragment extends Fragment {
 
         return rootView;
 
+    }
+
+
+
+    public void setRecycleView() {
+        recyclerView = rootView.findViewById(R.id.my_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        quotesNames = new ArrayList<>();
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),MainActivity.images, MainActivity.motivationName);
+        recyclerView.setAdapter(quotesTypes);
     }
 
 

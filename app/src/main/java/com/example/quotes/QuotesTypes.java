@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,7 +37,6 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
 
     public QuotesTypes(Context mContext, ArrayList<String> quotesImages,String motivationName) {
-//        Log.d("inside quotestypes","here, "+quotesImages.get(0).getImageurl());
         this.mContext = mContext;
         this.quotesImages=quotesImages;
         this.motivationName=motivationName;
@@ -46,25 +46,30 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
     @Override
     public QuotesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.quotes_content, viewGroup, false);
-        Log.d("inside view holder","here");
         QuotesViewHolder viewHolder = new QuotesViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final QuotesViewHolder quotesViewHolder, int i) {
-       // final QuotesNames quotesNames = dataSet.get(i);
-//        final QuotesImages quotesimage = quotesImages.get(i);
-        Log.d("from onbindviewholder",motivationName);
-        String imgUrl=mContext.getString(R.string.imagelink)+motivationName+"/"+ quotesImages.get(i);
-        Log.d("data_viewholder","aa, "+imgUrl);
-        try{
-            Log.d("vannundo ","unde");
-            //quotesViewHolder.quotesname.setText(quotesNames.getQuoteName());
-            Glide.with(mContext).load(imgUrl).
-                    into(quotesViewHolder.imageView);
+    public void onBindViewHolder(@NonNull final QuotesViewHolder quotesViewHolder, final int i) {
 
+        final String imgUrl=mContext.getString(R.string.imagelink)+motivationName+"/"+ quotesImages.get(i);
+        quotesViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext,ImagePopup.class);
+                intent.putExtra("imageslist",quotesImages);
+                intent.putExtra("clickedImage",i+"");
+                intent.putExtra("Type",motivationName);
+                mContext.startActivity(intent);
+
+            }
+        });
+        try{
+            //quotesViewHolder.quotesname.setText(quotesNames.getQuoteName());
+           // Glide.with(mContext).load(imgUrl).into(quotesViewHolder.imageView);
+            Picasso.get().load(imgUrl).into(quotesViewHolder.imageView);
         }
         catch (Exception e){
             Toast.makeText(mContext, "No image found", Toast.LENGTH_SHORT).show();

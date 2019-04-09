@@ -6,10 +6,10 @@
     tools:context=".fragments.FavoriteFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fav_recycler_view"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
-        android:text="favorite" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
