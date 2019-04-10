@@ -55,6 +55,7 @@ public class ImagePopup extends AppCompatActivity {
         showImage(imagePosition);
         checkLike();
 
+
         imageView.setOnTouchListener(new OnSwipeTouchListener(ImagePopup.this) {
             public void onSwipeTop() {
                // Toast.makeText(ImagePopup.this, "top", Toast.LENGTH_SHORT).show();
@@ -94,38 +95,27 @@ public class ImagePopup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!checkLike()){
-                    Log.d("Error","is here");
-                    Log.d("imagebefore",sharedPreferences.getStringSet("likedImages",null)+"");
-                    Log.d("imagebeforeset",set+"");
+
                     set.add(imgUrl);
                     f++;
                     sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
-                   // Toast.makeText(ImagePopup.this, "flag="+f+"shf="+sharedPreferences.getInt("flag",0), Toast.LENGTH_SHORT).show();
-                    Log.d("imageafter",sharedPreferences.getStringSet("likedImages",null)+"");
-                    Log.d("imageafterset",set+"");
-                    Log.d("valuesets",set.size()+","+imgUrl);
+
                     //likedImages.add(imgUrl);
                     likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red_24dp));
                 }
                 else {
-                    Log.d("imagebefore",sharedPreferences.getStringSet("likedImages",null)+"");
-                    Log.d("imagebeforeset",set+"");
+
                     set.remove(imgUrl);
                     f--;
-                    Log.d("valueset",set.size()+","+imgUrl);
                     sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
-                    Log.d("imageafter",sharedPreferences.getStringSet("likedImages",null)+"");
-                    Log.d("imageafterset",set+"");
+
                     likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
                 }
             }
         });
 
-        Log.d("click",likedImages+"");
-        Log.d("clicke",motivationType+"");
-        Log.d("clicked",imagePosition+"");
     }
 
     private boolean checkLike() {

@@ -147,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 setRecycleView();
 
-
-
             }
         });
 
