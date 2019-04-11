@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import com.example.quotes.MainActivity;
 import com.example.quotes.R;
 
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ public class SearchFragment extends Fragment {
 
     ArrayList<String> listItems;
     ArrayAdapter<String> adapter;
+    ListView listView;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -35,15 +40,30 @@ public class SearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        listItems=getArguments().getStringArrayList("quoteitems");
+        listView = rootView.findViewById(R.id.quoteslistView);
+        adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,listItems);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((MainActivity)getActivity()).clickListView(position);
+            }
+        });
 
         // Inflate the layout for this fragment
         return rootView;
     }
+
+
+
 
 }

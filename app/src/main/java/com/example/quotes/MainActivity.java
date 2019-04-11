@@ -122,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listItems);
         listView.setAdapter(adapter);
 
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("quoteitems",listItems);
+        searchFragment.setArguments(bundle);
 
 
         parseData();
@@ -149,18 +152,29 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                clicked=true;
+                /*clicked=true;
                 QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
                 motivationName =quotesKeyVal.quoteKey;
                 putImagetoArray();
-                Toast.makeText(MainActivity.this,quotesKeyVal.getFormatedName()+","+quotesKeyVal.quoteKey , Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(MainActivity.this,quotesKeyVal.getFormatedName()+","+quotesKeyVal.quoteKey , Toast.LENGTH_SHORT).show();
                 drawerLayout.closeDrawer(GravityCompat.START);
-                setRecycleView();
+                setRecycleView();*/
+                clickListView(position);
 
             }
         });
 
 
+    }
+
+    public void clickListView(int position){
+        clicked=true;
+        QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
+        motivationName =quotesKeyVal.quoteKey;
+        putImagetoArray();
+        //  Toast.makeText(MainActivity.this,quotesKeyVal.getFormatedName()+","+quotesKeyVal.quoteKey , Toast.LENGTH_SHORT).show();
+        drawerLayout.closeDrawer(GravityCompat.START);
+        setRecycleView();
     }
 
     private void setRecycleView() {
