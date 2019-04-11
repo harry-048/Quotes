@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="2dp"
+    android:layout_margin="10dp"
+    android:background="@drawable/popupstyle"
     tools:context=".ImagePopup">
 
 
@@ -12,10 +14,42 @@
         android:id="@+id/swipeQuoteImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
+        android:layout_above="@id/swipeControlLayout"
         android:scaleType="fitCenter"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
+
+    <LinearLayout
+        android:id="@+id/swipeControlLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/swipeDownloadImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_file_download_black_24dp" />
+
+        <ImageView
+            android:id="@+id/swpieLikeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_favorite_border_black_24dp" />
+
+        <ImageView
+            android:id="@+id/swipeShareImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_share_black_24dp" />
+
+    </LinearLayout>
 
 
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/common_google_signin_btn_text_dark_disabled"
     tools:context=".SwipeQuoteActivity">
 
     <!--<android.support.v7.widget.RecyclerView
@@ -17,38 +18,7 @@
         android:id="@+id/picker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/swipeControlLayout"
         app:dsv_orientation="horizontal" />
 
-    <LinearLayout
-        android:id="@+id/swipeControlLayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:weightSum="3">
 
-        <ImageView
-            android:id="@+id/swipeDownloadImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_file_download_black_24dp" />
-
-        <ImageView
-            android:id="@+id/swpieLikeImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_favorite_border_black_24dp" />
-
-        <ImageView
-            android:id="@+id/swipeShareImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_share_black_24dp" />
-
-    </LinearLayout>
 </RelativeLayout>
