@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -167,6 +168,14 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                                         Log.d("Clickedbfr",""+save);
                                         save=true;
                                         Log.d("Clickedaft",""+save);
+
+                                        MediaScannerConnection.scanFile(mContext, new String[]{file.toString()}, null,
+                                                new MediaScannerConnection.OnScanCompletedListener() {
+                                                    public void onScanCompleted(String path, Uri uri) {
+                                                        Log.d("ExternalStorage", "Scanned " + path + ":");
+                                                        Log.d("ExternalStorage", "-> uri=" + uri);
+                                                    }
+                                                });
                                     } catch (Exception e) {
                                         Log.d("Working",e.getMessage()+",");
                                         e.printStackTrace();
@@ -207,10 +216,12 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                                 @Override
                                 public void run() {
                                     long t = System.currentTimeMillis();
-                                    Intent share = new Intent(Intent.ACTION_SEND);
-                                    share.setType("image/jpeg");
+                                    Intent share = new Intent();
                                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                                    File file = new File(Environment.getExternalStorageDirectory() + File.separator + t + "temporary_file.jpg");
+                                    String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
+                                    //File root = Environment.getExternalStorageDirectory();
+                                   // File cachePath = new File(root.getAbsolutePath() + File.separator + t + "temporary_file.jpg");
+                                    File file = new File(path);
                                     if (file.exists()) file.delete();
                                     try {
                                         bitmap.compress(Bitmap.CompressFormat.JPEG, 75, bytes);
@@ -224,9 +235,14 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                                         Log.d("Working",e.getMessage()+",");
                                         e.printStackTrace();
                                     }
-                                    share.putExtra(Intent.EXTRA_TEXT,"Follow on Instagram! \n https://www.instagram.com/aravind048?r=nametag");
-                                    share.putExtra(Intent.EXTRA_STREAM, Uri.parse(Environment.getExternalStorageDirectory() + File.separator + t + "temporary_file.jpg"));
-                                    mContext.startActivity(Intent.createChooser(share, "Share"));                                }
+                               //     Uri contentUri = FileProvider.getUriForFile(this, Environment.getExternalStorageDirectory() + File.separator + t + "temporary_file.jpg");
+                                    Log.d("imageshare",""+Uri.parse(Environment.getExternalStorageDirectory() + File.separator + t + "temporary_file.jpg"));
+                                    share.setAction(Intent.ACTION_SEND);
+                                    share.setType("image/*");
+                                    share.putExtra(Intent.EXTRA_TEXT,"Send From Quotes");
+                                    share.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+                                    mContext.startActivity(Intent.createChooser(share, "Share"));
+                                }
                             }).start();
                         }
 
