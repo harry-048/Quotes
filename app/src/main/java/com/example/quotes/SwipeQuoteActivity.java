@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public class SwipeQuoteActivity extends AppCompatActivity {
@@ -28,8 +29,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     ArrayList<String> quotesImages;
     String motivationType;
     int imagePosition;
-    SharedPreferences sharedPreferences;
-    Set<String> set;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,6 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         motivationType = getIntent().getStringExtra("Type");
         imagePosition = Integer.parseInt(getIntent().getStringExtra("clickedImage"));
 
-        sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
 
         DiscreteScrollView scrollView = findViewById(R.id.picker);
         final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView);
