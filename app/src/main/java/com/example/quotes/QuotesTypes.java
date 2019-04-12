@@ -3,6 +3,7 @@ package com.example.quotes;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
@@ -14,6 +15,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,11 +40,15 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
     Context mContext;
     String motivationName;
 
+    private InterstitialAd mInterstitialAd;
 
-    public QuotesTypes(Context mContext, ArrayList<String> quotesImages,String motivationName) {
+
+
+    public QuotesTypes(Context mContext, ArrayList<String> quotesImages,String motivationName, InterstitialAd mInterstitialAd) {
         this.mContext = mContext;
         this.quotesImages=quotesImages;
         this.motivationName=motivationName;
+        this.mInterstitialAd = mInterstitialAd;
     }
 
     @NonNull
@@ -64,15 +73,29 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                 intent.putExtra("Type",motivationName);
                 mContext.startActivity(intent);*/
 
-                Intent intent = new Intent(mContext,SwipeQuoteActivity.class);
+                final Intent intent = new Intent(mContext,SwipeQuoteActivity.class);
                 intent.putExtra("imageslist",quotesImages);
                 intent.putExtra("clickedImage",i+"");
                 intent.putExtra("Type",motivationName);
-                mContext.startActivity(intent);
+
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                    mContext.startActivity(intent);
+                }
+                mInterstitialAd.setAdListener(new AdListener(){
+                    @Override
+                    public void onAdClosed() {
+                        mContext.startActivity(intent);
+                        super.onAdClosed();
+                    }
+                });
 
 
             }
         });
+
         try{
             //quotesViewHolder.quotesname.setText(quotesNames.getQuoteName());
            // Glide.with(mContext).load(imgUrl).into(quotesViewHolder.imageView);

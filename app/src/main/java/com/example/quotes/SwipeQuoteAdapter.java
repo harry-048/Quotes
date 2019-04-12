@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.net.UrlQuerySanitizer;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -64,11 +65,12 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     SharedPreferences sharedPreferences;
     Set<String> set;
     int f=2;
+    View view;
 
     @NonNull
     @Override
     public swipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.swipe_content, viewGroup, false);
+        view = LayoutInflater.from(mContext).inflate(R.layout.swipe_content, viewGroup, false);
         final swipeViewHolder viewHolder = new swipeViewHolder(view);
 
         sharedPreferences = mContext.getSharedPreferences("prefs.xml",MODE_PRIVATE);
@@ -130,12 +132,11 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                     swipeViewHolder.likeImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_favorite_red_24dp));
                 }
                 else {
-
                     set.remove(imgUrl);
                     f--;
+
                     sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
-
                     swipeViewHolder.likeImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
                 }
             }
@@ -157,7 +158,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                                 @Override
                                 public void run() {
                                     long t = System.currentTimeMillis();
-                                    File file = new File(Environment.getExternalStorageDirectory() + File.separator + t + "temporary_file.jpg");
+                                    final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
+                                    File file = new File(path);
                                     if (file.exists()) file.delete();
                                     try {
                                         file.createNewFile();
@@ -176,6 +178,14 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                                                         Log.d("ExternalStorage", "-> uri=" + uri);
                                                     }
                                                 });
+                                        Snackbar.make(view, "Open Gallery", Snackbar.LENGTH_LONG)
+                                                .setAction("View", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                     //   Toast.makeText(mContext, "snackbar", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(path));
+                                                    }
+                                                }).show();
                                     } catch (Exception e) {
                                         Log.d("Working",e.getMessage()+",");
                                         e.printStackTrace();

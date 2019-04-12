@@ -20,6 +20,8 @@ import com.example.quotes.MainActivity;
 import com.example.quotes.QuotesNames;
 import com.example.quotes.QuotesTypes;
 import com.example.quotes.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,6 +49,8 @@ public class HomeFragment extends Fragment {
 
     ArrayList<QuotesNames> quotesNames;
 
+    InterstitialAd mInterstitialAd;
+
     public HomeFragment() {
         // Required empty public constructor
         Log.d("HomeFragment","Created");
@@ -57,6 +61,14 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
+
+
+
+        mInterstitialAd = new InterstitialAd(getActivity());
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        //mInterstitialAd.setAdUnitId("ca-app-pub-9098946909579213/8837571799");
+
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
     }
 
@@ -141,7 +153,7 @@ public class HomeFragment extends Fragment {
 
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
-        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),MainActivity.images, MainActivity.motivationName);
+        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),MainActivity.images, MainActivity.motivationName, mInterstitialAd);
         recyclerView.setAdapter(quotesTypes);
     }
 

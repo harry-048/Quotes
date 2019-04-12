@@ -2,19 +2,18 @@ package com.example.quotes;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,11 +21,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.quotes.fragments.FavoriteFragment;
 import com.example.quotes.fragments.HomeFragment;
 import com.example.quotes.fragments.SearchFragment;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,26 +45,24 @@ import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static ArrayList<String> images;
+    public static String motivationName = "";
     JSONObject data;
     ArrayList<String> listItems;
     ArrayAdapter<String> adapter;
     ListView listView;
-    public static ArrayList<String> images;
-    String url="";
-    String jsonurl="";
-    public static String motivationName ="";
-    boolean clicked=false;
+    String url = "";
+    String jsonurl = "";
+    boolean clicked = false;
     HomeFragment homeFragment = new HomeFragment();
     Fragment favoriteFragment = new FavoriteFragment();
     SearchFragment searchFragment = new SearchFragment();
     Fragment selectedFragment = homeFragment;
-    private DrawerLayout drawerLayout;
     ArrayList<QuotesNames> quotesNames;
+    BottomNavigationView navigation;
+    private DrawerLayout drawerLayout;
     private ArrayList<QuotesKeyVal> quoteskeyvalue;
     private ArrayList<QuotesImages> quotesImages;
-    BottomNavigationView navigation;
-
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -81,15 +79,15 @@ public class MainActivity extends AppCompatActivity {
                     // mTextMessage.setText(R.string.title_home);
                     break;
                 case R.id.navigation_dashboard:
-                    selectedFragment= favoriteFragment;
+                    selectedFragment = favoriteFragment;
                     //  mTextMessage.setText(R.string.title_dashboard);
                     break;
                 case R.id.navigation_notifications:
-                    selectedFragment=searchFragment;
+                    selectedFragment = searchFragment;
                     // mTextMessage.setText(R.string.title_notifications);
                     break;
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             return true;
         }
     };
@@ -108,22 +106,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // MobileAds.initialize(this, "ca-app-pub-9098946909579213~1471105716");
+
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
+            }
 
         }
 
         quoteskeyvalue = new ArrayList<>();
         quotesImages = new ArrayList<>();
-        listItems=new ArrayList<String>();
-        listView=(ListView) findViewById(R.id.nameslistView);
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listItems);
+        listItems = new ArrayList<String>();
+        listView = (ListView) findViewById(R.id.nameslistView);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         listView.setAdapter(adapter);
 
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList("quoteitems",listItems);
+        bundle.putStringArrayList("quoteitems", listItems);
         searchFragment.setArguments(bundle);
 
 
@@ -141,10 +144,10 @@ public class MainActivity extends AppCompatActivity {
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 
 
-        NavigationView navigationView =(NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
        /* motivationName=quoteskeyvalue.get(0).getQuoteKey();
         putImagetoArray();
@@ -152,14 +155,14 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*clicked=true;
+                clicked = true;
                 QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
-                motivationName =quotesKeyVal.quoteKey;
+                motivationName = quotesKeyVal.quoteKey;
                 putImagetoArray();
-              //  Toast.makeText(MainActivity.this,quotesKeyVal.getFormatedName()+","+quotesKeyVal.quoteKey , Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(MainActivity.this,quotesKeyVal.getFormatedName()+","+quotesKeyVal.quoteKey , Toast.LENGTH_SHORT).show();
                 drawerLayout.closeDrawer(GravityCompat.START);
-                setRecycleView();*/
-                clickListView(position);
+                setRecycleView();
+                //clickListView(position);
 
             }
         });
@@ -167,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void clickListView(int position){
-        clicked=true;
+    public void clickListView(int position) {
+        clicked = true;
         QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
-        motivationName =quotesKeyVal.quoteKey;
+        motivationName = quotesKeyVal.quoteKey;
         putImagetoArray();
         //  Toast.makeText(MainActivity.this,quotesKeyVal.getFormatedName()+","+quotesKeyVal.quoteKey , Toast.LENGTH_SHORT).show();
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -179,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setRecycleView() {
 
-        selectedFragment=homeFragment;
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+        selectedFragment = homeFragment;
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
         homeFragment.setRecycleView();
         navigation.setSelectedItemId(R.id.navigation_home);
 
@@ -230,17 +233,17 @@ public class MainActivity extends AppCompatActivity {
 
                         clicked=false;
                     }*/
-                  //  String[] imgurl=data.get("happy").toString();
+                    //  String[] imgurl=data.get("happy").toString();
                     //String[] imgurl = Arrays.copyOf(data.get("happy"), data.get("happy").l, String[].class);
-                    quoteskeyvalue.add(new QuotesKeyVal(name,key));
+                    quoteskeyvalue.add(new QuotesKeyVal(name, key));
                     //quotesImages.add(new QuotesImages(data.get("happy")));
 
                     Object value = data.get(key);
                     listItems.add(name);
-                    Log.d("categoryin",key+","+ motivationName);
-                    Log.d(key,data.get(key).toString());
+                    Log.d("categoryin", key + "," + motivationName);
+                    Log.d(key, data.get(key).toString());
                     Log.d("motivationinparse", motivationName);
-                    motivationName =quoteskeyvalue.get(0).quoteKey;
+                    motivationName = quoteskeyvalue.get(0).quoteKey;
                     putImagetoArray();
                 } catch (JSONException ee) {
                     // Something went wrong!
@@ -248,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             searchFragment.setListItems(listItems);
-            motivationName =quoteskeyvalue.get(0).quoteKey;
+            motivationName = quoteskeyvalue.get(0).quoteKey;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -256,16 +259,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void putImagetoArray() {
-        JSONArray imagesArray = null;
-        try {
-            imagesArray = data.getJSONArray(motivationName);
-            images = new ArrayList();
-            for (int i=0;i<imagesArray.length();i++){
-                images.add(imagesArray.getString(i));
+        final JSONArray[] imagesArray = {null};
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    imagesArray[0] = data.getJSONArray(motivationName);
+                    images = new ArrayList();
+                    for (int i = 0; i < imagesArray[0].length(); i++) {
+                        images.add(imagesArray[0].getString(i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        }).run();
 
     }
 }
