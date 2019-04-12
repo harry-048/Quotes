@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginBottom="8dp"
-    android:orientation="vertical">
+    >
 
+    <com.jgabrielfreitas.core.BlurImageView
+        android:id="@+id/backBlurImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:radius="24" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="2dp"
-        android:scaleType="fitXY" />
+        android:scaleType="fitCenter" />
 
 
-    <View
+    <!--<View
         android:id="@+id/bottomView"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/darker_gray"/>
-</LinearLayout>
+        android:background="@android:color/darker_gray"/>-->
+</RelativeLayout>

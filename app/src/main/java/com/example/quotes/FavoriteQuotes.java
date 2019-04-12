@@ -1,7 +1,6 @@
 package com.example.quotes;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,13 +11,9 @@ import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import static android.content.Context.MODE_PRIVATE;
+public class FavoriteQuotes extends RecyclerView.Adapter<FavoritesQuotesViewHolder> {
 
-public class FavoriteQuotes extends RecyclerView.Adapter<QuotesViewHolder> {
 
     public FavoriteQuotes(Context mContext,ArrayList<String> set) {
         Log.d("favoritecon","in favorites"+mContext);
@@ -33,19 +28,31 @@ public class FavoriteQuotes extends RecyclerView.Adapter<QuotesViewHolder> {
 
     @NonNull
     @Override
-    public QuotesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public FavoritesQuotesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.fav_quotes_content, viewGroup, false);
-        QuotesViewHolder viewHolder = new QuotesViewHolder(view);
+        FavoritesQuotesViewHolder viewHolder = new FavoritesQuotesViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QuotesViewHolder quotesViewHolder, int i) {
+    public void onBindViewHolder(@NonNull FavoritesQuotesViewHolder favoritesQuotesViewHolder, int i) {
         final String imgUrl=set.get(i);
-        Picasso.get().load(imgUrl).into(quotesViewHolder.imageView);
+        Picasso.get().load(imgUrl).into(favoritesQuotesViewHolder.imageView);
+        Picasso.get().load(imgUrl).into(favoritesQuotesViewHolder.blurImageView);
+
+        favoritesQuotesViewHolder.blurImageView.setBlur(15);
         Log.d("favoriteimage","aa");
     }
+
+   /* @Override
+    public void onBindViewHolder(@NonNull QuotesViewHolder quotesViewHolder, int i) {
+        final String imgUrl=set.get(i);
+
+
+        Picasso.get().load(imgUrl).into(quotesViewHolder.imageView);
+        Log.d("favoriteimage","aa");
+    }*/
 
     @Override
     public int getItemCount() {
@@ -53,3 +60,4 @@ public class FavoriteQuotes extends RecyclerView.Adapter<QuotesViewHolder> {
         return set.size();
     }
 }
+
