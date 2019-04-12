@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.jgabrielfreitas.core.BlurImageView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
@@ -46,6 +47,7 @@ import java.util.Set;
 
 
 import jp.wasabeef.blurry.Blurry;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -134,10 +136,19 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
         swipeViewHolder.blurImageView.setFailDrawable(mContext.getResources().getDrawable(R.drawable.loadinganimation));
         swipeViewHolder.blurImageView.setDefaultDrawable(mContext.getResources().getDrawable(R.drawable.loadinganimation));*/
 
-      // Picasso.get().load(imgUrl).transform(new BlurTransformation(context)).placeholder(mContext.getResources().getDrawable(R.drawable.loadinganimation)).into(swipeViewHolder.blurImageView);
+       Picasso.get().load(imgUrl)
+               .transform(new BlurTransformation(mContext))
+               .into(swipeViewHolder.blurImageView);
         //swipeViewHolder.blurImageView.getResources().getDrawable(R.drawable.ic_favorite_red_24dp);
         Picasso.get().load(imgUrl).into(swipeViewHolder.imageView);
-        Blurry.with(mContext).capture(swipeViewHolder.blurImageView).into(swipeViewHolder.blurImageView);
+
+       /* try {
+            Blurry.with(mContext).capture(swipeViewHolder.blurImageView).into(swipeViewHolder.blurImageView);
+        }
+        catch (NullPointerException e){
+            Log.d("Blurerror",e.getMessage());
+        }*/
+
         Log.d("Blurwork","yes");
 
         checkLike(swipeViewHolder);
