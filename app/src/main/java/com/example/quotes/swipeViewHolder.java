@@ -8,13 +8,14 @@ import android.widget.LinearLayout;
 
 import com.jgabrielfreitas.core.BlurImageView;
 
+
 public class swipeViewHolder extends RecyclerView.ViewHolder {
 
     ImageView imageView;
     ImageView likeImageView;
     ImageView downloadImageView;
     ImageView shareImageView;
-    BlurImageView blurImageView;
+    ImageView blurImageView;
     public swipeViewHolder(@NonNull View itemView) {
         super(itemView);
         imageView = itemView.findViewById(R.id.swipeQuoteImageView);

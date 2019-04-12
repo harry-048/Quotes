@@ -39,9 +39,10 @@ public class FavoriteQuotes extends RecyclerView.Adapter<FavoritesQuotesViewHold
     public void onBindViewHolder(@NonNull FavoritesQuotesViewHolder favoritesQuotesViewHolder, int i) {
         final String imgUrl=set.get(i);
         Picasso.get().load(imgUrl).into(favoritesQuotesViewHolder.imageView);
-        Picasso.get().load(imgUrl).into(favoritesQuotesViewHolder.blurImageView);
 
-        favoritesQuotesViewHolder.blurImageView.setBlur(15);
+        //Picasso.get().load(imgUrl).into(favoritesQuotesViewHolder.blurImageView);
+       // favoritesQuotesViewHolder.blurImageView.setBlur(15);
+
         Log.d("favoriteimage","aa");
     }
 

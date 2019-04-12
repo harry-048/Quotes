@@ -20,6 +20,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'jp.wasabeef:blurry:3.0.0'
+    implementation 'com.wingjay:blurimageviewlib:2.0.1'
     implementation 'com.android.billingclient:billing:1.2.2'
     implementation 'com.github.jgabrielfreitas:BlurImageView:1.0.1'
     implementation 'com.google.android.gms:play-services-ads:17.2.0'

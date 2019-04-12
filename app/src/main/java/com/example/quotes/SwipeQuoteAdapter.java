@@ -28,8 +28,10 @@ import android.widget.Toast;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
+import com.jgabrielfreitas.core.BlurImageView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.squareup.picasso.Transformation;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.io.ByteArrayOutputStream;
@@ -42,6 +44,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+
+import jp.wasabeef.blurry.Blurry;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -70,6 +74,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     int f=2;
     View view;
     String galleryPath;
+    BlurImageView blurbackImageView;
     private BillingClient billingClient;
 
     @NonNull
@@ -77,6 +82,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     public swipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         view = LayoutInflater.from(mContext).inflate(R.layout.swipe_content, viewGroup, false);
         final swipeViewHolder viewHolder = new swipeViewHolder(view);
+
+
 
         sharedPreferences = mContext.getSharedPreferences("prefs.xml",MODE_PRIVATE);
         set = new HashSet<String>();
@@ -109,7 +116,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     private void showImage(int imagePosition, swipeViewHolder viewHolder) {
         //Log.d("position",imagePosition+"b");
         imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(imagePosition);
-        Picasso.get().load(imgUrl).placeholder(mContext.getResources().getDrawable(R.drawable.ic_loading)).into(viewHolder.imageView);
+        Picasso.get().load(imgUrl).placeholder(mContext.getResources().getDrawable(R.drawable.loadinganimation)).into(viewHolder.imageView);
 
     }
 
@@ -118,11 +125,21 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
 
        // showImage(i,swipeViewHolder);
         imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(i);
-        Picasso.get().load(imgUrl).into(swipeViewHolder.blurImageView);
-        Picasso.get().load(imgUrl).into(swipeViewHolder.imageView);
+       // showImage(i,swipeViewHolder);
+       /* Picasso.get().load(imgUrl).into(swipeViewHolder.blurImageView);
+        swipeViewHolder.blurImageView.setBlur(15);*/
 
-        swipeViewHolder.blurImageView.setBlur(15);
-       // Blurry.with(mContext).capture(swipeViewHolder).into(swipeViewHolder.imageView);
+       /* swipeViewHolder.blurImageView.setBlurImageByUrl(imgUrl);
+        swipeViewHolder.blurImageView.setBlurFactor(8);
+        swipeViewHolder.blurImageView.setFailDrawable(mContext.getResources().getDrawable(R.drawable.loadinganimation));
+        swipeViewHolder.blurImageView.setDefaultDrawable(mContext.getResources().getDrawable(R.drawable.loadinganimation));*/
+
+      // Picasso.get().load(imgUrl).transform(new BlurTransformation(context)).placeholder(mContext.getResources().getDrawable(R.drawable.loadinganimation)).into(swipeViewHolder.blurImageView);
+        //swipeViewHolder.blurImageView.getResources().getDrawable(R.drawable.ic_favorite_red_24dp);
+        Picasso.get().load(imgUrl).into(swipeViewHolder.imageView);
+        Blurry.with(mContext).capture(swipeViewHolder.blurImageView).into(swipeViewHolder.blurImageView);
+        Log.d("Blurwork","yes");
+
         checkLike(swipeViewHolder);
 
         swipeViewHolder.likeImageView.setOnClickListener(new View.OnClickListener() {
