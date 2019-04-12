@@ -12,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.picasso.transformations.BlurTransformation;
+
 public class FavoriteQuotes extends RecyclerView.Adapter<FavoritesQuotesViewHolder> {
 
 
@@ -39,7 +41,9 @@ public class FavoriteQuotes extends RecyclerView.Adapter<FavoritesQuotesViewHold
     public void onBindViewHolder(@NonNull FavoritesQuotesViewHolder favoritesQuotesViewHolder, int i) {
         final String imgUrl=set.get(i);
         Picasso.get().load(imgUrl).into(favoritesQuotesViewHolder.imageView);
-
+        Picasso.get().load(imgUrl)
+                .transform(new BlurTransformation(mContext))
+                .into(favoritesQuotesViewHolder.blurImageView);
         //Picasso.get().load(imgUrl).into(favoritesQuotesViewHolder.blurImageView);
        // favoritesQuotesViewHolder.blurImageView.setBlur(15);
 
