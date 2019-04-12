@@ -10,6 +10,15 @@
     tools:context=".ImagePopup">
 
 
+    <com.jgabrielfreitas.core.BlurImageView
+        android:id="@+id/BlurImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/swipeControlLayout"
+        android:scaleType="centerCrop"
+        app:radius="24" />
+
+
     <ImageView
         android:id="@+id/swipeQuoteImageView"
         android:layout_width="match_parent"
@@ -17,6 +26,14 @@
         android:layout_above="@id/swipeControlLayout"
         android:scaleType="fitCenter"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+<!--    <ImageView
+        android:id="@+id/swipeBackgndImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/swipeControlLayout"
+        android:scaleType="fitXY"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />-->
 
 
     <LinearLayout

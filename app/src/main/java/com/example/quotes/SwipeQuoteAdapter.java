@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -39,6 +41,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -66,6 +69,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     Set<String> set;
     int f=2;
     View view;
+    String galleryPath;
+    private BillingClient billingClient;
 
     @NonNull
     @Override
@@ -81,7 +86,6 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
             set = new HashSet<String>();
         }
         checkLike(viewHolder);
-
 
 
         return viewHolder;
@@ -105,7 +109,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     private void showImage(int imagePosition, swipeViewHolder viewHolder) {
         //Log.d("position",imagePosition+"b");
         imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(imagePosition);
-        Picasso.get().load(imgUrl).into(viewHolder.imageView);
+        Picasso.get().load(imgUrl).placeholder(mContext.getResources().getDrawable(R.drawable.ic_loading)).into(viewHolder.imageView);
 
     }
 
@@ -114,8 +118,11 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
 
        // showImage(i,swipeViewHolder);
         imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(i);
+        Picasso.get().load(imgUrl).into(swipeViewHolder.blurImageView);
         Picasso.get().load(imgUrl).into(swipeViewHolder.imageView);
 
+        swipeViewHolder.blurImageView.setBlur(15);
+       // Blurry.with(mContext).capture(swipeViewHolder).into(swipeViewHolder.imageView);
         checkLike(swipeViewHolder);
 
         swipeViewHolder.likeImageView.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +183,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                                                     public void onScanCompleted(String path, Uri uri) {
                                                         Log.d("ExternalStorage", "Scanned " + path + ":");
                                                         Log.d("ExternalStorage", "-> uri=" + uri);
+                                                        galleryPath=uri+"";
                                                     }
                                                 });
                                         Snackbar.make(view, "Open Gallery", Snackbar.LENGTH_LONG)
@@ -183,7 +191,12 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                                                     @Override
                                                     public void onClick(View v) {
                                                      //   Toast.makeText(mContext, "snackbar", Toast.LENGTH_SHORT).show();
-                                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(path));
+                                                        Intent intent = new Intent(Intent.ACTION_PICK,
+                                                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                                        intent.setAction(android.content.Intent.ACTION_VIEW);
+                                                        intent.setDataAndType(Uri.parse(galleryPath),"image/*");
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        mContext.startActivity(intent);
                                                     }
                                                 }).show();
                                     } catch (Exception e) {

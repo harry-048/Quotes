@@ -99,7 +99,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
         try{
             //quotesViewHolder.quotesname.setText(quotesNames.getQuoteName());
            // Glide.with(mContext).load(imgUrl).into(quotesViewHolder.imageView);
-            Picasso.get().load(imgUrl).into(quotesViewHolder.imageView);
+            Picasso.get().load(imgUrl).placeholder(mContext.getResources().getDrawable(R.drawable.ic_loading)).into(quotesViewHolder.imageView);
         }
         catch (Exception e){
             Toast.makeText(mContext, "No image found", Toast.LENGTH_SHORT).show();
