@@ -2,6 +2,7 @@ package com.rstream.dailyquotes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
 
@@ -28,7 +31,8 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
 
 
-    public QuotesTypes(Context mContext, ArrayList<String> quotesImages,String motivationName, InterstitialAd mInterstitialAd) {
+
+    public QuotesTypes(Context mContext, ArrayList<String> quotesImages,String motivationName) {
         this.mContext = mContext;
         this.quotesImages=quotesImages;
         this.motivationName=motivationName;
@@ -40,6 +44,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
     public QuotesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.quotes_content, viewGroup, false);
         QuotesViewHolder viewHolder = new QuotesViewHolder(view);
+
 
         return viewHolder;
     }
@@ -62,20 +67,8 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                 intent.putExtra("clickedImage",i+"");
                 intent.putExtra("Type",motivationName);
                 intent.putExtra("className","QuotesTypes");
+                mContext.startActivity(intent);
 
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
-                    mContext.startActivity(intent);
-                }
-                mInterstitialAd.setAdListener(new AdListener(){
-                    @Override
-                    public void onAdClosed() {
-                        mContext.startActivity(intent);
-                        super.onAdClosed();
-                    }
-                });
 
 
             }

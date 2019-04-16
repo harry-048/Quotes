@@ -50,7 +50,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
         this.motivationType = motivationType;
         this.imagePosition = imagePosition;
         this.scrollView = scrollView;
-        Log.d("displayimagess",motivationType);
+        Log.d("displayimagess",motivationType+","+imagePosition);
     }
 
     Context mContext;
@@ -90,7 +90,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
         }
         checkLike(viewHolder);
 
-
+        //showImage(imagePosition,viewHolder);
         return viewHolder;
     }
 
@@ -110,7 +110,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     }
 
     private void showImage(int imagePosition, swipeViewHolder viewHolder) {
-        //Log.d("position",imagePosition+"b");
+        Log.d("position",imagePosition+"b");
         imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(imagePosition);
         Picasso.get().load(imgUrl).placeholder(mContext.getResources().getDrawable(R.drawable.loadinganimation)).into(viewHolder.imageView);
 
@@ -124,7 +124,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
         else
             imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(i);
         Log.d("displayimage",motivationType+","+mContext.getString(R.string.imagelink));
-        Log.d("displayimagesss",imgUrl);
+        Log.d("displayimagesss",imgUrl+", "+i);
         Log.d("displayimagessss",motivationType+"/"+ quotesImages.get(i));
        Picasso.get().load(imgUrl)
                .transform(new BlurTransformation(mContext))

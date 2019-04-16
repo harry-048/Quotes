@@ -138,7 +138,7 @@ public class HomeFragment extends Fragment {
 
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
-        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),MainActivity.images, MainActivity.motivationName, mInterstitialAd);
+        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),MainActivity.images, MainActivity.motivationName);
         recyclerView.setAdapter(quotesTypes);
     }
 
