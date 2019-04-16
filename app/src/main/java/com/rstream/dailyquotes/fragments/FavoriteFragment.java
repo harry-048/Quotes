@@ -50,6 +50,28 @@ public class FavoriteFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_favorite, container, false);
 
+      /*  sharedPreferences = getActivity().getSharedPreferences("prefs.xml",MODE_PRIVATE);
+        new HashSet<String>();
+        set= sharedPreferences.getStringSet("likedImages",null);
+        if (set==null){
+            Log.d("favnull", "onCreateViewHolder:");
+            set = new HashSet<String>();
+        }
+        else {
+            Log.d("favorite","in favorites"+set);
+            quotesList.clear();
+            quotesList.addAll(set);
+        }
+        Log.d("fav",set.size()+",");
+
+        setRecycleView();*/
+
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         sharedPreferences = getActivity().getSharedPreferences("prefs.xml",MODE_PRIVATE);
         new HashSet<String>();
         set= sharedPreferences.getStringSet("likedImages",null);
@@ -65,9 +87,9 @@ public class FavoriteFragment extends Fragment {
         Log.d("fav",set.size()+",");
 
         setRecycleView();
-
-        return rootView;
     }
+
+
 
     private void setRecycleView() {
         recyclerView = rootView.findViewById(R.id.fav_recycler_view);

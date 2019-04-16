@@ -50,6 +50,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
         this.motivationType = motivationType;
         this.imagePosition = imagePosition;
         this.scrollView = scrollView;
+        Log.d("displayimagess",motivationType);
     }
 
     Context mContext;
@@ -118,29 +119,18 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final swipeViewHolder swipeViewHolder, final int i) {
 
-       // showImage(i,swipeViewHolder);
-        imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(i);
-       // showImage(i,swipeViewHolder);
-       /* Picasso.get().load(imgUrl).into(swipeViewHolder.blurImageView);
-        swipeViewHolder.blurImageView.setBlur(15);*/
-
-       /* swipeViewHolder.blurImageView.setBlurImageByUrl(imgUrl);
-        swipeViewHolder.blurImageView.setBlurFactor(8);
-        swipeViewHolder.blurImageView.setFailDrawable(mContext.getResources().getDrawable(R.drawable.loadinganimation));
-        swipeViewHolder.blurImageView.setDefaultDrawable(mContext.getResources().getDrawable(R.drawable.loadinganimation));*/
-
+        if (motivationType=="")
+            imgUrl=quotesImages.get(i);
+        else
+            imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(i);
+        Log.d("displayimage",motivationType+","+mContext.getString(R.string.imagelink));
+        Log.d("displayimagesss",imgUrl);
+        Log.d("displayimagessss",motivationType+"/"+ quotesImages.get(i));
        Picasso.get().load(imgUrl)
                .transform(new BlurTransformation(mContext))
                .into(swipeViewHolder.blurImageView);
         //swipeViewHolder.blurImageView.getResources().getDrawable(R.drawable.ic_favorite_red_24dp);
         Picasso.get().load(imgUrl).into(swipeViewHolder.imageView);
-
-       /* try {
-            Blurry.with(mContext).capture(swipeViewHolder.blurImageView).into(swipeViewHolder.blurImageView);
-        }
-        catch (NullPointerException e){
-            Log.d("Blurerror",e.getMessage());
-        }*/
 
         Log.d("Blurwork","yes");
 
@@ -155,8 +145,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                     f++;
                     sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
-                    sharedPreferences.edit().putInt("imagePosition",i).apply();
-                    sharedPreferences.edit().putString("motivationName",motivationType).apply();
+
                     //likedImages.add(imgUrl);
                     swipeViewHolder.likeImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_favorite_red_24dp));
                 }
@@ -166,8 +155,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
 
                     sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
-                    sharedPreferences.edit().putInt("imagePosition",i).apply();
-                    sharedPreferences.edit().putString("motivationName",motivationType).apply();
+
                     swipeViewHolder.likeImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
                 }
             }

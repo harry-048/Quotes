@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> listItems;
     ArrayAdapter<String> adapter;
     ListView listView;
-    String url = "";
-    String jsonurl = "";
     boolean clicked = false;
     HomeFragment homeFragment = new HomeFragment();
     Fragment favoriteFragment = new FavoriteFragment();
@@ -99,6 +97,20 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (selectedFragment==favoriteFragment || selectedFragment==searchFragment)
+        {
+            selectedFragment=homeFragment;
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            navigation.setSelectedItemId(R.id.navigation_home);
+        }
+        else if (selectedFragment==homeFragment){
+            super.onBackPressed();
+        }
     }
 
     @Override

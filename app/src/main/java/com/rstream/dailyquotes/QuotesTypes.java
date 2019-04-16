@@ -61,6 +61,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                 intent.putExtra("imageslist",quotesImages);
                 intent.putExtra("clickedImage",i+"");
                 intent.putExtra("Type",motivationName);
+                intent.putExtra("className","QuotesTypes");
 
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();

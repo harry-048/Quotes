@@ -27,6 +27,7 @@ public class FavoriteQuotes extends RecyclerView.Adapter<FavoritesQuotesViewHold
 
     Context mContext;
     ArrayList<String> set;
+    String likedMotivationName;
  //   ArrayList<String> quotesList = new ArrayList<String>();
 
 
@@ -51,10 +52,14 @@ public class FavoriteQuotes extends RecyclerView.Adapter<FavoritesQuotesViewHold
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(mContext,SwipeQuoteActivity.class);
-              /*  intent.putExtra("imageslist",quotesImages);
+                intent.putExtra("imageslist",set);
                 intent.putExtra("clickedImage",i+"");
-                intent.putExtra("Type",motivationName);
-                mContext.startActivity(intent);*/
+                intent.putExtra("className","FavoriteQuotes");
+                String s = imgUrl.replace(mContext.getString(R.string.imagelink),"");
+                String[] str = s.split("/");
+                likedMotivationName = str[0];
+                intent.putExtra("Type",likedMotivationName);
+                mContext.startActivity(intent);
             }
         });
         //Picasso.get().load(imgUrl).into(favoritesQuotesViewHolder.blurImageView);

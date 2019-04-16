@@ -25,6 +25,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     ArrayList<String> quotesImages;
     String motivationType;
     int imagePosition;
+    String intentClassName;
 
 
     @Override
@@ -34,11 +35,20 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         quotesImages = getIntent().getStringArrayListExtra("imageslist");
         motivationType = getIntent().getStringExtra("Type");
         imagePosition = Integer.parseInt(getIntent().getStringExtra("clickedImage"));
+        intentClassName = getIntent().getStringExtra("className");
 
+        Log.d("displayimages",motivationType+","+imagePosition+","+quotesImages);
 
         DiscreteScrollView scrollView = findViewById(R.id.picker);
-        final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView);
-        scrollView.setAdapter(swipeQuotes);
+        if (intentClassName.equals("QuotesTypes")){
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView);
+            scrollView.setAdapter(swipeQuotes);
+        }
+        if (intentClassName.equals("FavoriteQuotes")){
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,"",imagePosition,scrollView);
+            scrollView.setAdapter(swipeQuotes);
+        }
+
         scrollView.scrollToPosition(imagePosition);
 
 
