@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/common_google_signin_btn_text_dark_disabled"
-    tools:context=".SwipeQuoteActivity">
+    tools:context=".dailyquotes.SwipeQuoteActivity">
 
     <!--<android.support.v7.widget.RecyclerView
         android:id="@+id/swipeRecyclerView"

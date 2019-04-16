@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.quotes">
+    package="com.rstream.dailyquotes">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -16,9 +16,9 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9098946909579213~1471105716"/>
-        <activity android:name=".SwipeQuoteActivity"
+        <activity android:name="com.rstream.dailyquotes.SwipeQuoteActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ImagePopup" />
+        <activity android:name="com.rstream.dailyquotes.ImagePopup" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
