@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
 import com.rstream.dailyquotes.R;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.InterstitialAd;
@@ -26,13 +27,14 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
     private ArrayList<String> quotesImages;
     Context mContext;
     String motivationName;
-
+    SharedPreferences preferences;
+    public boolean adShowingFlag = true;
     private InterstitialAd mInterstitialAd;
 
 
 
 
-    public QuotesTypes(Context mContext, ArrayList<String> quotesImages,String motivationName) {
+    public QuotesTypes(Context mContext, ArrayList<String> quotesImages, String motivationName, InterstitialAd mInterstitialAd) {
         this.mContext = mContext;
         this.quotesImages=quotesImages;
         this.motivationName=motivationName;
@@ -45,6 +47,9 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
         View view = LayoutInflater.from(mContext).inflate(R.layout.quotes_content, viewGroup, false);
         QuotesViewHolder viewHolder = new QuotesViewHolder(view);
 
+
+        preferences = mContext.getSharedPreferences("prefs.xml",MODE_PRIVATE);
+        adShowingFlag= preferences.getBoolean("adShowingFlag",true);
 
         return viewHolder;
     }
@@ -67,7 +72,33 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                 intent.putExtra("clickedImage",i+"");
                 intent.putExtra("Type",motivationName);
                 intent.putExtra("className","QuotesTypes");
-                mContext.startActivity(intent);
+
+                if (mInterstitialAd.isLoaded()) {
+                    if (adShowingFlag){
+                        Log.d("interstitial", ","+adShowingFlag);
+                        mInterstitialAd.show();
+                    }
+                    else {
+                        Log.d("interstitial", ":"+adShowingFlag);
+                        adShowingFlag=true;
+                        preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
+                        mContext.startActivity(intent);
+                    }
+                    Log.d("interstitial", "The interstitial loaded.");
+                } else {
+                    Log.d("interstitial", "The interstitial wasn't loaded yet.");
+                    mContext.startActivity(intent);
+                }
+                mInterstitialAd.setAdListener(new AdListener(){
+                    @Override
+                    public void onAdClosed() {
+                        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                        adShowingFlag=false;
+                        preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
+                        mContext.startActivity(intent);
+                        super.onAdClosed();
+                    }
+                });
 
 
 

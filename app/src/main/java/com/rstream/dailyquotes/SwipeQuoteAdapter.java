@@ -250,7 +250,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    long t = System.currentTimeMillis();
+                                    /*long t = System.currentTimeMillis();
                                     Intent share = new Intent();
                                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                                     String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
@@ -276,7 +276,25 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                                     share.setType("image/*");
                                     share.putExtra(Intent.EXTRA_TEXT,"Send From Quotes");
                                     share.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
-                                    mContext.startActivity(Intent.createChooser(share, "Share"));
+                                    mContext.startActivity(Intent.createChooser(share, "Share"));*/
+
+                                    long t = System.currentTimeMillis();
+                                    File root = Environment.getExternalStorageDirectory();
+                                    File cachePath = new File(root.getAbsolutePath() + File.separator + t + "temporary_file.jpg");
+                                    try {
+                                        cachePath.createNewFile();
+                                        FileOutputStream ostream = new FileOutputStream(cachePath);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                                        ostream.close();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    Intent share = new Intent(Intent.ACTION_SEND);
+                                    share.putExtra(Intent.EXTRA_TEXT, "Send From Quotes");
+                                    share.setType("image/*");
+                                    share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(cachePath));
+                                    mContext.startActivity(Intent.createChooser(share,"Share via"));
+
                                 }
                             }).start();
                         }

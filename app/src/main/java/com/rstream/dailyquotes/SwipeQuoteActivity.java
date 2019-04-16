@@ -30,20 +30,20 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     String motivationType;
     int imagePosition;
     String intentClassName;
-    InterstitialAd mInterstitialAd;
+    /*InterstitialAd mInterstitialAd;
     SharedPreferences preferences;
     public boolean adShowingFlag = true;
-    boolean swapFlag=true;
+    boolean swapFlag=true;*/
     DiscreteScrollView scrollView;
 
-    @Override
+   /* @Override
     public void finish() {
         if (swapFlag)
             adShowingFlag = !adShowingFlag;
         preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
         Log.d("adshowingas","showing"+","+adShowingFlag);
         super.finish();
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +53,13 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         motivationType = getIntent().getStringExtra("Type");
         imagePosition = Integer.parseInt(getIntent().getStringExtra("clickedImage"));
         intentClassName = getIntent().getStringExtra("className");
-        preferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
-        adShowingFlag= preferences.getBoolean("adShowingFlag",true);
+        /*preferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
+        adShowingFlag= preferences.getBoolean("adShowingFlag",true);*/
         scrollView = findViewById(R.id.picker);
-        swapFlag=true;
+       /* swapFlag=true;
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());*/
 
         Log.d("displayimages",motivationType+","+imagePosition+","+quotesImages);
 
@@ -79,7 +79,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
             showSwipeQuotes(quotesImages,motivationType,imagePosition);
         }*/
 
-        mInterstitialAd.setAdListener(new AdListener(){
+      /*  mInterstitialAd.setAdListener(new AdListener(){
             @Override
             public void onAdLoaded() {
                 if (adShowingFlag){
@@ -100,7 +100,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
                 super.onAdClosed();
             }
         });
-
+*/
 
        /* if (mInterstitialAd.isLoaded()){
             if (adShowingFlag){
