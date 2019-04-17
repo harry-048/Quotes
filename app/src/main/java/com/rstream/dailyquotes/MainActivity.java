@@ -23,6 +23,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.rstream.dailyquotes.R;
 import com.rstream.dailyquotes.fragments.FavoriteFragment;
 import com.rstream.dailyquotes.fragments.HomeFragment;
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView navigation;
     private DrawerLayout drawerLayout;
     private ArrayList<QuotesKeyVal> quoteskeyvalue;
+    private InterstitialAd mInterstitialAd;
+
     //private ArrayList<QuotesImages> quotesImages;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        //final boolean[] close = {false};
         if (selectedFragment==favoriteFragment || selectedFragment==searchFragment)
         {
             selectedFragment=homeFragment;
@@ -110,7 +115,8 @@ public class MainActivity extends AppCompatActivity {
             navigation.setSelectedItemId(R.id.navigation_home);
         }
         else if (selectedFragment==homeFragment){
-            super.onBackPressed();
+                mInterstitialAd.show();
+                super.onBackPressed();
         }
     }
 
@@ -118,6 +124,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
         // MobileAds.initialize(this, "ca-app-pub-9098946909579213~1471105716");
 
         /*FirebaseInstanceId.getInstance().getInstanceId()

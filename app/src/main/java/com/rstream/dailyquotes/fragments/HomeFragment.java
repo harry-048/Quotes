@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
 
 
         mInterstitialAd = new InterstitialAd(getActivity());
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
         //mInterstitialAd.setAdUnitId("ca-app-pub-9098946909579213/8837571799");
 
         mInterstitialAd.loadAd(new AdRequest.Builder().build());

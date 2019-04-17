@@ -22,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -129,37 +130,69 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        Log.d("message", "From: " + remoteMessage.getFrom());
+        handleNow(remoteMessage);
+
+        Log.d("indexvaluede", "From: " + remoteMessage.getFrom());
+        Log.d("indexvaluedes", "From: " + remoteMessage.getData().get("images"));
+        Log.d("indexvaluedesa", "From: " + remoteMessage.getData().size());
 
         if (remoteMessage.getData().size() > 0) {
             Log.d("message notifiation", "Message data payload: " + remoteMessage.getData());
+            //Map<String, String> data = remoteMessage.getData();
+            //String myCustomKey = data.get("my_custom_key");
+           // parseMessage(remoteMessage.getData().get("images"));
+            //Toast.makeText(this, remoteMessage.getData().get("image"), Toast.LENGTH_SHORT).show();
 
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
                // scheduleJob();
             } else {
                 // Handle message within 10 seconds
-               // handleNow();
+                handleNow(remoteMessage);
             }
         }
 
         if (remoteMessage.getNotification() != null) {
 
-            Log.d("Receiveded", "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            String message = remoteMessage.getNotification().getBody();
+            parseMessage(remoteMessage.getData().get("images"));
+
+            Log.d("indexvalued", "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            /*String message = remoteMessage.getNotification().getBody();
             String s = message.replace(this.getString(R.string.imagelink),"");
             String[] str = s.split("/");
             motivationName = str[0];
             parseData();
             int i = images.indexOf(str[1]);
-            Log.d("indexvalue", "Message Notification Body: " + str[1]);
+            Log.d("indexvalue", "Message Notification: " + str[1]);
             Intent intent = new Intent(this,SwipeQuoteActivity.class);
             intent.putExtra("imageslist",images);
             intent.putExtra("clickedImage",i+"");
             intent.putExtra("Type",motivationName);
             intent.putExtra("className","MyFirebaseMessaging");
-            startActivity(intent);
+            startActivity(intent);*/
             //Toast.makeText(this, "message"+remoteMessage.getNotification().getBody(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void handleNow(RemoteMessage remoteMessage) {
+        Log.d("fcm_message", remoteMessage.getData().get("images"));
+
+    }
+
+    private void parseMessage(String notificationMessage) {
+        String message = notificationMessage;
+        String s = message.replace(this.getString(R.string.imagelink),"");
+        String[] str = s.split("/");
+        motivationName = str[0];
+        parseData();
+        int i = images.indexOf(str[1]);
+        Log.d("indexvalue", "Message Notification: " + str[1]);
+        Log.d("indexvalue", "Message: " + message);
+        Intent intent = new Intent(this,SwipeQuoteActivity.class);
+        intent.putExtra("imageslist",images);
+        intent.putExtra("clickedImage",i+"");
+        intent.putExtra("Type",motivationName);
+        intent.putExtra("className","MyFirebaseMessaging");
+        startActivity(intent);
     }
 }

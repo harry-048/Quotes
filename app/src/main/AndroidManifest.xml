@@ -29,7 +29,11 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9098946909579213~1471105716"/>
         <activity android:name="com.rstream.dailyquotes.SwipeQuoteActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_1" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.rstream.dailyquotes.ImagePopup" />
         <activity
             android:name=".MainActivity"
