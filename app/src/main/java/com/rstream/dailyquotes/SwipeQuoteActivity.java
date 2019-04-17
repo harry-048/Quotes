@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -146,10 +147,10 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         intentClassName = getIntent().getStringExtra("className");
         scrollView = findViewById(R.id.picker);
 
-
+        Toast.makeText(this, "message got here", Toast.LENGTH_SHORT).show();
         Log.d("displayimages",motivationType+","+imagePosition+","+quotesImages);
 
-
+        parseData();
         showSwipeQuotes(quotesImages,motivationType,imagePosition);
 
         scrollView.scrollToPosition(imagePosition);

@@ -138,8 +138,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getData().size() > 0) {
             Log.d("message notifiation", "Message data payload: " + remoteMessage.getData());
-            //Map<String, String> data = remoteMessage.getData();
-            //String myCustomKey = data.get("my_custom_key");
+            Map<String, String> data = remoteMessage.getData();
+            String myCustomKey = data.get("images");
+            Log.d("indexvaluedesasdsds", "mycustomkey data payload: " + myCustomKey);
            // parseMessage(remoteMessage.getData().get("images"));
             //Toast.makeText(this, remoteMessage.getData().get("image"), Toast.LENGTH_SHORT).show();
 

@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
 import com.rstream.dailyquotes.R;
 import com.jgabrielfreitas.core.BlurImageView;
 import com.squareup.picasso.Picasso;
@@ -53,6 +54,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
         Log.d("displayimagess",motivationType+","+imagePosition);
     }
 
+
     Context mContext;
     ArrayList<String> quotesImages;
     String motivationType;
@@ -70,6 +72,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     private BillingClient billingClient;
     int imgPosition;
     String motivationName;
+    int likeCount=0;
+    int shareCount=0;
 
     @NonNull
     @Override
@@ -85,6 +89,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
         f= sharedPreferences.getInt("flag",0);
         imgPosition = sharedPreferences.getInt("imagePosition",0);
         motivationName = sharedPreferences.getString("motivationName",null);
+        likeCount = sharedPreferences.getInt("likeCount",0);
+        shareCount = sharedPreferences.getInt("shareCount",0);
         if (set==null){
             set = new HashSet<String>();
         }
@@ -141,20 +147,31 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
             public void onClick(View v) {
                 if (!checkLike(swipeViewHolder)){
 
-                    set.add(imgUrl);
-                    f++;
-                    sharedPreferences.edit().putInt("flag",f).apply();
-                    sharedPreferences.edit().putStringSet("likedImages",set).apply();
+                    if (likeCount>2){
 
-                    //likedImages.add(imgUrl);
-                    swipeViewHolder.likeImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_favorite_red_24dp));
+                    }
+                    else {
+                        set.add(imgUrl);
+                        f++;
+                        likeCount++;
+                        sharedPreferences.edit().putInt("flag",f).apply();
+                        sharedPreferences.edit().putStringSet("likedImages",set).apply();
+                        sharedPreferences.edit().putInt("likeCount",likeCount).apply();
+
+                        //likedImages.add(imgUrl);
+                        swipeViewHolder.likeImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_favorite_red_24dp));
+
+                    }
+
                 }
                 else {
                     set.remove(imgUrl);
                     f--;
+                    likeCount--;
 
                     sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
+                    sharedPreferences.edit().putInt("likeCount",likeCount).apply();
 
                     swipeViewHolder.likeImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
                 }
