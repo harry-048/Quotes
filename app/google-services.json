@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "175430422004",
+    "firebase_url": "https://daily-quotes-1a4a9.firebaseio.com",
+    "project_id": "daily-quotes-1a4a9",
+    "storage_bucket": "daily-quotes-1a4a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175430422004:android:69caf22563d1acbb",
+        "android_client_info": {
+          "package_name": "com.rstream.dailyquotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175430422004-rps3eqfnqjp235k9ic7tcnbh9lool075.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rstream.dailyquotes",
+            "certificate_hash": "818246f32c04dbd0fe0017946f06deec7d7b9b85"
+          }
+        },
+        {
+          "client_id": "175430422004-qun48hpmhp9bm9m95iccpbd88jepl64s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALRR4eUYJtdlWA8eI-BZP361ps7qoyFPg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175430422004-qun48hpmhp9bm9m95iccpbd88jepl64s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
