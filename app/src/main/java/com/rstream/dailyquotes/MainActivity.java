@@ -1,6 +1,7 @@
 package com.rstream.dailyquotes;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView navigation;
     private DrawerLayout drawerLayout;
     private ArrayList<QuotesKeyVal> quoteskeyvalue;
-    private ArrayList<QuotesImages> quotesImages;
+    //private ArrayList<QuotesImages> quotesImages;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         quoteskeyvalue = new ArrayList<>();
-        quotesImages = new ArrayList<>();
+       // quotesImages = new ArrayList<>();
         listItems = new ArrayList<String>();
         listView = (ListView) findViewById(R.id.nameslistView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
@@ -243,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
         String jsonString = writer.toString();
         try {
             data = new JSONObject(jsonString);
+            /*Intent intent = new Intent(this,MyFirebaseMessagingService.class);
+            intent.putExtra("jsonfile",data+"");*/
             Iterator<String> iter = data.keys();
             while (iter.hasNext()) {
                 String key = iter.next();

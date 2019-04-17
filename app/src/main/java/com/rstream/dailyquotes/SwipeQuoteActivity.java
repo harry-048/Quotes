@@ -53,79 +53,15 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         motivationType = getIntent().getStringExtra("Type");
         imagePosition = Integer.parseInt(getIntent().getStringExtra("clickedImage"));
         intentClassName = getIntent().getStringExtra("className");
-        /*preferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
-        adShowingFlag= preferences.getBoolean("adShowingFlag",true);*/
         scrollView = findViewById(R.id.picker);
-       /* swapFlag=true;
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());*/
+
 
         Log.d("displayimages",motivationType+","+imagePosition+","+quotesImages);
 
 
         showSwipeQuotes(quotesImages,motivationType,imagePosition);
 
-       /* if (adShowingFlag){
-            adShowingFlag=false;
-            Log.d("adshowinga","showing"+","+adShowingFlag);
-            preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
-            mInterstitialAd.show();
-        }
-        else {
-            Log.d("adshowing","not showing"+","+adShowingFlag);
-            adShowingFlag=true;
-            preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
-            showSwipeQuotes(quotesImages,motivationType,imagePosition);
-        }*/
-
-      /*  mInterstitialAd.setAdListener(new AdListener(){
-            @Override
-            public void onAdLoaded() {
-                if (adShowingFlag){
-                    Log.d("adshowinga","showing"+","+adShowingFlag);
-                    mInterstitialAd.show();
-
-                }
-                super.onAdLoaded();
-                Log.d("adshowings","showing"+","+adShowingFlag+","+imagePosition);
-            }
-
-            @Override
-            public void onAdClosed() {
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                adShowingFlag=false;
-                swapFlag=false;
-                preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
-                super.onAdClosed();
-            }
-        });
-*/
-
-       /* if (mInterstitialAd.isLoaded()){
-            if (adShowingFlag){
-                adShowingFlag=false;
-                Log.d("adshowing","showing"+","+adShowingFlag);
-                preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
-                mInterstitialAd.show();
-            }
-            else {
-                Log.d("adshowing","not showing"+","+adShowingFlag);
-                adShowingFlag=true;
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
-                showSwipeQuotes(quotesImages,motivationType,imagePosition);
-            }
-        }
-        else {
-            Log.d("adshowings","not showing"+","+adShowingFlag);
-            showSwipeQuotes(quotesImages,motivationType,imagePosition);
-        }*/
-
-
         scrollView.scrollToPosition(imagePosition);
-
-
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("message_subject_intent"));
 
@@ -142,6 +78,10 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         }
         if (intentClassName.equals("FavoriteQuotes")){
             final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,"",imagePosition,scrollView);
+            scrollView.setAdapter(swipeQuotes);
+        }
+        if (intentClassName.equals("MyFirebaseMessaging")){
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView);
             scrollView.setAdapter(swipeQuotes);
         }
     }
