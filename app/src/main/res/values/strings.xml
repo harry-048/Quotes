@@ -10,7 +10,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="AdUnitId">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="premium_sku">android.test.purchase</string>
+    <string name="premium_sku">android.test.purchased</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

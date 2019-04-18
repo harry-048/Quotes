@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
             navigation.setSelectedItemId(R.id.navigation_home);
         }
         else if (selectedFragment==homeFragment){
+            if (!purchased)
                 mInterstitialAd.show();
             AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
             alertDialog.setTitle("Are you sure to exit app?");

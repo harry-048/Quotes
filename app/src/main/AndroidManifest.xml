@@ -7,8 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,11 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".PremiumDialogActivity"></activity>
 
         <service
-            android:name="com.rstream.dailyquotes.MyFirebaseMessagingService"
+            android:name=".MyFirebaseMessagingService"
             android:exported="false">
-
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -28,15 +26,18 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9098946909579213~1471105716"/>
-        <activity android:name="com.rstream.dailyquotes.SwipeQuoteActivity"
+            android:value="ca-app-pub-9098946909579213~1471105716" />
+
+        <activity
+            android:name=".SwipeQuoteActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.rstream.dailyquotes.SwipeQuoteActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.rstream.dailyquotes.ImagePopup" />
+        <activity android:name=".ImagePopup" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
