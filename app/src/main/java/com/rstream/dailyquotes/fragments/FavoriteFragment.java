@@ -83,18 +83,30 @@ public class FavoriteFragment extends Fragment {
             set = new HashSet<String>();
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
             alertDialog.setTitle("You don't have any favorites yet");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
                     });
             alertDialog.show();
+
         }
         else {
             Log.d("favorite","in favorites"+set);
             quotesList.clear();
             quotesList.addAll(set);
+            if (quotesList.size()==0){
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("You don't have any favorites yet");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
         }
         Log.d("fav",set.size()+",");
 

@@ -147,7 +147,6 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         intentClassName = getIntent().getStringExtra("className");
         scrollView = findViewById(R.id.picker);
 
-        Toast.makeText(this, "message got here", Toast.LENGTH_SHORT).show();
         Log.d("displayimages",motivationType+","+imagePosition+","+quotesImages);
 
         parseData();

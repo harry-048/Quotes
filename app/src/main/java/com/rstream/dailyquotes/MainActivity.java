@@ -4,10 +4,12 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -24,7 +26,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -47,8 +54,9 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PurchasesUpdatedListener {
 
     public static ArrayList<String> images;
     public static String motivationName = "";
@@ -66,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ArrayList<QuotesKeyVal> quoteskeyvalue;
     private InterstitialAd mInterstitialAd;
+    private BillingClient billingClient;
+    SharedPreferences sharedPreferences;
+    boolean purchased =false;
 
     //private ArrayList<QuotesImages> quotesImages;
 
@@ -138,13 +149,59 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void initializeBillingClient(){
+        billingClient = BillingClient.newBuilder(this).setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
+                if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (billingClient.isReady()){
+            refreshPurchaseList();
+        }
+    }
+
+    private void refreshPurchaseList() {
+        Purchase.PurchasesResult purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
+        List<Purchase> purchasedList = purchasesResult.getPurchasesList();
+        for(Purchase purchase: purchasedList){
+            if (purchase.getSku().equals(this.getString(R.string.premium_sku)))
+            {
+                purchased=true;
+                //sharedPreferences.edit().putBoolean("purchased",purchased).apply();
+            }
+            //Toast.makeText(this, "Purchased " + purchase.getSku(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+        sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
+        purchased=sharedPreferences.getBoolean("purchased",false);
+        initializeBillingClient();
         // MobileAds.initialize(this, "ca-app-pub-9098946909579213~1471105716");
 
         /*FirebaseInstanceId.getInstance().getInstanceId()
@@ -333,6 +390,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).run();
+
+    }
+
+    @Override
+    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
 
     }
 }

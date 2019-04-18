@@ -1,7 +1,9 @@
 package com.rstream.dailyquotes;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,9 +13,11 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +27,12 @@ import android.widget.Toast;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.rstream.dailyquotes.R;
 import com.jgabrielfreitas.core.BlurImageView;
 import com.squareup.picasso.Picasso;
@@ -34,6 +44,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -41,21 +52,22 @@ import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
+public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> implements PurchasesUpdatedListener {
 
 
 
-    public SwipeQuoteAdapter(Context mContext, ArrayList<String> quotesImages, String motivationType, int imagePosition,DiscreteScrollView scrollView) {
+    public SwipeQuoteAdapter(Activity mContext, ArrayList<String> quotesImages, String motivationType, int imagePosition, DiscreteScrollView scrollView) {
         this.mContext = mContext;
         this.quotesImages = quotesImages;
         this.motivationType = motivationType;
         this.imagePosition = imagePosition;
         this.scrollView = scrollView;
         Log.d("displayimagess",motivationType+","+imagePosition);
+        initializeBillingClient();
     }
 
 
-    Context mContext;
+    Activity mContext;
     ArrayList<String> quotesImages;
     String motivationType;
     int imagePosition;
@@ -69,11 +81,15 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
     View view;
     String galleryPath;
     BlurImageView blurbackImageView;
-    private BillingClient billingClient;
     int imgPosition;
     String motivationName;
     int likeCount=0;
-    int shareCount=0;
+    int downloadCount=0;
+    boolean purchased=false;
+
+    private BillingClient billingClient;
+
+
 
     @NonNull
     @Override
@@ -84,13 +100,14 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
 
 
         sharedPreferences = mContext.getSharedPreferences("prefs.xml",MODE_PRIVATE);
+        purchased = sharedPreferences.getBoolean("purchased",false);
         set = new HashSet<String>();
         set= sharedPreferences.getStringSet("likedImages",null);
         f= sharedPreferences.getInt("flag",0);
         imgPosition = sharedPreferences.getInt("imagePosition",0);
         motivationName = sharedPreferences.getString("motivationName",null);
         likeCount = sharedPreferences.getInt("likeCount",0);
-        shareCount = sharedPreferences.getInt("shareCount",0);
+        downloadCount = sharedPreferences.getInt("downloadCount",0);
         if (set==null){
             set = new HashSet<String>();
         }
@@ -147,8 +164,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
             public void onClick(View v) {
                 if (!checkLike(swipeViewHolder)){
 
-                    if (likeCount>2){
-
+                    if (likeCount>=2&& !purchased){
+                        showPremiumDialog();
                     }
                     else {
                         set.add(imgUrl);
@@ -187,65 +204,74 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
                     // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
                 }
                 else {
-                    Picasso.get().load(imgUrl).into(new Target() {
-                        @Override
-                        public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    long t = System.currentTimeMillis();
-                                    final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
-                                    File file = new File(path);
-                                    if (file.exists()) file.delete();
-                                    try {
-                                        file.createNewFile();
-                                        FileOutputStream ostream = new FileOutputStream(file);
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
-                                        ostream.flush();
-                                        ostream.close();
-                                        Log.d("Clickedbfr",""+save);
-                                        save=true;
-                                        Log.d("Clickedaft",""+save);
+                    if (downloadCount>=2&& !purchased){
+                        showPremiumDialog();
+                    }
+                    else {
+                        Picasso.get().load(imgUrl).into(new Target() {
+                            @Override
+                            public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        long t = System.currentTimeMillis();
+                                        final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
+                                        File file = new File(path);
+                                        if (file.exists()) file.delete();
+                                        try {
+                                            file.createNewFile();
+                                            FileOutputStream ostream = new FileOutputStream(file);
+                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
+                                            ostream.flush();
+                                            ostream.close();
+                                            Log.d("Clickedbfr",""+save);
+                                            save=true;
+                                            Log.d("Clickedaft",""+save);
 
-                                        MediaScannerConnection.scanFile(mContext, new String[]{file.toString()}, null,
-                                                new MediaScannerConnection.OnScanCompletedListener() {
-                                                    public void onScanCompleted(String path, Uri uri) {
-                                                        Log.d("ExternalStorage", "Scanned " + path + ":");
-                                                        Log.d("ExternalStorage", "-> uri=" + uri);
-                                                        galleryPath=uri+"";
-                                                    }
-                                                });
-                                        Snackbar.make(view, "Open Gallery", Snackbar.LENGTH_LONG)
-                                                .setAction("View", new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                     //   Toast.makeText(mContext, "snackbar", Toast.LENGTH_SHORT).show();
-                                                        Intent intent = new Intent(Intent.ACTION_PICK,
-                                                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                                        intent.setAction(android.content.Intent.ACTION_VIEW);
-                                                        intent.setDataAndType(Uri.parse(galleryPath),"image/*");
-                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                        mContext.startActivity(intent);
-                                                    }
-                                                }).show();
-                                    } catch (Exception e) {
-                                        Log.d("Working",e.getMessage()+",");
-                                        e.printStackTrace();
+                                            MediaScannerConnection.scanFile(mContext, new String[]{file.toString()}, null,
+                                                    new MediaScannerConnection.OnScanCompletedListener() {
+                                                        public void onScanCompleted(String path, Uri uri) {
+                                                            Log.d("ExternalStorage", "Scanned " + path + ":");
+                                                            Log.d("ExternalStorage", "-> uri=" + uri);
+                                                            galleryPath=uri+"";
+                                                        }
+                                                    });
+                                            downloadCount++;
+                                            Log.d("downloadCount",downloadCount+"");
+                                            sharedPreferences.edit().putInt("downloadCount",downloadCount).apply();
+                                            Snackbar.make(view, "Open Gallery", Snackbar.LENGTH_LONG)
+                                                    .setAction("View", new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            //   Toast.makeText(mContext, "snackbar", Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(Intent.ACTION_PICK,
+                                                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                                            intent.setAction(android.content.Intent.ACTION_VIEW);
+                                                            intent.setDataAndType(Uri.parse(galleryPath),"image/*");
+                                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            mContext.startActivity(intent);
+                                                        }
+                                                    }).show();
+                                        } catch (Exception e) {
+                                            Log.d("Working",e.getMessage()+",");
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
-                            }).start();
-                        }
+                                }).start();
+                            }
 
-                        @Override
-                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                            @Override
+                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-                        }
-                    });
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            }
+                        });
+                    }
                 }
+
                 if (save){
                     save=false;
                     Toast.makeText(mContext, "Successfully Downloaded", Toast.LENGTH_SHORT).show();
@@ -347,8 +373,98 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> {
 
     }
 
+    private void showPremiumDialog() {
+        new AlertDialog.Builder(mContext)
+                .setMessage("Buy Premium For that Manhhh!!")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        launchIAP();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
+    }
+
+    private void initializeBillingClient(){
+        billingClient = BillingClient.newBuilder(mContext).setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
+                if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+    }
+
+    private void launchIAP() {
+        if (billingClient.isReady()){
+            List<String> skuList = new ArrayList<> ();
+            skuList.add(mContext.getString(R.string.premium_sku));
+            SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+            params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+            billingClient.querySkuDetailsAsync(params.build(),
+                    new SkuDetailsResponseListener() {
+                        @Override
+                        public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
+                            // Process the result.
+                            if (responseCode == BillingClient.BillingResponse.OK
+                                    && skuDetailsList != null) {
+                                for (SkuDetails skuDetails : skuDetailsList) {
+                                    String sku = skuDetails.getSku();
+                                    String price = skuDetails.getPrice();
+                                    if (mContext.getString(R.string.premium_sku).equals(sku)) {
+                                        //Toast.makeText(mContext, price, Toast.LENGTH_SHORT).show();
+                                        Log.d("PremiumUpgrade", price);
+
+                                        BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                                                .setSkuDetails(skuDetails)
+                                                .build();
+                                        int responseCode1 = billingClient.launchBillingFlow(mContext, flowParams);
+
+                                    }
+                                }
+
+                            }
+                        }
+                    });
+        }
+    }
+
+    private void refreshPurchaseList() {
+        Purchase.PurchasesResult purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
+        List<Purchase> purchasedList = purchasesResult.getPurchasesList();
+        for(Purchase purchase: purchasedList){
+            if (purchase.getSku().equals(mContext.getString(R.string.premium_sku)))
+            {
+                purchased=true;
+                sharedPreferences.edit().putBoolean("purchased",purchased).apply();
+            }
+            //Toast.makeText(this, "Purchased " + purchase.getSku(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public int getItemCount() {
         return quotesImages.size();
+    }
+
+    @Override
+    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+        refreshPurchaseList();
     }
 }
