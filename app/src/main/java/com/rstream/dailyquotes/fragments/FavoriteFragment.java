@@ -1,5 +1,7 @@
 package com.rstream.dailyquotes.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rstream.dailyquotes.FavoriteQuotes;
+import com.rstream.dailyquotes.MainActivity;
 import com.rstream.dailyquotes.R;
 
 
@@ -78,6 +81,15 @@ public class FavoriteFragment extends Fragment {
         if (set==null){
             Log.d("favnull", "onCreateViewHolder:");
             set = new HashSet<String>();
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle("You don't have any favorites yet");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
         }
         else {
             Log.d("favorite","in favorites"+set);
