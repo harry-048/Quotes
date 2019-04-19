@@ -1,9 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical"
     tools:context=".PremiumDialogActivity">
 
-</RelativeLayout>
+
+    <ImageView
+        android:id="@+id/premiumLauncher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:srcCompat="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/removeAdstextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:textColor="@color/premium_color"
+        android:text="@string/remove_fullscreen_ads" />
+
+    <TextView
+        android:id="@+id/unlimitedTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:textColor="@color/premium_color"
+        android:text="@string/unlimited_favorites_and_downloads" />
+
+    <TextView
+        android:id="@+id/premiumfeatureTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/and_all_other_premium_features" />
+
+    <TextView
+        android:id="@+id/MoneyTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:padding="10dp"
+        android:text="70" />
+
+<!--    <view
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:padding="5dp"
+
+        android:layout_marginBottom="10dp"
+        android:background="@color/premium_color"/>-->
+
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:background="@color/premium_color"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:text="@string/continue_purchase" />
+
+
+</LinearLayout>

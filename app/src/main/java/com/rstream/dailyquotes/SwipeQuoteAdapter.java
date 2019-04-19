@@ -63,8 +63,13 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         this.imagePosition = imagePosition;
         this.scrollView = scrollView;
         Log.d("displayimagess",motivationType+","+imagePosition);
+        premiumDialogActivity=new PremiumDialogActivity(mContext,this);
         initializeBillingClient();
+
     }
+
+    PremiumDialogActivity premiumDialogActivity;
+
 
 
     Activity mContext;
@@ -374,7 +379,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     }
 
     private void showPremiumDialog() {
-        new AlertDialog.Builder(mContext)
+        /*new AlertDialog.Builder(mContext)
                 .setMessage("Buy Premium For that Manhhh!!")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -389,8 +394,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         dialog.dismiss();
                     }
                 })
-                .show();
-
+                .show();*/
+            premiumDialogActivity.show();
     }
 
     private void initializeBillingClient(){
@@ -401,6 +406,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                 if (billingResponseCode == BillingClient.BillingResponse.OK) {
                     // The BillingClient is ready. You can query purchases here.
                     refreshPurchaseList();
+                    premiumDialogActivity.setBillingClient(billingClient);
                 }
             }
             @Override
@@ -411,7 +417,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         });
     }
 
-    private void launchIAP() {
+    public void launchIAP() {
         if (billingClient.isReady()){
             List<String> skuList = new ArrayList<> ();
             skuList.add(mContext.getString(R.string.premium_sku));
