@@ -28,9 +28,20 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9098946909579213~1471105716" />
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.myfileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
+
         <activity
             android:name=".SwipeQuoteActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="com.rstream.dailyquotes.SwipeQuoteActivity" />
 

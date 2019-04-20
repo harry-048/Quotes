@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +44,8 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -292,13 +296,13 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                     // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
                 }
                 else {
-                    Picasso.get().load(imgUrl).into(new Target() {
+                    /*Picasso.get().load(imgUrl).into(new Target() {
                         @Override
                         public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    /*long t = System.currentTimeMillis();
+                                    long t = System.currentTimeMillis();
                                     Intent share = new Intent();
                                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                                     String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
@@ -321,12 +325,13 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                //     Uri contentUri = FileProvider.getUriForFile(this, Environment.getExternalStorageDirectory() + File.separator + t + "temporary_file.jpg");
                                     Log.d("imageshare",""+Uri.parse(Environment.getExternalStorageDirectory() + File.separator + t + "temporary_file.jpg"));
                                     share.setAction(Intent.ACTION_SEND);
+                                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                                     share.setType("image/*");
                                     share.putExtra(Intent.EXTRA_TEXT,"Send From Quotes");
                                     share.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
-                                    mContext.startActivity(Intent.createChooser(share, "Share"));*/
+                                    mContext.startActivity(Intent.createChooser(share, "Share"));
 
-                                    long t = System.currentTimeMillis();
+                                   *//* long t = System.currentTimeMillis();
                                     File root = Environment.getExternalStorageDirectory();
                                     File cachePath = new File(root.getAbsolutePath() + File.separator + t + "temporary_file.jpg");
                                     try {
@@ -341,7 +346,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                     share.putExtra(Intent.EXTRA_TEXT, "Send From Quotes");
                                     share.setType("image/*");
                                     share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(cachePath));
-                                    mContext.startActivity(Intent.createChooser(share,"Share via"));
+                                    mContext.startActivity(Intent.createChooser(share,"Share via"));*//*
 
                                 }
                             }).start();
@@ -355,7 +360,39 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         @Override
                         public void onPrepareLoad(Drawable placeHolderDrawable) {
                         }
-                    });
+                    });*/
+
+                    try {
+                        URL url = new URL(imgUrl);
+                       // Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        View content = swipeViewHolder.imageView;
+                        content.setDrawingCacheEnabled(true);
+                        Bitmap bitmap = content.getDrawingCache();
+                        long t = System.currentTimeMillis();
+                        File root = Environment.getExternalStorageDirectory();
+                        File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+                        //File cachePath = new File(root.getAbsolutePath() + File.separator + t + "temporary_file.jpg");
+                        try {
+                            cachePath.createNewFile();
+                            FileOutputStream ostream = new FileOutputStream(cachePath);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                            ostream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Uri fileUri = FileProvider.getUriForFile(mContext, "com.myfileprovider", cachePath);                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.putExtra(Intent.EXTRA_TEXT, "Send From Daily Quotes");
+                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        share.setType("image/*");
+                        share.putExtra(Intent.EXTRA_STREAM, fileUri);
+                        mContext.startActivity(Intent.createChooser(share,"Share via"));
+                    } catch(IOException e) {
+                        Log.d("sharingnotworking","true"+e.getMessage());
+                        System.out.println(e);
+                    }
+                    catch (Exception e){
+                        Log.d("sharingnotworking","right"+e.getMessage());
+                    }
                 }
             }
         });
