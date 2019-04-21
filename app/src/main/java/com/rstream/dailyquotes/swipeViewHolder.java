@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.rstream.dailyquotes.R;
-import com.jgabrielfreitas.core.BlurImageView;
+
 
 
 public class swipeViewHolder extends RecyclerView.ViewHolder {

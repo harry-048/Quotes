@@ -6,12 +6,12 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.rstream.dailyquotes.R;
-import com.jgabrielfreitas.core.BlurImageView;
+
 
 public class FavoritesQuotesViewHolder extends RecyclerView.ViewHolder {
 
     ImageView imageView;
-    BlurImageView blurImageView;
+    ImageView blurImageView;
 
     public FavoritesQuotesViewHolder(@NonNull View itemView) {
         super(itemView);

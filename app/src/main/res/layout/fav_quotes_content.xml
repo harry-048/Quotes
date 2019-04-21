@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="8dp">
 
-    <com.jgabrielfreitas.core.BlurImageView
+    <ImageView
         android:id="@+id/backBlurImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        app:radius="24" />
+        android:scaleType="centerCrop" />
 
     <ImageView
         android:id="@+id/imageView"

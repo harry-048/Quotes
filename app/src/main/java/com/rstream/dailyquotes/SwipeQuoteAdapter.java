@@ -36,7 +36,7 @@ import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.rstream.dailyquotes.R;
-import com.jgabrielfreitas.core.BlurImageView;
+
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -89,7 +89,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     int f=2;
     View view;
     String galleryPath;
-    BlurImageView blurbackImageView;
+
     int imgPosition;
     String motivationName;
     int likeCount=0;
@@ -296,72 +296,6 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                     // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
                 }
                 else {
-                    /*Picasso.get().load(imgUrl).into(new Target() {
-                        @Override
-                        public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    long t = System.currentTimeMillis();
-                                    Intent share = new Intent();
-                                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                                    String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
-                                    //File root = Environment.getExternalStorageDirectory();
-                                   // File cachePath = new File(root.getAbsolutePath() + File.separator + t + "temporary_file.jpg");
-                                    File file = new File(path);
-                                    if (file.exists()) file.delete();
-                                    try {
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, bytes);
-                                        if (file.createNewFile()) {
-                                            FileOutputStream fo = new FileOutputStream(file);
-                                            fo.write(bytes.toByteArray());
-                                        }
-
-
-                                    } catch (Exception e) {
-                                        Log.d("Working",e.getMessage()+",");
-                                        e.printStackTrace();
-                                    }
-                               //     Uri contentUri = FileProvider.getUriForFile(this, Environment.getExternalStorageDirectory() + File.separator + t + "temporary_file.jpg");
-                                    Log.d("imageshare",""+Uri.parse(Environment.getExternalStorageDirectory() + File.separator + t + "temporary_file.jpg"));
-                                    share.setAction(Intent.ACTION_SEND);
-                                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    share.setType("image/*");
-                                    share.putExtra(Intent.EXTRA_TEXT,"Send From Quotes");
-                                    share.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
-                                    mContext.startActivity(Intent.createChooser(share, "Share"));
-
-                                   *//* long t = System.currentTimeMillis();
-                                    File root = Environment.getExternalStorageDirectory();
-                                    File cachePath = new File(root.getAbsolutePath() + File.separator + t + "temporary_file.jpg");
-                                    try {
-                                        cachePath.createNewFile();
-                                        FileOutputStream ostream = new FileOutputStream(cachePath);
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-                                        ostream.close();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    Intent share = new Intent(Intent.ACTION_SEND);
-                                    share.putExtra(Intent.EXTRA_TEXT, "Send From Quotes");
-                                    share.setType("image/*");
-                                    share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(cachePath));
-                                    mContext.startActivity(Intent.createChooser(share,"Share via"));*//*
-
-                                }
-                            }).start();
-                        }
-
-                        @Override
-                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-                        }
-                    });*/
-
                     try {
                         URL url = new URL(imgUrl);
                        // Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());

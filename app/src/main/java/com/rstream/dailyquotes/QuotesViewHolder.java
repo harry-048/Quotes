@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.rstream.dailyquotes.R;
-import com.jgabrielfreitas.core.BlurImageView;
+
 
 
 public class QuotesViewHolder extends RecyclerView.ViewHolder {
