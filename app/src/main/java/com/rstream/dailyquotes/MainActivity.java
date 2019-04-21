@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PurchasesUpdatedListener {
+public class MainActivity extends AppCompatActivity implements PurchasesUpdatedListener,NavigationView.OnNavigationItemSelectedListener {
 
     public static ArrayList<String> images;
     public static String motivationName = "";
@@ -203,34 +203,19 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
         purchased=sharedPreferences.getBoolean("purchased",false);
         initializeBillingClient();
-        // MobileAds.initialize(this, "ca-app-pub-9098946909579213~1471105716");
-
-        /*FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });*/
 
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+       /* if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
             }
 
+        }*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
+            }
         }
 
         quoteskeyvalue = new ArrayList<>();
@@ -397,5 +382,10 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     @Override
     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
     }
 }

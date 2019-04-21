@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">Quotes</string>
+    <string name="app_name">Daily Quotes</string>
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorites</string>
     <string name="title_categories">Categories</string>
+
+
     <string name="quotes">Quotes</string>
     <string name="imagelink">http://riafyme.com/app/quotes/</string>
 
@@ -15,6 +17,9 @@
     <string name="unlimited_favorites_and_downloads">Unlimited favorites and downloads</string>
     <string name="and_all_other_premium_features">and all other premium features</string>
     <string name="continue_purchase">CONTINUE</string>
+    <string name="title_activity_btmnav">btmnav</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
