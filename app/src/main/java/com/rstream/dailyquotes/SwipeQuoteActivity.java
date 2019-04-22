@@ -147,7 +147,6 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         intentClassName = getIntent().getStringExtra("className");
         scrollView = findViewById(R.id.picker);
 
-        Log.d("displayimages",motivationType+","+imagePosition+","+quotesImages);
 
         parseData();
         showSwipeQuotes(quotesImages,motivationType,imagePosition);
@@ -185,12 +184,11 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String name= intent.getStringExtra("QuoteImage");
-            Log.d("scrollimg",name+"");
         }
     };
 
     private void setRecycleView() {
-      //  recyclerView = findViewById(R.id.swipeRecyclerView);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
@@ -199,8 +197,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
 
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
-       // final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition);
-      //  recyclerView.setAdapter(swipeQuotes);
+
     }
 
 

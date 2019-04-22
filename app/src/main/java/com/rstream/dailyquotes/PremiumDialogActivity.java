@@ -2,13 +2,12 @@ package com.rstream.dailyquotes;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,9 +58,9 @@ public class PremiumDialogActivity extends Dialog {
 
     private void getPurchaseDetails(){
 
-        //Toast.makeText(getContext(), "working", Toast.LENGTH_SHORT).show();
+
         if (billingClient.isReady()){
-            //Toast.makeText(getContext(), "working it is", Toast.LENGTH_LONG).show();
+
             List<String> skuList = new ArrayList<>();
             skuList.add(getContext().getString(R.string.premium_sku));
             SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
@@ -79,8 +78,6 @@ public class PremiumDialogActivity extends Dialog {
                                     priceTextView.setText(price);
                                     if (getContext().getString(R.string.premium_sku).equals(sku)) {
 
-                                        //Toast.makeText(mContext, price, Toast.LENGTH_SHORT).show();
-                                        Log.d("PremiumUpgrade", price);
 
                                         PremiumDialogActivity.this.skuDetails = skuDetails;
 

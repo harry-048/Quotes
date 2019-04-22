@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
-import com.rstream.dailyquotes.R;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.InterstitialAd;
 import com.squareup.picasso.Picasso;
@@ -74,18 +74,15 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                 if (!purchased){
                     if (mInterstitialAd.isLoaded()) {
                         if (adShowingFlag){
-                            Log.d("interstitial", ","+adShowingFlag);
                             mInterstitialAd.show();
                         }
                         else {
-                            Log.d("interstitial", ":"+adShowingFlag);
                             adShowingFlag=true;
                             preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
                             mContext.startActivity(intent);
                         }
-                        Log.d("interstitial", "The interstitial loaded.");
                     } else {
-                        Log.d("interstitial", "The interstitial wasn't loaded yet.");
+
                         mContext.startActivity(intent);
                     }
                     mInterstitialAd.setAdListener(new AdListener(){
@@ -110,8 +107,6 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
         });
 
         try{
-            //quotesViewHolder.quotesname.setText(quotesNames.getQuoteName());
-           // Glide.with(mContext).load(imgUrl).into(quotesViewHolder.imageView);
             Picasso.get().load(imgUrl).placeholder(mContext.getResources().getDrawable(R.drawable.loadinganimation)).into(quotesViewHolder.imageView);
         }
         catch (Exception e){

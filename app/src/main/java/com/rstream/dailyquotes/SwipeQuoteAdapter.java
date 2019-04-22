@@ -2,13 +2,10 @@ package com.rstream.dailyquotes;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -19,14 +16,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
@@ -35,13 +30,9 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
-import com.rstream.dailyquotes.R;
-
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -66,7 +57,6 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         this.motivationType = motivationType;
         this.imagePosition = imagePosition;
         this.scrollView = scrollView;
-        Log.d("displayimagess",motivationType+","+imagePosition);
         premiumDialogActivity=new PremiumDialogActivity(mContext,this);
         initializeBillingClient();
 
@@ -142,7 +132,6 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     }
 
     private void showImage(int imagePosition, swipeViewHolder viewHolder) {
-        Log.d("position",imagePosition+"b");
         imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(imagePosition);
         Picasso.get().load(imgUrl).placeholder(mContext.getResources().getDrawable(R.drawable.loadinganimation)).into(viewHolder.imageView);
 
@@ -155,16 +144,13 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
             imgUrl=quotesImages.get(i);
         else
             imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(i);
-        Log.d("displayimage",motivationType+","+mContext.getString(R.string.imagelink));
-        Log.d("displayimagesss",imgUrl+", "+i);
-        Log.d("displayimagessss",motivationType+"/"+ quotesImages.get(i));
+
        Picasso.get().load(imgUrl)
                .transform(new BlurTransformation(mContext))
                .into(swipeViewHolder.blurImageView);
-        //swipeViewHolder.blurImageView.getResources().getDrawable(R.drawable.ic_favorite_red_24dp);
+
         Picasso.get().load(imgUrl).into(swipeViewHolder.imageView);
 
-        Log.d("Blurwork","yes");
 
         checkLike(swipeViewHolder);
 
@@ -184,7 +170,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         sharedPreferences.edit().putStringSet("likedImages",set).apply();
                         sharedPreferences.edit().putInt("likeCount",likeCount).apply();
 
-                        //likedImages.add(imgUrl);
+
                         swipeViewHolder.likeImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_favorite_red_24dp));
 
                     }
@@ -210,7 +196,6 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
                 if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(mContext, "No permission!", Toast.LENGTH_SHORT).show();
-                    // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
                 }
                 else {
                     if (downloadCount>=2&& !purchased){
@@ -233,20 +218,15 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                             bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
                                             ostream.flush();
                                             ostream.close();
-                                            Log.d("Clickedbfr",""+save);
                                             save=true;
-                                            Log.d("Clickedaft",""+save);
 
                                             MediaScannerConnection.scanFile(mContext, new String[]{file.toString()}, null,
                                                     new MediaScannerConnection.OnScanCompletedListener() {
                                                         public void onScanCompleted(String path, Uri uri) {
-                                                            Log.d("ExternalStorage", "Scanned " + path + ":");
-                                                            Log.d("ExternalStorage", "-> uri=" + uri);
                                                             galleryPath=uri+"";
                                                         }
                                                     });
                                             downloadCount++;
-                                            Log.d("downloadCount",downloadCount+"");
                                             sharedPreferences.edit().putInt("downloadCount",downloadCount).apply();
                                             Snackbar.make(view, "Open Gallery", Snackbar.LENGTH_LONG)
                                                     .setAction("View", new View.OnClickListener() {
@@ -262,7 +242,6 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                                         }
                                                     }).show();
                                         } catch (Exception e) {
-                                            Log.d("Working",e.getMessage()+",");
                                             e.printStackTrace();
                                         }
                                     }
@@ -283,7 +262,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
                 if (save){
                     save=false;
-                    Toast.makeText(mContext, "Successfully Downloaded", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(mContext, "Successfully Downloaded", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -293,19 +272,16 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(mContext, "No permission!", Toast.LENGTH_SHORT).show();
-                    // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
                 }
                 else {
                     try {
                         URL url = new URL(imgUrl);
-                       // Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                         View content = swipeViewHolder.imageView;
                         content.setDrawingCacheEnabled(true);
                         Bitmap bitmap = content.getDrawingCache();
                         long t = System.currentTimeMillis();
                         File root = Environment.getExternalStorageDirectory();
                         File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
-                        //File cachePath = new File(root.getAbsolutePath() + File.separator + t + "temporary_file.jpg");
                         try {
                             cachePath.createNewFile();
                             FileOutputStream ostream = new FileOutputStream(cachePath);
@@ -321,30 +297,20 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         share.putExtra(Intent.EXTRA_STREAM, fileUri);
                         mContext.startActivity(Intent.createChooser(share,"Share via"));
                     } catch(IOException e) {
-                        Log.d("sharingnotworking","true"+e.getMessage());
-                        System.out.println(e);
+                        e.printStackTrace();
                     }
                     catch (Exception e){
-                        Log.d("sharingnotworking","right"+e.getMessage());
+                        e.printStackTrace();
                     }
                 }
             }
         });
 
-      //  Log.d("positions",""+i);
+
         Intent intent = new Intent("message_subject_intent");
         intent.putExtra("QuoteImage" , imgUrl);
         intent.putExtra("postion",i);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-
-
-
-       /* swipeViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("position",""+i);
-            }
-        });*/
 
 
     }
@@ -405,8 +371,6 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                     String sku = skuDetails.getSku();
                                     String price = skuDetails.getPrice();
                                     if (mContext.getString(R.string.premium_sku).equals(sku)) {
-                                        //Toast.makeText(mContext, price, Toast.LENGTH_SHORT).show();
-                                        Log.d("PremiumUpgrade", price);
 
                                         BillingFlowParams flowParams = BillingFlowParams.newBuilder()
                                                 .setSkuDetails(skuDetails)
@@ -431,7 +395,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                 purchased=true;
                 sharedPreferences.edit().putBoolean("purchased",purchased).apply();
             }
-            //Toast.makeText(this, "Purchased " + purchase.getSku(), Toast.LENGTH_SHORT).show();
+
         }
     }
 
