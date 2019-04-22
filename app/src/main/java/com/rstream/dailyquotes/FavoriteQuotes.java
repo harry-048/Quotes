@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rstream.dailyquotes.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ public class FavoriteQuotes extends RecyclerView.Adapter<FavoritesQuotesViewHold
 
 
     public FavoriteQuotes(Context mContext,ArrayList<String> set) {
-        Log.d("favoritecon","in favorites"+mContext);
         this.mContext = mContext;
         this.set = set;
     }
@@ -28,7 +25,6 @@ public class FavoriteQuotes extends RecyclerView.Adapter<FavoritesQuotesViewHold
     Context mContext;
     ArrayList<String> set;
     String likedMotivationName;
- //   ArrayList<String> quotesList = new ArrayList<String>();
 
 
     @NonNull
@@ -62,24 +58,12 @@ public class FavoriteQuotes extends RecyclerView.Adapter<FavoritesQuotesViewHold
                 mContext.startActivity(intent);
             }
         });
-        //Picasso.get().load(imgUrl).into(favoritesQuotesViewHolder.blurImageView);
-       // favoritesQuotesViewHolder.blurImageView.setBlur(15);
 
-        Log.d("favoriteimage","aa");
     }
 
-   /* @Override
-    public void onBindViewHolder(@NonNull QuotesViewHolder quotesViewHolder, int i) {
-        final String imgUrl=set.get(i);
-
-
-        Picasso.get().load(imgUrl).into(quotesViewHolder.imageView);
-        Log.d("favoriteimage","aa");
-    }*/
 
     @Override
     public int getItemCount() {
-        Log.d("favoritecount","in favorites"+set.size());
         return set.size();
     }
 }

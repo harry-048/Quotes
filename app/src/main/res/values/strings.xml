@@ -9,8 +9,6 @@
     <string name="imagelink">http://riafyme.com/app/quotes/</string>
 
     <string name="title_activity_swipe_quote">SwipeQuoteActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="AdUnitId">ca-app-pub-8059732698195520/2165008777</string>
     <string name="premium_sku">android.test.purchased</string>
     <string name="remove_fullscreen_ads">Remove fullscreen ads</string>

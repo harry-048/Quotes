@@ -7,13 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.rstream.dailyquotes.FavoriteQuotes;
-import com.rstream.dailyquotes.MainActivity;
 import com.rstream.dailyquotes.R;
 
 
@@ -27,7 +26,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class FavoriteFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     SharedPreferences sharedPreferences;
     Set<String> set;
@@ -53,22 +51,6 @@ public class FavoriteFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_favorite, container, false);
 
-      /*  sharedPreferences = getActivity().getSharedPreferences("prefs.xml",MODE_PRIVATE);
-        new HashSet<String>();
-        set= sharedPreferences.getStringSet("likedImages",null);
-        if (set==null){
-            Log.d("favnull", "onCreateViewHolder:");
-            set = new HashSet<String>();
-        }
-        else {
-            Log.d("favorite","in favorites"+set);
-            quotesList.clear();
-            quotesList.addAll(set);
-        }
-        Log.d("fav",set.size()+",");
-
-        setRecycleView();*/
-
         return rootView;
     }
 
@@ -79,7 +61,6 @@ public class FavoriteFragment extends Fragment {
         new HashSet<String>();
         set= sharedPreferences.getStringSet("likedImages",null);
         if (set==null){
-            Log.d("favnull", "onCreateViewHolder:");
             set = new HashSet<String>();
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
             alertDialog.setTitle("You don't have any favorites yet");
@@ -93,7 +74,6 @@ public class FavoriteFragment extends Fragment {
 
         }
         else {
-            Log.d("favorite","in favorites"+set);
             quotesList.clear();
             quotesList.addAll(set);
             if (quotesList.size()==0){
@@ -108,7 +88,6 @@ public class FavoriteFragment extends Fragment {
                 alertDialog.show();
             }
         }
-        Log.d("fav",set.size()+",");
 
         setRecycleView();
     }

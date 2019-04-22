@@ -21,12 +21,8 @@ import java.util.ArrayList;
 
 
 public class HomeFragment extends Fragment {
-    boolean pass=true;
-    String url="";
-    String jsonurl="";
-    int flag=0;
+
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
     private GridLayoutManager layoutManager;
     ProgressBar progressBar;
 
@@ -38,7 +34,6 @@ public class HomeFragment extends Fragment {
 
     public HomeFragment() {
         // Required empty public constructor
-        Log.d("HomeFragment","Created");
     }
 
     @Override
@@ -51,8 +46,6 @@ public class HomeFragment extends Fragment {
 
         mInterstitialAd = new InterstitialAd(getActivity());
         mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
-        //mInterstitialAd.setAdUnitId("ca-app-pub-9098946909579213/8837571799");
-
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
     }
@@ -66,20 +59,6 @@ public class HomeFragment extends Fragment {
         progressBar.setVisibility(View.INVISIBLE);
 
         setRecycleView();
-
-
-
-
-        try{
-
-
-        }
-        catch (Exception ee){
-            Log.d("recycle error","here, "+ee.getMessage());
-            ee.printStackTrace();
-        }
-
-
 
         return rootView;
 

@@ -3,7 +3,6 @@ package com.rstream.dailyquotes;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -44,11 +43,7 @@ public class ImagePopup extends AppCompatActivity {
         set= sharedPreferences.getStringSet("likedImages",null);
         f= sharedPreferences.getInt("flag",0);
         if (set==null){
-           // Toast.makeText(this, "its null", Toast.LENGTH_SHORT).show();
             set = new HashSet<String>();
-        }
-        else {
-            //Toast.makeText(this, set.size()+" , "+f, Toast.LENGTH_SHORT).show();
         }
         showImage(imagePosition);
         checkLike();
@@ -56,7 +51,6 @@ public class ImagePopup extends AppCompatActivity {
 
         imageView.setOnTouchListener(new OnSwipeTouchListener(ImagePopup.this) {
             public void onSwipeTop() {
-               // Toast.makeText(ImagePopup.this, "top", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeRight() {
                 if (imagePosition>0){
@@ -64,7 +58,6 @@ public class ImagePopup extends AppCompatActivity {
                     showImage(imagePosition);
                     checkLike();
                 }
-               // Toast.makeText(ImagePopup.this, "right", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeLeft() {
                 if (imagePosition<quotesImages.size()-1){
@@ -72,22 +65,13 @@ public class ImagePopup extends AppCompatActivity {
                     showImage(imagePosition);
                     checkLike();
                 }
-              //  Toast.makeText(ImagePopup.this, "left", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeBottom() {
-               // Toast.makeText(ImagePopup.this, "bottom", Toast.LENGTH_SHORT).show();
             }
 
         });
 
-       /* for (int i=0;i<likedImages.size();i++){
-            if (imgUrl==likedImages.get(i)){
 
-            }
-            else {
-                likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
-            }
-        }*/
 
         likeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +83,6 @@ public class ImagePopup extends AppCompatActivity {
                     sharedPreferences.edit().putInt("flag",f).apply();
                     sharedPreferences.edit().putStringSet("likedImages",set).apply();
 
-                    //likedImages.add(imgUrl);
                     likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red_24dp));
                 }
                 else {
@@ -133,9 +116,7 @@ public class ImagePopup extends AppCompatActivity {
 
     private void showImage(int imagePosition) {
         imgUrl=this.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(imagePosition);
-       // Glide.with(this).load(imgUrl).into(imageView);
         Picasso.get().load(imgUrl).into(imageView);
-        Log.d("click",set+"");
     }
 
 

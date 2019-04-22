@@ -63,11 +63,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
         quotesViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(mContext,ImagePopup.class);
-                intent.putExtra("imageslist",quotesImages);
-                intent.putExtra("clickedImage",i+"");
-                intent.putExtra("Type",motivationName);
-                mContext.startActivity(intent);*/
+
 
                 final Intent intent = new Intent(mContext,SwipeQuoteActivity.class);
                 intent.putExtra("imageslist",quotesImages);
