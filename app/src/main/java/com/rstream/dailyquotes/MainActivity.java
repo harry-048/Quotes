@@ -3,7 +3,6 @@ package com.rstream.dailyquotes;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -26,16 +25,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.rstream.dailyquotes.R;
 import com.rstream.dailyquotes.fragments.FavoriteFragment;
 import com.rstream.dailyquotes.fragments.HomeFragment;
 import com.rstream.dailyquotes.fragments.SearchFragment;
@@ -78,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     SharedPreferences sharedPreferences;
     boolean purchased =false;
 
-    //private ArrayList<QuotesImages> quotesImages;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -89,18 +83,12 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     selectedFragment = homeFragment;
-                   /* url="http://52.91.243.194/RIA/set/setgrid.php?type=category&page=moving-light&country=us&lang=en";
-                    DownloadQuote getQuote = new DownloadQuote();
-                    getQuote.execute(url);*/
-                    // mTextMessage.setText(R.string.title_home);
                     break;
                 case R.id.navigation_dashboard:
                     selectedFragment = favoriteFragment;
-                    //  mTextMessage.setText(R.string.title_dashboard);
                     break;
                 case R.id.navigation_notifications:
                     selectedFragment = searchFragment;
-                    // mTextMessage.setText(R.string.title_notifications);
                     break;
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
@@ -120,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
     @Override
     public void onBackPressed() {
-        //final boolean[] close = {false};
+
         if (selectedFragment==favoriteFragment || selectedFragment==searchFragment)
         {
             selectedFragment=homeFragment;
@@ -146,7 +134,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                         }
                     });
             alertDialog.show();
-               // super.onBackPressed();
         }
     }
 
@@ -184,9 +171,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
             if (purchase.getSku().equals(this.getString(R.string.premium_sku)))
             {
                 purchased=true;
-                //sharedPreferences.edit().putBoolean("purchased",purchased).apply();
             }
-            //Toast.makeText(this, "Purchased " + purchase.getSku(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -205,13 +190,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         initializeBillingClient();
 
 
-       /* if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
-            }
-
-        }*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
@@ -219,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         }
 
         quoteskeyvalue = new ArrayList<>();
-       // quotesImages = new ArrayList<>();
         listItems = new ArrayList<String>();
         listView = (ListView) findViewById(R.id.nameslistView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
@@ -249,9 +226,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-       /* motivationName=quoteskeyvalue.get(0).getQuoteKey();
-        putImagetoArray();
-        setRecycleView();*/
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -259,10 +233,8 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
                 motivationName = quotesKeyVal.quoteKey;
                 putImagetoArray();
-                //  Toast.makeText(MainActivity.this,quotesKeyVal.getFormatedName()+","+quotesKeyVal.quoteKey , Toast.LENGTH_SHORT).show();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 setRecycleView();
-                //clickListView(position);
 
             }
         });
@@ -275,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
         motivationName = quotesKeyVal.quoteKey;
         putImagetoArray();
-        //  Toast.makeText(MainActivity.this,quotesKeyVal.getFormatedName()+","+quotesKeyVal.quoteKey , Toast.LENGTH_SHORT).show();
         drawerLayout.closeDrawer(GravityCompat.START);
         setRecycleView();
     }
@@ -314,8 +285,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         String jsonString = writer.toString();
         try {
             data = new JSONObject(jsonString);
-            /*Intent intent = new Intent(this,MyFirebaseMessagingService.class);
-            intent.putExtra("jsonfile",data+"");*/
             Iterator<String> iter = data.keys();
             while (iter.hasNext()) {
                 String key = iter.next();
@@ -331,15 +300,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                         }
                     }
                     String name = sb.toString();
-                    /*if (clicked){
-
-                        clicked=false;
-                    }*/
-                    //  String[] imgurl=data.get("happy").toString();
-                    //String[] imgurl = Arrays.copyOf(data.get("happy"), data.get("happy").l, String[].class);
                     quoteskeyvalue.add(new QuotesKeyVal(name, key));
-                    //quotesImages.add(new QuotesImages(data.get("happy")));
-
                     Object value = data.get(key);
                     listItems.add(name);
                     Log.d("categoryin", key + "," + motivationName);
@@ -348,7 +309,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                     motivationName = quoteskeyvalue.get(0).quoteKey;
                     putImagetoArray();
                 } catch (JSONException ee) {
-                    // Something went wrong!
                     ee.printStackTrace();
                 }
             }
