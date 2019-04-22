@@ -58,6 +58,8 @@ public class HomeFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
+
+
         setRecycleView();
 
         return rootView;
@@ -77,7 +79,7 @@ public class HomeFragment extends Fragment {
 
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
-        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),MainActivity.images, MainActivity.motivationName,mInterstitialAd);
+        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),MainActivity.images, MainActivity.motivationName,mInterstitialAd,MainActivity.width);
         recyclerView.setAdapter(quotesTypes);
     }
 

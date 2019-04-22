@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -31,15 +33,17 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
     public boolean adShowingFlag = true;
     private InterstitialAd mInterstitialAd;
     boolean purchased =false;
+    int width;
 
 
 
 
-    public QuotesTypes(Context mContext, ArrayList<String> quotesImages, String motivationName, InterstitialAd mInterstitialAd) {
+    public QuotesTypes(Context mContext, ArrayList<String> quotesImages, String motivationName, InterstitialAd mInterstitialAd, int width) {
         this.mContext = mContext;
         this.quotesImages=quotesImages;
         this.motivationName=motivationName;
         this.mInterstitialAd = mInterstitialAd;
+        this.width=width;
     }
 
     @NonNull
@@ -52,6 +56,8 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
         preferences = mContext.getSharedPreferences("prefs.xml",MODE_PRIVATE);
         adShowingFlag= preferences.getBoolean("adShowingFlag",true);
         purchased = preferences.getBoolean("purchased",false);
+
+
 
         return viewHolder;
     }
@@ -107,6 +113,9 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
         });
 
         try{
+            int h = (width/2)-16;
+            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,h);
+            quotesViewHolder.imageView.setLayoutParams(parms);
             Picasso.get().load(imgUrl).placeholder(mContext.getResources().getDrawable(R.drawable.loadinganimation)).into(quotesViewHolder.imageView);
         }
         catch (Exception e){
