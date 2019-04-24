@@ -26,12 +26,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.rstream.dailyquotes.fragments.FavoriteFragment;
 import com.rstream.dailyquotes.fragments.HomeFragment;
 import com.rstream.dailyquotes.fragments.SearchFragment;
@@ -190,6 +195,19 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
+
+        FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                      /*  String msg = getString(R.string.msg_subscribed);
+                        if (!task.isSuccessful()) {
+                            msg = getString(R.string.msg_subscribe_failed);
+                        }
+
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();*/
+                    }
+                });
 
         Log.d("width",width+", height:"+height);
 
