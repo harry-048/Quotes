@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                                 finish();
                             }
                         });
+
                 alertDialog.show();
             }
         }
