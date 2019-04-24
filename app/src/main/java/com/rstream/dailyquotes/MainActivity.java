@@ -109,33 +109,38 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
     @Override
     public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+            if (selectedFragment==favoriteFragment || selectedFragment==searchFragment)
+            {
+                selectedFragment=homeFragment;
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                navigation.setSelectedItemId(R.id.navigation_home);
+            }
+            else if (selectedFragment==homeFragment){
+                if (!purchased)
+                    mInterstitialAd.show();
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Are you sure to exit app?");
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "EXIT",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                alertDialog.show();
+            }
+        }
 
-        if (selectedFragment==favoriteFragment || selectedFragment==searchFragment)
-        {
-            selectedFragment=homeFragment;
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-            navigation.setSelectedItemId(R.id.navigation_home);
-        }
-        else if (selectedFragment==homeFragment){
-            if (!purchased)
-                mInterstitialAd.show();
-            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-            alertDialog.setTitle("Are you sure to exit app?");
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "EXIT",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    });
-            alertDialog.show();
-        }
     }
 
     private void initializeBillingClient(){
