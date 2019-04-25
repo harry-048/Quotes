@@ -90,7 +90,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                             preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
                             if (imageload[0])
                                 mContext.startActivity(intent);
-                            else
+                            /*else
                             {
                                 AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
                                 alertDialog.setTitle("Check your internet connection");
@@ -101,13 +101,13 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                                             }
                                         });
                                 alertDialog.show();
-                            }
+                            }*/
                         }
                     } else {
 
                         if (imageload[0])
                             mContext.startActivity(intent);
-                        else
+                        /*else
                         {
                             AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
                             alertDialog.setTitle("Check your internet connection");
@@ -118,7 +118,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                                         }
                                     });
                             alertDialog.show();
-                        }
+                        }*/
                     }
                     mInterstitialAd.setAdListener(new AdListener(){
                         @Override
@@ -135,7 +135,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
                     if (imageload[0])
                         mContext.startActivity(intent);
-                    else
+                    /*else
                     {
                         AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
                         alertDialog.setTitle("Check your internet connection");
@@ -146,7 +146,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                                     }
                                 });
                         alertDialog.show();
-                    }
+                    }*/
                 }
 
 
