@@ -2,6 +2,7 @@ package com.rstream.dailyquotes;
 
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -106,8 +107,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   @Override
   public void onMessageReceived(RemoteMessage remoteMessage) {
     super.onMessageReceived(remoteMessage);
-
-    handleNow(remoteMessage);
+    if(remoteMessage.getData()!=null)
+       handleNow(remoteMessage);
 
     if (remoteMessage.getData().size() > 0) {
       Map<String, String> data = remoteMessage.getData();
@@ -128,7 +129,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   }
 
   private void handleNow(RemoteMessage remoteMessage) {
-
+    Toast.makeText(this, "message, "+remoteMessage, Toast.LENGTH_SHORT).show();
   }
 
   private void parseMessage(String notificationMessage) {

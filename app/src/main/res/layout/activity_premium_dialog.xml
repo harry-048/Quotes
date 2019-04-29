@@ -53,7 +53,7 @@
         android:textSize="20sp"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:padding="10dp"
-        android:text="70" />
+        android:text="" />
 
 
     <View
