@@ -44,6 +44,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
   String motivationName;
   JSONObject data;
+  int position;
   public static ArrayList<String> images;
 
   Target target = new Target() {
@@ -158,8 +159,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
       }
     }
 
-    if (remoteMessage.getData()!= null)
-        getImage(remoteMessage);
+    if (remoteMessage.getData()!= null){
+      getImage(remoteMessage);
+      parseMessage(remoteMessage.getData().get("imageUrl"));
+    }
+
 
     if (remoteMessage.getNotification() != null) {
       Log.d("Tokenmessage", "haha message is here!"+remoteMessage.getData() );
@@ -174,10 +178,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+    Intent intent = new Intent(getApplicationContext(), SwipeQuoteActivity.class);
+
+    intent.putExtra("imageslist",images);
+    intent.putExtra("clickedImage",position+"");
+    intent.putExtra("Type",motivationName);
     intent.putExtra("className","MyFirebaseMessaging");
     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,0);
+    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
 
@@ -245,11 +253,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     motivationName = str[0];
     parseData();
     int i = images.indexOf(str[1]);
-    Intent intent = new Intent(this,SwipeQuoteActivity.class);
+    position=images.indexOf(str[1]);
+   /* Intent intent = new Intent(this,SwipeQuoteActivity.class);
     intent.putExtra("imageslist",images);
     intent.putExtra("clickedImage",i+"");
     intent.putExtra("Type",motivationName);
     intent.putExtra("className","MyFirebaseMessaging");
-    startActivity(intent);
+    startActivity(intent);*/
   }
 }

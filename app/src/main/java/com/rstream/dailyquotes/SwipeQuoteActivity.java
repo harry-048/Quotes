@@ -41,9 +41,9 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private LinearLayoutManager layoutManager;
     ArrayList<String> quotesImages;
-    String motivationType;
-    int imagePosition;
-    String intentClassName;
+    String motivationType="";
+    int imagePosition=0;
+    String intentClassName="";
     DiscreteScrollView scrollView;
     public static ArrayList<String> images;
     JSONObject data;
