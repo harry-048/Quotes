@@ -3,6 +3,7 @@ package com.rstream.dailyquotes;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -201,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("Tokenmessage","fhaifliahf");
                       /*  String msg = getString(R.string.msg_subscribed);
                         if (!task.isSuccessful()) {
                             msg = getString(R.string.msg_subscribe_failed);
@@ -210,10 +212,26 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                     }
                 });
 
+        if ((getIntent().getStringExtra("className"))!=null){
+            Log.d("Tokenmessages",getIntent().getStringExtra("className")+" ,");
+            if (getIntent().getStringExtra("className").equals("MyFirebaseMessaging")){
+                Intent i = new Intent(this,SwipeQuoteActivity.class);
+                i.putExtra("imageslist",images);
+                i.putExtra("clickedImage",i+"");
+                i.putExtra("Type",motivationName);
+                i.putExtra("className","MyFirebaseMessaging");
+                startActivity(i);
+            }
+        }
+
+
         Log.d("width",width+", height:"+height);
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
+        if (BuildConfig.DEBUG)
+            mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
+        else
+            mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
