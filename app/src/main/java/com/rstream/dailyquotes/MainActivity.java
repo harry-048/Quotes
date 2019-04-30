@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -259,10 +260,15 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
         /*adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         listView.setAdapter(adapter);*/
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setSelectedItemColor(0);
+            }
+        }, 500);
 
-        Log.d("setSelectedItemColor",listItems.size()+","+listView.getChildCount());
 
-        setSelectedItemColor(0);
 
         quotesNames = new ArrayList<>();
         Toolbar toolbar = findViewById(R.id.toolbar);
