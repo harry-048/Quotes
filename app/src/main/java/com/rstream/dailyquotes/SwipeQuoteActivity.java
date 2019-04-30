@@ -51,17 +51,47 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     boolean adshow=false;
     boolean purchased =false;
     SharedPreferences sharedPreferences;
+    Intent i;
 
+  /*  @Override
+    protected void onDestroy() {
+        Log.d("sharedPreferences","its really here");
+        sharedPreferences.edit().putBoolean("adShowingFlag",true).apply();
+        super.onDestroy();
+    }
+*/
     @Override
     public void onBackPressed() {
-        if (adshow){
+        /*if (adshow){
+            Log.d("Tokenmessagedsads", "haha message is here!" );
             adshow=false;
             if (mInterstitialAd.isLoaded()){
+                Log.d("Tokenmessagedsadsadshow", "haha message is here!" );
                 mInterstitialAd.show();
             }
-        }
+        }*/
+        if (intentClassName.equals("MyFirebaseMessaging")){
+            i = new Intent(this,MainActivity.class);
+            if (mInterstitialAd.isLoaded()){
 
-        super.onBackPressed();
+                mInterstitialAd.show();
+            }
+            else {
+
+                startActivity(i);
+                finish();
+            }
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    startActivity(i);
+                    finish();
+                }
+
+            });
+        }
+        else
+            super.onBackPressed();
     }
 
     private void parseData() {
@@ -189,7 +219,9 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         if (intentClassName.equals("MyFirebaseMessaging")){
             final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView);
             scrollView.setAdapter(swipeQuotes);
+
             if (!purchased){
+                Log.d("Tokenmessagedsas", "haha message!" );
                 adshow=true;
                 mInterstitialAd = new InterstitialAd(this);
                 if (BuildConfig.DEBUG)

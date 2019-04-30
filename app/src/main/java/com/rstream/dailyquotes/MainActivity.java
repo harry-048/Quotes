@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,11 +23,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.billingclient.api.BillingClient;
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     private InterstitialAd mInterstitialAd;
     private BillingClient billingClient;
     SharedPreferences sharedPreferences;
+    boolean isFirstOpen = true;
     boolean purchased =false;
     public static int width=0;
 
@@ -114,6 +118,13 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     }
 
     @Override
+    protected void onDestroy() {
+        Log.d("sharedPreferences","its here");
+        sharedPreferences.edit().putBoolean("adShowingFlag",true).apply();
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -139,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "EXIT",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                sharedPreferences.edit().putBoolean("adShowingFlag",true).apply();
                                 dialog.dismiss();
                                 finish();
                             }
@@ -172,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     protected void onResume() {
         super.onResume();
 
+        setSelectedItemColor(0);
         if (billingClient.isReady()){
             refreshPurchaseList();
         }
@@ -203,26 +216,9 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                      /*  String msg = getString(R.string.msg_subscribed);
-                        if (!task.isSuccessful()) {
-                            msg = getString(R.string.msg_subscribe_failed);
-                        }
 
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();*/
                     }
                 });
-
-        /*if ((getIntent().getStringExtra("className"))!=null){
-            Log.d("Tokenmessages",getIntent().getStringExtra("className")+" ,");
-            if (getIntent().getStringExtra("className").equals("MyFirebaseMessaging")){
-                Intent i = new Intent(this,SwipeQuoteActivity.class);
-                i.putExtra("imageslist",images);
-                i.putExtra("clickedImage",i+"");
-                i.putExtra("Type",motivationName);
-                i.putExtra("className","MyFirebaseMessaging");
-                startActivity(i);
-            }
-        }*/
 
 
         Log.d("width",width+", height:"+height);
@@ -234,8 +230,11 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
             mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
+
+
         sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
         purchased=sharedPreferences.getBoolean("purchased",false);
+
         initializeBillingClient();
 
 
@@ -258,6 +257,12 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
         parseData();
 
+        /*adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
+        listView.setAdapter(adapter);*/
+
+        Log.d("setSelectedItemColor",listItems.size()+","+listView.getChildCount());
+
+        setSelectedItemColor(0);
 
         quotesNames = new ArrayList<>();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -267,6 +272,14 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        isFirstOpen=sharedPreferences.getBoolean("isFirstOpen",true);
+        if (isFirstOpen)
+        {
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
+        sharedPreferences.edit().putBoolean("isFirstOpen",false).apply();
+
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -275,9 +288,21 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setSelectedItemColor(position);
+                /*for (int i=0;i<listView.getChildCount();i++){
+                    if (position==i){
+                        listView.getChildAt(i).setBackgroundResource(R.color.selected_color);
+                        ((TextView)listView.getChildAt(i)).setTextColor(ContextCompat.getColor(MainActivity.this, android.R.color.white));
+                    }
+                    else {
+                        listView.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+                        ((TextView)listView.getChildAt(i)).setTextColor(ContextCompat.getColor(MainActivity.this, android.R.color.black));
+                    }
+                }*/
                 clicked = true;
                 QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
                 motivationName = quotesKeyVal.quoteKey;
@@ -290,6 +315,24 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
 
     }
+
+    private void setSelectedItemColor(int position) {
+
+        for (int i=0;i<listView.getChildCount();i++){
+
+            if (position==i){
+
+                listView.getChildAt(i).setBackgroundResource(R.color.selected_color);
+                ((TextView)listView.getChildAt(i)).setTextColor(ContextCompat.getColor(MainActivity.this, android.R.color.white));
+            }
+            else {
+
+                listView.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+                ((TextView)listView.getChildAt(i)).setTextColor(ContextCompat.getColor(MainActivity.this, android.R.color.black));
+            }
+        }
+    }
+
 
     public void clickListView(int position) {
         clicked = true;
@@ -363,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
             }
             searchFragment.setListItems(listItems);
             motivationName = quoteskeyvalue.get(0).quoteKey;
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

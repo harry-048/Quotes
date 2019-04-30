@@ -90,42 +90,19 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                             preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
                             if (imageload[0])
                                 mContext.startActivity(intent);
-                            /*else
-                            {
-                                AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                                alertDialog.setTitle("Check your internet connection");
-                                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                alertDialog.show();
-                            }*/
                         }
                     } else {
 
                         if (imageload[0])
                             mContext.startActivity(intent);
-                        /*else
-                        {
-                            AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                            alertDialog.setTitle("Check your internet connection");
-                            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                            alertDialog.show();
-                        }*/
+
                     }
                     mInterstitialAd.setAdListener(new AdListener(){
                         @Override
                         public void onAdClosed() {
                             mInterstitialAd.loadAd(new AdRequest.Builder().build());
                             adShowingFlag=false;
-                            preferences.edit().putBoolean("adShowingFlag",adShowingFlag).apply();
+                            preferences.edit().putBoolean("adShowingFlag",false).apply();
                             mContext.startActivity(intent);
                             super.onAdClosed();
                         }

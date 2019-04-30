@@ -13,7 +13,7 @@ public class MyFirebaseInstanceService extends FirebaseInstanceIdService {
        // FirebaseMessaging.getInstance().subscribeToTopic("all");
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes");
-        Log.d("Tokenmessage", "Refreshed token: " + refreshedToken);
+        Log.d("Tokenmessagedsads", "Refreshed token: " + refreshedToken);
 
     }
 }

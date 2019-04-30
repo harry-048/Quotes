@@ -166,7 +166,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     if (remoteMessage.getNotification() != null) {
-      Log.d("Tokenmessage", "haha message is here!"+remoteMessage.getData() );
+     // Log.d("Tokenmessage", "haha message is here!"+remoteMessage.getData() );
      // getImage(remoteMessage);
       parseMessage(remoteMessage.getData().get("images"));
     }
@@ -184,6 +184,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     intent.putExtra("clickedImage",position+"");
     intent.putExtra("Type",motivationName);
     intent.putExtra("className","MyFirebaseMessaging");
+    Log.d("Tokenmessage", "uahfaiuhfuiaewhofiuawe" );
     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -247,7 +248,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
   private void parseMessage(String notificationMessage) {
     String message = notificationMessage;
-    Log.d("Tokenmessage", "Refreshed token: " + message);
     String s = message.replace(this.getString(R.string.imagelink),"");
     String[] str = s.split("/");
     motivationName = str[0];

@@ -228,7 +228,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                                     });
                                             downloadCount++;
                                             sharedPreferences.edit().putInt("downloadCount",downloadCount).apply();
-                                            Snackbar.make(view, "Open Gallery", Snackbar.LENGTH_LONG)
+                                            Snackbar.make(mContext.findViewById(android.R.id.content), "Open Gallery", Snackbar.LENGTH_LONG)
                                                     .setAction("View", new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
@@ -242,6 +242,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                                         }
                                                     }).show();
                                         } catch (Exception e) {
+                                            Log.d("errorwhensnackbar",e.getMessage());
                                             e.printStackTrace();
                                         }
                                     }
