@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("Tokenmessage","fhaifliahf");
+
                       /*  String msg = getString(R.string.msg_subscribed);
                         if (!task.isSuccessful()) {
                             msg = getString(R.string.msg_subscribe_failed);
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                     }
                 });
 
-        if ((getIntent().getStringExtra("className"))!=null){
+        /*if ((getIntent().getStringExtra("className"))!=null){
             Log.d("Tokenmessages",getIntent().getStringExtra("className")+" ,");
             if (getIntent().getStringExtra("className").equals("MyFirebaseMessaging")){
                 Intent i = new Intent(this,SwipeQuoteActivity.class);
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 i.putExtra("className","MyFirebaseMessaging");
                 startActivity(i);
             }
-        }
+        }*/
 
 
         Log.d("width",width+", height:"+height);
