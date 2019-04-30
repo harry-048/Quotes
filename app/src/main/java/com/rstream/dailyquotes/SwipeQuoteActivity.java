@@ -47,7 +47,22 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     DiscreteScrollView scrollView;
     public static ArrayList<String> images;
     JSONObject data;
+    private InterstitialAd mInterstitialAd;
+    boolean adshow=false;
+    boolean purchased =false;
+    SharedPreferences sharedPreferences;
 
+    @Override
+    public void onBackPressed() {
+        if (adshow){
+            adshow=false;
+            if (mInterstitialAd.isLoaded()){
+                mInterstitialAd.show();
+            }
+        }
+
+        super.onBackPressed();
+    }
 
     private void parseData() {
         InputStream in = getResources().openRawResource(R.raw.data);
@@ -146,7 +161,8 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         imagePosition = Integer.parseInt(getIntent().getStringExtra("clickedImage"));
         intentClassName = getIntent().getStringExtra("className");
         scrollView = findViewById(R.id.picker);
-
+        sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
+        purchased=sharedPreferences.getBoolean("purchased",false);
 
         parseData();
         showSwipeQuotes(quotesImages,motivationType,imagePosition);
@@ -173,6 +189,15 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         if (intentClassName.equals("MyFirebaseMessaging")){
             final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView);
             scrollView.setAdapter(swipeQuotes);
+            if (!purchased){
+                adshow=true;
+                mInterstitialAd = new InterstitialAd(this);
+                if (BuildConfig.DEBUG)
+                    mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
+                else
+                    mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
         }
         if (intentClassName.equals("FromFireBase")){
             final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,images,motivationType,imagePosition,scrollView);

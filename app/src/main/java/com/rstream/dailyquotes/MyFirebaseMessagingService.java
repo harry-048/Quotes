@@ -198,8 +198,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
       //Configure Notification Channel
       notificationChannel.setDescription("Game Notifications");
       notificationChannel.enableLights(true);
-      notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-      notificationChannel.enableVibration(true);
+      notificationChannel.setVibrationPattern(new long[]{200});
+      notificationChannel.enableVibration(false);
 
       notificationManager.createNotificationChannel(notificationChannel);
     }
