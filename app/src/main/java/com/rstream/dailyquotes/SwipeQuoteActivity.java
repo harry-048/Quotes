@@ -62,14 +62,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
 */
     @Override
     public void onBackPressed() {
-        /*if (adshow){
-            Log.d("Tokenmessagedsads", "haha message is here!" );
-            adshow=false;
-            if (mInterstitialAd.isLoaded()){
-                Log.d("Tokenmessagedsadsadshow", "haha message is here!" );
-                mInterstitialAd.show();
-            }
-        }*/
+
         if (intentClassName.equals("MyFirebaseMessaging")){
             i = new Intent(this,MainActivity.class);
             if (mInterstitialAd.isLoaded()){
