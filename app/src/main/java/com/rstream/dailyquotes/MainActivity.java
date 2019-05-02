@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     boolean isFirstOpen = true;
     boolean purchased =false;
     public static int width=0;
+    public static int height=0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -209,8 +210,12 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
+        height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
+
+      /*  Intent intent = new Intent(MainActivity.this,SwipeQuoteActivity.class);
+        intent.putExtra("height",height);
+        intent.putExtra("width",width);*/
 
         FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

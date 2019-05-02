@@ -17,6 +17,7 @@ public class swipeViewHolder extends RecyclerView.ViewHolder {
     ImageView downloadImageView;
     ImageView shareImageView;
     ImageView blurImageView;
+    ImageView wallpaperImageView;
     public swipeViewHolder(@NonNull View itemView) {
         super(itemView);
         imageView = itemView.findViewById(R.id.swipeQuoteImageView);
@@ -24,5 +25,6 @@ public class swipeViewHolder extends RecyclerView.ViewHolder {
         downloadImageView = itemView.findViewById(R.id.swipeDownloadImageView);
         shareImageView = itemView.findViewById(R.id.swipeShareImageView);
         blurImageView = itemView.findViewById(R.id.BlurImageView);
+        wallpaperImageView = itemView.findViewById(R.id.swpieWallpaperImageView);
     }
 }

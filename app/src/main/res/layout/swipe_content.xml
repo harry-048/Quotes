@@ -41,7 +41,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:gravity="center"
-        android:weightSum="3">
+        android:weightSum="4">
 
         <ImageView
             android:id="@+id/swipeDownloadImageView"
@@ -56,6 +56,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/ic_favorite_border_black_24dp" />
+
+        <ImageView
+            android:id="@+id/swpieWallpaperImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_wallpaper_black_24dp" />
 
         <ImageView
             android:id="@+id/swipeShareImageView"

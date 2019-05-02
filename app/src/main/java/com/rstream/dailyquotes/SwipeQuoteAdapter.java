@@ -2,10 +2,12 @@ package com.rstream.dailyquotes;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -36,6 +38,7 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -51,12 +54,14 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
 
 
-    public SwipeQuoteAdapter(Activity mContext, ArrayList<String> quotesImages, String motivationType, int imagePosition, DiscreteScrollView scrollView) {
+    public SwipeQuoteAdapter(Activity mContext, ArrayList<String> quotesImages, String motivationType, int imagePosition, DiscreteScrollView scrollView,int height, int width) {
         this.mContext = mContext;
         this.quotesImages = quotesImages;
         this.motivationType = motivationType;
         this.imagePosition = imagePosition;
         this.scrollView = scrollView;
+        this.height= height;
+        this.width=width;
         premiumDialogActivity=new PremiumDialogActivity(mContext,this);
         initializeBillingClient();
 
@@ -85,6 +90,9 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     int likeCount=0;
     int downloadCount=0;
     boolean purchased=false;
+    int width=0;
+    int height=0;
+    WallpaperManager myWallpaperManager;
 
     private BillingClient billingClient;
 
@@ -307,12 +315,195 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
             }
         });
 
+        swipeViewHolder.wallpaperImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                myWallpaperManager= WallpaperManager.getInstance(mContext);
+/*
+
+                Picasso.get().load(imgUrl)
+                        .into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        long t = System.currentTimeMillis();
+                                        final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
+                                        File file = new File(path);
+                                        if (file.exists()) file.delete();
+                                        try {
+                                            file.createNewFile();
+                                            FileOutputStream ostream = new FileOutputStream(file);
+                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
+                                            ostream.flush();
+                                            ostream.close();
+                                          //  Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0 , width, height);
+                                          //  Bitmap btm= Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), false);
+                                            Log.d("errorwhensnackbars","imgwidth:"+bitmap.getWidth()+",imgheight:"+ bitmap.getHeight()+"width:"+width+"height:"+height);
+                                            int value=0;
+                                            float ratio;
+                                            if (width>=height)
+                                                ratio = width/height;
+                                            else
+                                                ratio=height/width;
+                                            Log.d("errorwhensnackbarsd","gdbgdfbvsdgfb,"+width+","+height+","+height/width);
+                                            int val;
+                                            Bitmap btm=null;
+                                            if (bitmap.getHeight() <= bitmap.getWidth()) {
+                                                int bitratio = bitmap.getWidth()/bitmap.getHeight();
+
+                                                Log.d("errorwhensnackbarsd",bitratio+"");
+                                                value = bitmap.getHeight();
+                                                val= (int) (width/2*ratio-bitmap.getWidth()/2);
+                                                int w= (int) (bitmap.getWidth()*ratio);
+                                                Log.d("errorwhensnackbarsd",w+",qwerty,"+val);
+                                                btm = Bitmap.createBitmap(bitmap, val, 0, w, bitmap.getHeight());
+                                                Log.d("errorwhensnackbarsd","asdfgh");
+                                            } else {
+                                                int bitratio = bitmap.getHeight()/bitmap.getWidth();
+                                                Log.d("errorwhensnackbarsd",bitratio+"");
+                                                value = bitmap.getWidth();
+                                                btm = Bitmap.createBitmap(bitmap, 0, bitmap.getHeight()/2-bitmap.getWidth()/2, bitmap.getWidth(), bitmap.getHeight()*bitratio);
+                                            }
+
+                                           // Bitmap btm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth()*ratio, bitmap.getHeight()*ratio);
+                                           // Bitmap btm = resize(bitmap,width,height);
+                                           // Bitmap btm = getResizedBitmap(bitmap, width, height);
+                                          //  Log.d("errorwhensnackbarsd",btm.getHeight()/btm.getWidth()+"");
+                                            Log.d("errorwhensnackbar","imgwidth:"+bitmap.getWidth()+",imgheight:"+ bitmap.getHeight()+"width:"+btm.getWidth()+"height:"+btm.getHeight());
+                                           // myWallpaperManager.setWallpaperOffsetSteps(1, 1);
+                                            myWallpaperManager.setBitmap(btm);
+
+
+
+                                        } catch (Exception e) {
+                                            Log.d("errorwhensnackba",e.getMessage());
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }).start();
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+
+*/
+
+                try {
+                    URL url = new URL(imgUrl);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    Log.d("urlerrormessage",e.getMessage()+"");
+                }
+                View content = swipeViewHolder.imageView;
+                content.setDrawingCacheEnabled(true);
+                Bitmap bitmap = content.getDrawingCache();
+                long t = System.currentTimeMillis();
+                File root = Environment.getExternalStorageDirectory();
+                File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+
+                try {
+                    cachePath.createNewFile();
+                    FileOutputStream ostream = new FileOutputStream(cachePath);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                    ostream.close();
+                    Log.d("errorwhensnackbar","imgwidth:"+bitmap.getWidth()+",imgheight:"+ bitmap.getHeight()+"width:"+width+"height:"+height);
+
+                    Bitmap btm= Bitmap.createScaledBitmap(bitmap, width, height, false);
+
+                    Log.d("errorwhensnackbars","imgwidth:"+bitmap.getWidth()+",imgheight:"+ bitmap.getHeight()+"width:"+btm.getWidth()+"height:"+btm.getHeight());
+
+                    //Bitmap btm = getResizedBitmap(bitmap, height, width);
+
+                  /*  myWallpaperManager.setBitmap(btm);
+                    myWallpaperManager.setWallpaperOffsetSteps(.5f, 0.f);
+                    myWallpaperManager.suggestDesiredDimensions(bitmap.getWidth(),bitmap.getHeight());
+*/
+                    myWallpaperManager.setBitmap(btm);
+                    myWallpaperManager.setWallpaperOffsetSteps(.5f, 0.f);
+                    myWallpaperManager.suggestDesiredDimensions(width,height);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
 
         Intent intent = new Intent("message_subject_intent");
         intent.putExtra("QuoteImage" , imgUrl);
         intent.putExtra("postion",i);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
+
+    }
+
+    private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
+
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > 1) {
+                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+            }
+        //    image = Bitmap.createScaledBitmap(image, width/2-finalWidth/2, finalHeight, true);
+            if (finalWidth>=finalHeight){
+                int fWidth =  width/2-finalWidth/2;
+                image= Bitmap.createBitmap(image, fWidth,0,finalWidth, finalHeight);
+            }
+            else {
+                int fWidth =  width/2-finalWidth/2;
+                image= Bitmap.createBitmap(image, fWidth,0,finalWidth, finalHeight);
+            }
+            return image;
+        } else {
+            return image;
+        }
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+
+        int width = bm.getWidth();
+
+        int height = bm.getHeight();
+
+        float scaleWidth = ((float) newWidth) / width;
+
+        float scaleHeight = ((float) newHeight) / height;
+
+        /**
+         *  create a matrix for the manipulation
+         */
+
+        Matrix matrix = new Matrix();
+
+        /**
+         *  resize the bit map
+         */
+
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        /**
+         * recreate the new Bitmap
+         */
+
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+
+        return resizedBitmap;
 
     }
 

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -52,6 +53,8 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     boolean purchased =false;
     SharedPreferences sharedPreferences;
     Intent i;
+    int width=0;
+    int height=0;
 
   /*  @Override
     protected void onDestroy() {
@@ -187,6 +190,13 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
         purchased=sharedPreferences.getBoolean("purchased",false);
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+
+        Log.d("heightandwidth",height+","+width);
+
         parseData();
         showSwipeQuotes(quotesImages,motivationType,imagePosition);
 
@@ -202,15 +212,15 @@ public class SwipeQuoteActivity extends AppCompatActivity {
 
     public void showSwipeQuotes(ArrayList<String> quotesImages, String motivationType, int imagePosition){
         if (intentClassName.equals("QuotesTypes")){
-            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView);
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
         }
         if (intentClassName.equals("FavoriteQuotes")){
-            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,"",imagePosition,scrollView);
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,"",imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
         }
         if (intentClassName.equals("MyFirebaseMessaging")){
-            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView);
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
 
             if (!purchased){
@@ -225,7 +235,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
             }
         }
         if (intentClassName.equals("FromFireBase")){
-            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,images,motivationType,imagePosition,scrollView);
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,images,motivationType,imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
         }
     }
