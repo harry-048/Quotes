@@ -72,7 +72,8 @@ public class PremiumDialogActivity extends Dialog {
                             // Process the result.
                             if (responseCode == BillingClient.BillingResponse.OK
                                     && skuDetailsList != null) {
-                                for (SkuDetails skuDetails : skuDetailsList) {
+                                for (SkuDetails
+                                        skuDetails : skuDetailsList) {
                                     String sku = skuDetails.getSku();
                                     String price = skuDetails.getPrice();
                                     priceTextView.setText(price);

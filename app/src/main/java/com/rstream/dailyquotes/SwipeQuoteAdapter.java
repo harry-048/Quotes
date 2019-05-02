@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -23,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -299,7 +302,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        Uri fileUri = FileProvider.getUriForFile(mContext, "com.myfileprovider", cachePath);                        Intent share = new Intent(Intent.ACTION_SEND);
+                        Uri fileUri = FileProvider.getUriForFile(mContext, "com.myfileprovider", cachePath);
+                        Intent share = new Intent(Intent.ACTION_SEND);
                         share.putExtra(Intent.EXTRA_TEXT, "Send From Daily Quotes");
                         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         share.setType("image/*");
@@ -318,7 +322,125 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         swipeViewHolder.wallpaperImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                myWallpaperManager= WallpaperManager.getInstance(mContext);
+                final Bitmap[] bitmapfront = new Bitmap[1];
+                final Bitmap[] bitmapback = new Bitmap[1];
+                Picasso.get().load(imgUrl)
+                        .into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                Bitmap btm=null;
+                                long t = System.currentTimeMillis();
+                                File root = Environment.getExternalStorageDirectory();
+                                File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+
+                                try {
+                                    cachePath.createNewFile();
+                                    FileOutputStream ostream = new FileOutputStream(cachePath);
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                                    ostream.close();
+
+                                    float percent= ((width-bitmap.getWidth())*100)/width;
+
+                                    int h= (int) ((bitmap.getHeight()*100)/(100-percent));
+
+                                    btm= Bitmap.createScaledBitmap(bitmap, width, h, false);
+
+                                } catch (IOException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+
+                                bitmapfront[0] =btm;
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+
+                Picasso.get().load(imgUrl)
+                        .transform(new BlurTransformation(mContext))
+                        .into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                Bitmap btm=null;
+                                long t = System.currentTimeMillis();
+                                File root = Environment.getExternalStorageDirectory();
+                                File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+
+                                try {
+                                    cachePath.createNewFile();
+                                    FileOutputStream ostream = new FileOutputStream(cachePath);
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                                    ostream.close();
+
+                                    btm= Bitmap.createScaledBitmap(bitmap, width, height, false);
+
+
+                                } catch (IOException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+                                bitmapback[0]=btm;
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+
+                Bitmap bmOverlay = Bitmap.createBitmap(bitmapback[0].getWidth(), bitmapback[0].getHeight(), bitmapback[0].getConfig());
+                Canvas canvas = new Canvas(bmOverlay);
+                canvas.drawBitmap(bitmapback[0], new Matrix(), null);
+                int h=height/2-bitmapfront[0].getHeight()/2;
+                Log.d("heightofimage",h+","+height+","+bitmapfront[0].getHeight());
+                canvas.drawBitmap(bitmapfront[0], 0, h, null);
+
+                try {
+                    URL url = new URL(imgUrl);
+                    View content = swipeViewHolder.imageView;
+                    content.setDrawingCacheEnabled(true);
+                    Bitmap bitmap = content.getDrawingCache();
+                    long t = System.currentTimeMillis();
+                    File root = Environment.getExternalStorageDirectory();
+                    File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+                    try {
+                        cachePath.createNewFile();
+                        FileOutputStream ostream = new FileOutputStream(cachePath);
+                        bmOverlay.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                        ostream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+                    Uri fileUri = FileProvider.getUriForFile(mContext, "com.myfileprovider", cachePath);
+                   // Intent share = new Intent(Intent.ACTION_SEND);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.setDataAndType(fileUri, "image/jpeg");
+                    intent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                    mContext.startActivity(Intent.createChooser(intent,"Share via"));
+                } catch(IOException e) {
+                    Log.d("errorwhenwallpaper",e.getMessage());
+                    e.printStackTrace();
+                }
+                catch (Exception e){
+                    Log.d("errorwhenwallpapers",e.getMessage());
+                    e.printStackTrace();
+                }
+
+
 /*
 
                 Picasso.get().load(imgUrl)
@@ -397,7 +519,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         });
 
 */
-
+/*
                 try {
                     URL url = new URL(imgUrl);
                 } catch (MalformedURLException e) {
@@ -424,17 +546,17 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
                     //Bitmap btm = getResizedBitmap(bitmap, height, width);
 
-                  /*  myWallpaperManager.setBitmap(btm);
+                  *//*  myWallpaperManager.setBitmap(btm);
                     myWallpaperManager.setWallpaperOffsetSteps(.5f, 0.f);
                     myWallpaperManager.suggestDesiredDimensions(bitmap.getWidth(),bitmap.getHeight());
-*/
+*//*
                     myWallpaperManager.setBitmap(btm);
                     myWallpaperManager.setWallpaperOffsetSteps(.5f, 0.f);
                     myWallpaperManager.suggestDesiredDimensions(width,height);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                }
+                }*/
             }
         });
 
@@ -445,6 +567,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
 
     }
+/*
 
     private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
         if (maxHeight > 0 && maxWidth > 0) {
@@ -485,27 +608,34 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
         float scaleHeight = ((float) newHeight) / height;
 
-        /**
+        */
+/**
          *  create a matrix for the manipulation
-         */
+         *//*
+
 
         Matrix matrix = new Matrix();
 
-        /**
+        */
+/**
          *  resize the bit map
-         */
+         *//*
+
 
         matrix.postScale(scaleWidth, scaleHeight);
 
-        /**
+        */
+/**
          * recreate the new Bitmap
-         */
+         *//*
+
 
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
 
         return resizedBitmap;
 
     }
+*/
 
     private void showPremiumDialog() {
         /*new AlertDialog.Builder(mContext)
