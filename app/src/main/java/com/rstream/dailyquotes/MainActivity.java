@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     protected void onResume() {
         super.onResume();
 
-        setSelectedItemColor(0);
+       // setSelectedItemColor(0);
         if (billingClient.isReady()){
             refreshPurchaseList();
         }
@@ -213,10 +213,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
 
-      /*  Intent intent = new Intent(MainActivity.this,SwipeQuoteActivity.class);
-        intent.putExtra("height",height);
-        intent.putExtra("width",width);*/
-
         FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -227,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 });
 
 
-        Log.d("width",width+", height:"+height);
+
 
         mInterstitialAd = new InterstitialAd(this);
         if (BuildConfig.DEBUG)
@@ -304,16 +300,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 setSelectedItemColor(position);
-                /*for (int i=0;i<listView.getChildCount();i++){
-                    if (position==i){
-                        listView.getChildAt(i).setBackgroundResource(R.color.selected_color);
-                        ((TextView)listView.getChildAt(i)).setTextColor(ContextCompat.getColor(MainActivity.this, android.R.color.white));
-                    }
-                    else {
-                        listView.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
-                        ((TextView)listView.getChildAt(i)).setTextColor(ContextCompat.getColor(MainActivity.this, android.R.color.black));
-                    }
-                }*/
+
                 clicked = true;
                 QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
                 motivationName = quotesKeyVal.quoteKey;
@@ -346,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
 
     public void clickListView(int position) {
+        setSelectedItemColor(position);
         clicked = true;
         QuotesKeyVal quotesKeyVal = quoteskeyvalue.get(position);
         motivationName = quotesKeyVal.quoteKey;

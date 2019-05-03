@@ -26,6 +26,7 @@ public class SearchFragment extends Fragment {
     ArrayList<String> listItems;
     ArrayAdapter<String> adapter;
     ListView listView;
+    public int p=0;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -50,6 +51,7 @@ public class SearchFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                p=position;
                 ((MainActivity)getActivity()).clickListView(position);
             }
         });
