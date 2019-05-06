@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.rstream.dailyquotes.BuildConfig;
 import com.rstream.dailyquotes.MainActivity;
 import com.rstream.dailyquotes.QuotesNames;
 import com.rstream.dailyquotes.QuotesTypes;
@@ -45,7 +46,11 @@ public class HomeFragment extends Fragment {
 
 
         mInterstitialAd = new InterstitialAd(getActivity());
-        mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
+        //mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
+        if (BuildConfig.DEBUG)
+            mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
+        else
+            mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
     }

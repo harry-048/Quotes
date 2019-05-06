@@ -96,6 +96,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     int width=0;
     int height=0;
     WallpaperManager myWallpaperManager;
+    Bitmap bitback=null;
+    Bitmap bitfront=null;
 
     private BillingClient billingClient;
 
@@ -322,124 +324,208 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         swipeViewHolder.wallpaperImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                final Bitmap[] bitmapfront = new Bitmap[1];
-                final Bitmap[] bitmapback = new Bitmap[1];
-                Picasso.get().load(imgUrl)
-                        .into(new Target() {
-                            @Override
-                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                Bitmap btm=null;
-                                long t = System.currentTimeMillis();
-                                File root = Environment.getExternalStorageDirectory();
-                                File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+                if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(mContext, "No permission!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    final Bitmap[] bitmapfront = new Bitmap[1];
+                    final Bitmap[] bitmapback = new Bitmap[1];
+                    Picasso.get().load(imgUrl)
+                            .into(new Target() {
+                                @Override
+                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                    Bitmap btm=null;
+                                   /* long t = System.currentTimeMillis();
+                                    File root = Environment.getExternalStorageDirectory();
+                                    File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+*/
+                                    long t = System.currentTimeMillis();
+                                    final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
+                                    File file = new File(path);
+                                    if (file.exists()) file.delete();
+                                    try {
+                                       /* cachePath.createNewFile();
+                                        FileOutputStream ostream = new FileOutputStream(cachePath);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                                        ostream.close();*/
 
-                                try {
-                                    cachePath.createNewFile();
-                                    FileOutputStream ostream = new FileOutputStream(cachePath);
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-                                    ostream.close();
+                                        file.createNewFile();
+                                        FileOutputStream ostream = new FileOutputStream(file);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
+                                        ostream.flush();
+                                        ostream.close();
 
+
+                                    } catch (IOException e) {
+                                        Log.d("heightofimagefffsss",",qwertyuixcvbn  ,  "+e.getMessage());
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
+                                    catch (Exception ee){
+                                        Log.d("heightofimageesqwweesss",","+ee.getMessage());
+                                    }
                                     float percent= ((width-bitmap.getWidth())*100)/width;
 
                                     int h= (int) ((bitmap.getHeight()*100)/(100-percent));
 
                                     btm= Bitmap.createScaledBitmap(bitmap, width, h, false);
 
-                                } catch (IOException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
+                                    if (btm==null)
+                                        Log.d("heightofimagefffs",",qazxcfg,   ");
+                                    bitmapfront[0] =btm;
+                                    bitfront=btm;
                                 }
 
-                                bitmapfront[0] =btm;
-                            }
+                                @Override
+                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
 
-                            @Override
-                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                }
 
-                            }
+                                @Override
+                                public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-                            @Override
-                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                }
+                            });
 
-                            }
-                        });
+                    Picasso.get().load(imgUrl)
+                            .transform(new BlurTransformation(mContext))
+                            .into(new Target() {
+                                @Override
+                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                    Bitmap btm=null;
+                                   /* long t = System.currentTimeMillis();
+                                    File root = Environment.getExternalStorageDirectory();
+                                    File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+*/
+                                    long t = System.currentTimeMillis();
+                                    final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
+                                    File file = new File(path);
+                                    if (file.exists()) file.delete();
+                                    try {
+                                       /* cachePath.createNewFile();
+                                        FileOutputStream ostream = new FileOutputStream(cachePath);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                                        ostream.close();*/
 
-                Picasso.get().load(imgUrl)
-                        .transform(new BlurTransformation(mContext))
-                        .into(new Target() {
-                            @Override
-                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                Bitmap btm=null;
-                                long t = System.currentTimeMillis();
-                                File root = Environment.getExternalStorageDirectory();
-                                File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+                                        file.createNewFile();
+                                        FileOutputStream ostream = new FileOutputStream(file);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
+                                        ostream.flush();
+                                        ostream.close();
 
-                                try {
-                                    cachePath.createNewFile();
-                                    FileOutputStream ostream = new FileOutputStream(cachePath);
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-                                    ostream.close();
 
+
+
+                                    } catch (IOException e) {
+                                        Log.d("heightofimagees",","+e.getMessage());
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
+                                    catch (Exception ee){
+                                        Log.d("heightofimageesqwwee",","+ee.getMessage());
+                                    }
                                     btm= Bitmap.createScaledBitmap(bitmap, width, height, false);
-
-
-                                } catch (IOException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
+                                    if (btm==null)
+                                        Log.d("heightofimagees",",qwerty");
+                                    bitmapback[0]=btm;
+                                    bitback=btm;
                                 }
-                                bitmapback[0]=btm;
-                            }
 
-                            @Override
-                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                @Override
+                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                @Override
+                                public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-                            }
-                        });
+                                }
+                            });
+                    if (bitfront==null)
+                        Log.d("heightofimage",",bvgshbghabsgs");
+                    //Log.d("heightofimage",","+bitback.getHeight()+","+bitback.getConfig());
+                    Bitmap bmOverlay = Bitmap.createBitmap(bitback.getWidth(), bitback.getHeight(), bitback.getConfig());
+                    Canvas canvas = new Canvas(bmOverlay);
+                    canvas.drawBitmap(bitmapback[0], new Matrix(), null);
+                    int h=height/2-bitmapfront[0].getHeight()/2;
+                    //Log.d("heightofimage",h+","+height+","+bitmapfront[0].getHeight());
+                    canvas.drawBitmap(bitmapfront[0], 0, h, null);
 
-                Bitmap bmOverlay = Bitmap.createBitmap(bitmapback[0].getWidth(), bitmapback[0].getHeight(), bitmapback[0].getConfig());
-                Canvas canvas = new Canvas(bmOverlay);
-                canvas.drawBitmap(bitmapback[0], new Matrix(), null);
-                int h=height/2-bitmapfront[0].getHeight()/2;
-                Log.d("heightofimage",h+","+height+","+bitmapfront[0].getHeight());
-                canvas.drawBitmap(bitmapfront[0], 0, h, null);
 
-                try {
-                    URL url = new URL(imgUrl);
-                    View content = swipeViewHolder.imageView;
-                    content.setDrawingCacheEnabled(true);
-                    Bitmap bitmap = content.getDrawingCache();
-                    long t = System.currentTimeMillis();
-                    File root = Environment.getExternalStorageDirectory();
-                    File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+
+
+              /*  Android.Webkit.MimeTypeMap mp = Android.Webkit.MimeTypeMap.Singleton;
+                Intent intent = new Intent(Intent.ActionAttachData);
+                intent.AddCategory(Intent.CategoryDefault);
+                intent.SetDataAndType(path, mp.GetMimeTypeFromExtension("jpg"));
+                intent.PutExtra("mimeType", mp.GetMimeTypeFromExtension("jpg"));
+                intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                this.StartActivityForResult(Intent.CreateChooser(intent,"Set as"),42);*/
+
+
                     try {
-                        cachePath.createNewFile();
-                        FileOutputStream ostream = new FileOutputStream(cachePath);
-                        bmOverlay.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-                        ostream.close();
-                    } catch (Exception e) {
+                        URL url = new URL(imgUrl);
+                        View content = swipeViewHolder.imageView;
+                        content.setDrawingCacheEnabled(true);
+                        Bitmap bitmap = content.getDrawingCache();
+
+                        File root = Environment.getExternalStorageDirectory();
+                        File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+                        // String cpath= root.getAbsolutePath() + "/DCIM/Camera/image.jpg";
+
+                        long t = System.currentTimeMillis();
+                        final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
+                        File file = new File(path);
+                        if (file.exists()) file.delete();
+
+                        try {
+
+                            file.createNewFile();
+                            FileOutputStream ostream = new FileOutputStream(file);
+                            bmOverlay.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
+                            ostream.flush();
+                            ostream.close();
+
+                            MediaScannerConnection.scanFile(mContext, new String[]{file.toString()}, null,
+                                    new MediaScannerConnection.OnScanCompletedListener() {
+                                        public void onScanCompleted(String path, Uri uri) {
+                                            galleryPath=uri+"";
+                                        }
+                                    });
+
+                         /*   cachePath.createNewFile();
+                            FileOutputStream ostream = new FileOutputStream(cachePath);
+                            bmOverlay.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                            ostream.close();*/
+                        } catch (Exception e) {
+                            Log.d("errorwhenwallpaperqwer",e.getMessage());
+                            e.printStackTrace();
+                        }
+
+                        // Uri path = Uri.parse (cpath);
+                        Intent intent = new Intent(Intent.ACTION_ATTACH_DATA,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.addCategory(Intent.CATEGORY_DEFAULT);
+                       // Uri fileUri = FileProvider.getUriForFile(mContext, "com.myfileprovider", file);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        intent.setDataAndType(Uri.parse(galleryPath),"image/*");
+                        //intent.setDataAndType(fileUri, "image/*");
+                        //intent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                        intent.putExtra("mimeType", "image/*");
+                       // Toast.makeText(mContext, bmOverlay.getWidth()+","+bmOverlay.getHeight(), Toast.LENGTH_SHORT).show();
+                        mContext.startActivity(Intent.createChooser(intent,"Set as"));
+
+
+                    } catch(IOException e) {
+                        Log.d("errorwhenwallpaper",e.getMessage());
                         e.printStackTrace();
                     }
-                    Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
-                    Uri fileUri = FileProvider.getUriForFile(mContext, "com.myfileprovider", cachePath);
-                   // Intent share = new Intent(Intent.ACTION_SEND);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intent.setDataAndType(fileUri, "image/jpeg");
-                    intent.putExtra(Intent.EXTRA_STREAM, fileUri);
-                    mContext.startActivity(Intent.createChooser(intent,"Share via"));
-                } catch(IOException e) {
-                    Log.d("errorwhenwallpaper",e.getMessage());
-                    e.printStackTrace();
-                }
-                catch (Exception e){
-                    Log.d("errorwhenwallpapers",e.getMessage());
-                    e.printStackTrace();
-                }
+                    catch (Exception e){
+                        Log.d("errorwhenwallpapers",e.getMessage());
+                        e.printStackTrace();
+                    }
 
+                }
 
             }
         });

@@ -48,6 +48,7 @@ public class SearchFragment extends Fragment {
         adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,listItems);
         listView.setAdapter(adapter);
 
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

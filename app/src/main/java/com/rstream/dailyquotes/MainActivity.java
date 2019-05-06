@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
             if (purchase.getSku().equals(this.getString(R.string.premium_sku)))
             {
                 purchased=true;
+                sharedPreferences.edit().putBoolean("purchased",purchased).apply();
             }
         }
     }

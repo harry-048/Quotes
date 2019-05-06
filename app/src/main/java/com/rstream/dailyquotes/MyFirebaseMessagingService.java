@@ -142,6 +142,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   public void onMessageReceived(RemoteMessage remoteMessage) {
     super.onMessageReceived(remoteMessage);
     Log.d("Tokenmessage", "message:"+remoteMessage.getData() );
+
        handleNow(remoteMessage);
 
     if (remoteMessage.getData().size() > 0) {
@@ -160,6 +161,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     if (remoteMessage.getData()!= null){
+      Log.d("Tokenmessageefefr", "message:");
       getImage(remoteMessage);
       parseMessage(remoteMessage.getData().get("imageUrl"));
     }
@@ -228,7 +230,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     Config.imageUrl = data.get("imageUrl");
     //Create thread to fetch image from notification
     if(remoteMessage.getData()!=null){
-
+      Log.d("Tokenmessageaaa", "message:"+Config.imageUrl );
       Handler uiHandler = new Handler(Looper.getMainLooper());
       uiHandler.post(new Runnable() {
         @Override
@@ -247,6 +249,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   }
 
   private void parseMessage(String notificationMessage) {
+    Log.d("Tokenmessagesss", "message:"+notificationMessage );
     String message = notificationMessage;
     String s = message.replace(this.getString(R.string.imagelink),"");
     String[] str = s.split("/");
