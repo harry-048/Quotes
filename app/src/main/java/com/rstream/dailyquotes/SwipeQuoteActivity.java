@@ -227,10 +227,11 @@ public class SwipeQuoteActivity extends AppCompatActivity {
                 Log.d("Tokenmessagedsas", "haha message!" );
                 adshow=true;
                 mInterstitialAd = new InterstitialAd(this);
-                if (BuildConfig.DEBUG)
+                mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));
+                /*if (BuildConfig.DEBUG)
                     mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
                 else
-                    mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));
+                    mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));*/
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
         }

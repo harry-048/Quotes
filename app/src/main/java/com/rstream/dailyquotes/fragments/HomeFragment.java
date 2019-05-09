@@ -46,11 +46,12 @@ public class HomeFragment extends Fragment {
 
 
         mInterstitialAd = new InterstitialAd(getActivity());
-        //mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
+        mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));
+       /* //mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
         if (BuildConfig.DEBUG)
             mInterstitialAd.setAdUnitId(getString(R.string.AdUnitId));
         else
-            mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));
+            mInterstitialAd.setAdUnitId(getString(R.string.AdUnitIdProduct));*/
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
     }
