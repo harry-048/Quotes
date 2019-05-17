@@ -47,6 +47,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   int position;
   public static ArrayList<String> images;
 
+
+
   Target target = new Target() {
     @Override
     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -75,13 +77,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         writer.write(buffer, 0, n);
       }
     } catch (UnsupportedEncodingException e) {
+      Log.d("Errormessage", "message:"+e.getMessage());
       e.printStackTrace();
     } catch (IOException e) {
+      Log.d("ErrormessageIO", "message:"+e.getMessage());
       e.printStackTrace();
     } finally {
       try {
         in.close();
       } catch (IOException e) {
+        Log.d("ErrormessageIOfinal", "message:"+e.getMessage());
         e.printStackTrace();
       }
     }
@@ -107,6 +112,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
           Object value = data.get(key);
           putImagetoArray();
         } catch (JSONException ee) {
+          Log.d("Errormessagejson", "message:"+ee.getMessage());
           // Something went wrong!
           ee.printStackTrace();
         }
@@ -114,6 +120,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     } catch (JSONException e) {
+      Log.d("Errormessagejsonf", "message:"+e.getMessage());
       e.printStackTrace();
     }
 
@@ -143,7 +150,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     super.onMessageReceived(remoteMessage);
     Log.d("Tokenmessage", "message:"+remoteMessage.getData() );
 
-       handleNow(remoteMessage);
+       //handleNow(remoteMessage);
 
     if (remoteMessage.getData().size() > 0) {
       Map<String, String> data = remoteMessage.getData();
@@ -156,7 +163,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // scheduleJob();
       } else {
         // Handle message within 10 seconds
-        handleNow(remoteMessage);
+        //handleNow(remoteMessage);
       }
     }
 
@@ -226,7 +233,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   private void getImage(final RemoteMessage remoteMessage) {
 
     Map<String, String> data = remoteMessage.getData();
-    Config.title = data.get("title");
+    if (data.get("title").equals("")||data.get("title").equals(""))
+      Config.title = "Have a nice day";
+    else
+      Config.title = data.get("title");
     Config.imageUrl = data.get("imageUrl");
     //Create thread to fetch image from notification
     if(remoteMessage.getData()!=null){
@@ -255,7 +265,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     String[] str = s.split("/");
     motivationName = str[0];
     parseData();
-    int i = images.indexOf(str[1]);
+   // int i = images.indexOf(str[1]);
+    Log.d("Tokenmessagesssddd", "message length"+str.length+", "+str[0]+" , "+str[1] );
     position=images.indexOf(str[1]);
    /* Intent intent = new Intent(this,SwipeQuoteActivity.class);
     intent.putExtra("imageslist",images);

@@ -204,6 +204,17 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         }
     }
 
+    /*protected void onNewIntent(Intent intent) {
+        String action = intent.getAction();
+        String data = intent.getDataString();
+        if (data!=null)
+            Log.d("appIndexingishere","data: "+data);
+        if (Intent.ACTION_VIEW.equals(action) && data != null) {
+            //do your action
+            Log.d("appIndexingishere","yes");
+        }
+    }*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,6 +224,16 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
+
+        //onNewIntent(getIntent());
+        /*FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+
+                    }
+                });*/
 
         FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
