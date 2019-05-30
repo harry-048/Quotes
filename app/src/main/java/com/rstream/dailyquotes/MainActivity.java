@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
                     }
                 });*/
-
+        //FirebaseMessaging.getInstance().subscribeToTopic("messagecheckdailyquotes")
         FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

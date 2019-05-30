@@ -44,7 +44,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
   String motivationName;
   JSONObject data;
-  int position;
+  int position=0;
   public static ArrayList<String> images;
 
 
@@ -170,14 +170,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     if (remoteMessage.getData()!= null){
       Log.d("Tokenmessageefefr", "message:");
       getImage(remoteMessage);
-      parseMessage(remoteMessage.getData().get("imageUrl"));
+      //parseMessage(remoteMessage.getData().get("imageUrl"));
     }
 
 
     if (remoteMessage.getNotification() != null) {
      // Log.d("Tokenmessage", "haha message is here!"+remoteMessage.getData() );
      // getImage(remoteMessage);
-      parseMessage(remoteMessage.getData().get("images"));
+     // parseMessage(remoteMessage.getData().get("images"));
     }
   }
 
@@ -191,7 +191,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     intent.putExtra("imageslist",images);
     intent.putExtra("clickedImage",position+"");
-    intent.putExtra("Type",motivationName);
+    intent.putExtra("Type","happy");
     intent.putExtra("className","MyFirebaseMessaging");
     Log.d("Tokenmessage", "uahfaiuhfuiaewhofiuawe" );
     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -238,9 +238,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     else
       Config.title = data.get("title");
     Config.imageUrl = data.get("imageUrl");
-    //Create thread to fetch image from notification
+
+
+       //Create thread to fetch image from notification
     if(remoteMessage.getData()!=null){
-      Log.d("Tokenmessageaaa", "message:"+Config.imageUrl );
+      Log.d("Tokenmessageaaa", data.get("imageUrl")+ " ,message:, "+Config.imageUrl );
+      images = new ArrayList();
+      images.add(data.get("imageUrl"));
+      position=0;
       Handler uiHandler = new Handler(Looper.getMainLooper());
       uiHandler.post(new Runnable() {
         @Override

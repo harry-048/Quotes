@@ -220,7 +220,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
             scrollView.setAdapter(swipeQuotes);
         }
         if (intentClassName.equals("MyFirebaseMessaging")){
-            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView,height,width);
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,"",imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
 
             if (!purchased){
