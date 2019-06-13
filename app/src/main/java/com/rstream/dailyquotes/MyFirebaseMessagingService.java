@@ -169,7 +169,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     if (remoteMessage.getData()!= null){
       Log.d("Tokenmessageefefr", "message:");
-      getImage(remoteMessage);
+      try {
+        getImage(remoteMessage);
+      }
+      catch (Exception e){
+        e.printStackTrace();
+      }
       //parseMessage(remoteMessage.getData().get("imageUrl"));
     }
 
@@ -257,9 +262,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         @Override
         public void run() {
           // Get image from data Notification
-          Picasso.get()
-                  .load(Config.imageUrl)
-                  .into(target);
+          try {
+                Picasso.get()
+                    .load(Config.imageUrl)
+                    .into(target);
+          }
+          catch (Exception e)
+          {
+            e.printStackTrace();
+          }
+
         }
       }) ;
     }
