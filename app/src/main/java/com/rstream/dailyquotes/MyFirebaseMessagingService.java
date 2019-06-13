@@ -233,18 +233,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   private void getImage(final RemoteMessage remoteMessage) {
 
     Map<String, String> data = remoteMessage.getData();
-    if (data.get("title").equals("")||data.get("title").equals(""))
-      Config.title = "Have a nice day";
-    else
+    if (data.get("title")!=null && !data.get("title").trim().equals(""))
       Config.title = data.get("title");
-    Config.imageUrl = data.get("imageUrl");
+    else
+      Config.title = "Have a nice day";
+
+    if (data.get("imageUrl")!=null && !data.get("imageUrl").trim().equals(""))
+      Config.imageUrl = data.get("imageUrl");
+    else
+      Config.imageUrl = "http://riafyme.com/app/quotes/motivational/do-something-today-that-your-future-self-with-thank-you-for-quote-1.jpg";
+
+   // Config.imageUrl = data.get("imageUrl");
 
 
        //Create thread to fetch image from notification
     if(remoteMessage.getData()!=null){
-      Log.d("Tokenmessageaaa", data.get("imageUrl")+ " ,message:, "+Config.imageUrl );
+     // Log.d("Tokenmessageaaa", data.get("imageUrl")+ " ,message:, "+Config.imageUrl );
       images = new ArrayList();
-      images.add(data.get("imageUrl"));
+      images.add(Config.imageUrl);
       position=0;
       Handler uiHandler = new Handler(Looper.getMainLooper());
       uiHandler.post(new Runnable() {
