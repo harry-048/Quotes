@@ -18,6 +18,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.squareup.picasso.Picasso;
@@ -232,6 +234,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     notificationManager.notify(1, notificationBuilder.build());
 
+
+  }
+
+  @Override
+  public void onNewToken(String s) {
+    super.onNewToken(s);
+    String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+    FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes");
+    //FirebaseMessaging.getInstance().subscribeToTopic("messagecheckdailyquotes");
+    Log.d("Tokenmessagedsads", "Refreshed token: " + refreshedToken);
 
   }
 
