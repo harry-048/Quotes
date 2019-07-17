@@ -1,4 +1,4 @@
-package com.rstream.dailyquotes.fragments;
+package com.rstream.biblequotes.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rstream.dailyquotes.FavoriteQuotes;
-import com.rstream.dailyquotes.R;
+import com.rstream.biblequotes.FavoriteQuotes;
+import com.rstream.biblequotes.R;
 
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.rstream.dailyquotes;
+package com.rstream.biblequotes;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;

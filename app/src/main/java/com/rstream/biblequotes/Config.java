@@ -1,4 +1,4 @@
-package com.rstream.dailyquotes;
+package com.rstream.biblequotes;
 
 public class Config {
     public static String title = "";

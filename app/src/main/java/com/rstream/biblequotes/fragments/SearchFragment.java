@@ -1,4 +1,4 @@
-package com.rstream.dailyquotes.fragments;
+package com.rstream.biblequotes.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,8 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.rstream.dailyquotes.MainActivity;
-import com.rstream.dailyquotes.R;
+import com.rstream.biblequotes.MainActivity;
+import com.rstream.biblequotes.R;
 
 import java.util.ArrayList;
 

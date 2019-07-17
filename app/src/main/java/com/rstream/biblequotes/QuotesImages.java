@@ -1,4 +1,4 @@
-package com.rstream.dailyquotes;
+package com.rstream.biblequotes;
 
 public class QuotesImages {
     private String[] imageurl;

@@ -1,4 +1,4 @@
-package com.rstream.dailyquotes;
+package com.rstream.biblequotes;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,7 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -25,7 +24,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -41,7 +39,6 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -153,16 +150,17 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     @Override
     public void onBindViewHolder(@NonNull final swipeViewHolder swipeViewHolder, final int i) {
 
-        if (motivationType=="")
+        imgUrl=quotesImages.get(i);
+       /* if (motivationType=="")
             imgUrl=quotesImages.get(i);
         else
-            imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(i);
+            imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(i);*/
 
-       Picasso.get().load(imgUrl)
+       Picasso.get().load(quotesImages.get(i))
                .transform(new BlurTransformation(mContext))
                .into(swipeViewHolder.blurImageView);
 
-        Picasso.get().load(imgUrl).into(swipeViewHolder.imageView);
+        Picasso.get().load(quotesImages.get(i)).into(swipeViewHolder.imageView);
 
 
         checkLike(swipeViewHolder);
@@ -176,7 +174,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         showPremiumDialog();
                     }
                     else {
-                        set.add(imgUrl);
+                        set.add(quotesImages.get(i));
                         f++;
                         likeCount++;
                         sharedPreferences.edit().putInt("flag",f).apply();
@@ -190,7 +188,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
                 }
                 else {
-                    set.remove(imgUrl);
+                    set.remove(quotesImages.get(i));
                     f--;
                     likeCount--;
 
@@ -215,7 +213,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         showPremiumDialog();
                     }
                     else {
-                        Picasso.get().load(imgUrl).into(new Target() {
+                        Picasso.get().load(quotesImages.get(i)).into(new Target() {
                             @Override
                             public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
                                 new Thread(new Runnable() {
@@ -289,7 +287,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                 }
                 else {
                     try {
-                        URL url = new URL(imgUrl);
+                        URL url = new URL(quotesImages.get(i));
                         View content = swipeViewHolder.imageView;
                         content.setDrawingCacheEnabled(true);
                         Bitmap bitmap = content.getDrawingCache();
@@ -324,13 +322,16 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         swipeViewHolder.wallpaperImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                Log.d("imageurlclicked",imgUrl);
+                Log.d("imageurlclicked","i="+i);
+                Log.d("imageurlclicked",quotesImages.get(i)+"");
                 if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(mContext, "No permission!", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     final Bitmap[] bitmapfront = new Bitmap[1];
                     final Bitmap[] bitmapback = new Bitmap[1];
-                    Picasso.get().load(imgUrl)
+                    Picasso.get().load(quotesImages.get(i))
                             .into(new Target() {
                                 @Override
                                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -387,7 +388,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                 }
                             });
 
-                    Picasso.get().load(imgUrl)
+                    Picasso.get().load(quotesImages.get(i))
                             .transform(new BlurTransformation(mContext))
                             .into(new Target() {
                                 @Override
@@ -464,7 +465,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
 
                     try {
-                        URL url = new URL(imgUrl);
+                        URL url = new URL(quotesImages.get(i));
                         View content = swipeViewHolder.imageView;
                         content.setDrawingCacheEnabled(true);
                         Bitmap bitmap = content.getDrawingCache();
@@ -490,6 +491,15 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                     new MediaScannerConnection.OnScanCompletedListener() {
                                         public void onScanCompleted(String path, Uri uri) {
                                             galleryPath=uri+"";
+                                            Log.d("errorwhenwallpaperqwer", galleryPath);
+                                            Intent intent = new Intent(Intent.ACTION_ATTACH_DATA,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                            intent.addCategory(Intent.CATEGORY_DEFAULT);
+                                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                            intent.setDataAndType(Uri.parse(galleryPath),"image/*");
+                                            intent.putExtra("mimeType", "image/*");
+                                            mContext.startActivity(Intent.createChooser(intent,"Set as"));
+
                                         }
                                     });
 
@@ -502,18 +512,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                             e.printStackTrace();
                         }
 
-                        // Uri path = Uri.parse (cpath);
-                        Intent intent = new Intent(Intent.ACTION_ATTACH_DATA,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.addCategory(Intent.CATEGORY_DEFAULT);
-                       // Uri fileUri = FileProvider.getUriForFile(mContext, "com.myfileprovider", file);
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                        intent.setDataAndType(Uri.parse(galleryPath),"image/*");
-                        //intent.setDataAndType(fileUri, "image/*");
-                        //intent.putExtra(Intent.EXTRA_STREAM, fileUri);
-                        intent.putExtra("mimeType", "image/*");
-                       // Toast.makeText(mContext, bmOverlay.getWidth()+","+bmOverlay.getHeight(), Toast.LENGTH_SHORT).show();
-                        mContext.startActivity(Intent.createChooser(intent,"Set as"));
+
+
 
 
                     } catch(IOException e) {
@@ -521,7 +521,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         e.printStackTrace();
                     }
                     catch (Exception e){
-                        Log.d("errorwhenwallpapers",e.getMessage());
+                        Log.d("errorwhenwallpapers",e.getMessage()+ " "+ galleryPath);
                         e.printStackTrace();
                     }
 
@@ -531,7 +531,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         });
 
         Intent intent = new Intent("message_subject_intent");
-        intent.putExtra("QuoteImage" , imgUrl);
+        intent.putExtra("QuoteImage" , quotesImages.get(i));
         intent.putExtra("postion",i);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 

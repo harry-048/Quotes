@@ -1,9 +1,8 @@
-package com.rstream.dailyquotes;
+package com.rstream.biblequotes;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -24,14 +23,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -42,9 +39,9 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.rstream.dailyquotes.fragments.FavoriteFragment;
-import com.rstream.dailyquotes.fragments.HomeFragment;
-import com.rstream.dailyquotes.fragments.SearchFragment;
+import com.rstream.biblequotes.fragments.FavoriteFragment;
+import com.rstream.biblequotes.fragments.HomeFragment;
+import com.rstream.biblequotes.fragments.SearchFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -444,7 +441,8 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                     imagesArray[0] = data.getJSONArray(motivationName);
                     images = new ArrayList();
                     for (int i = 0; i < imagesArray[0].length(); i++) {
-                        images.add(imagesArray[0].getString(i));
+                        images.add(getString(R.string.imagelink)+motivationName+"/"+imagesArray[0].getString(i));
+                        //images.add(imagesArray[0].getString(i));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

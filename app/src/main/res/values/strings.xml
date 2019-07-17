@@ -1,5 +1,13 @@
 <resources>
-    <string name="app_name">Daily Quotes</string>
+
+    // Daily quotes app
+    <!--<string name="app_name">Daily Quotes</string>
+    <string name="package_name">com.rstream.dailyquotes</string>-->
+
+    //Bible quotes app
+    <string name="app_name">Bible Quotes</string>
+    <string name="package_name">com.rstream.biblequotes</string>
+
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorites</string>
     <string name="title_categories">Categories</string>

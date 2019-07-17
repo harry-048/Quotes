@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.rstream.dailyquotes"
+        applicationId "com.rstream.biblequotes"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 8

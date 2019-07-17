@@ -1,22 +1,20 @@
-package com.rstream.dailyquotes.fragments;
+package com.rstream.biblequotes.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.rstream.dailyquotes.BuildConfig;
-import com.rstream.dailyquotes.MainActivity;
-import com.rstream.dailyquotes.QuotesNames;
-import com.rstream.dailyquotes.QuotesTypes;
+import com.rstream.biblequotes.MainActivity;
+import com.rstream.biblequotes.QuotesNames;
+import com.rstream.biblequotes.QuotesTypes;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.rstream.dailyquotes.R;
+import com.rstream.biblequotes.R;
 
 import java.util.ArrayList;
 

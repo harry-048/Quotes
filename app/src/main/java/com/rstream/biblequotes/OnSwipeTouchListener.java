@@ -1,4 +1,4 @@
-package com.rstream.dailyquotes;
+package com.rstream.biblequotes;
 
 import android.content.Context;
 import android.view.GestureDetector;

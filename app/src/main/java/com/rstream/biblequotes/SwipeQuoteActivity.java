@@ -1,4 +1,4 @@
-package com.rstream.dailyquotes;
+package com.rstream.biblequotes;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,12 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.rstream.dailyquotes.R;
+import com.rstream.biblequotes.R;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import org.json.JSONArray;
@@ -197,7 +196,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
 
         Log.d("heightandwidth",height+","+width);
 
-        parseData();
+       // parseData();
         showSwipeQuotes(quotesImages,motivationType,imagePosition);
 
         scrollView.scrollToPosition(imagePosition);
@@ -235,10 +234,10 @@ public class SwipeQuoteActivity extends AppCompatActivity {
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
         }
-        if (intentClassName.equals("FromFireBase")){
+       /* if (intentClassName.equals("FromFireBase")){
             final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,images,motivationType,imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
-        }
+        }*/
     }
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
