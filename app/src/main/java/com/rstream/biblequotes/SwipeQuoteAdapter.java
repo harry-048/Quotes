@@ -359,7 +359,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                         }
                         Uri fileUri = FileProvider.getUriForFile(mContext, "com.myfileprovider", cachePath);
                         Intent share = new Intent(Intent.ACTION_SEND);
-                        share.putExtra(Intent.EXTRA_TEXT, "Send From Daily Quotes");
+                        share.putExtra(Intent.EXTRA_TEXT, "Send From Bible Quotes");
                         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         share.setType("image/*");
                         share.putExtra(Intent.EXTRA_STREAM, fileUri);
