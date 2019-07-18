@@ -3,10 +3,12 @@
     // Daily quotes app
     <!--<string name="app_name">Daily Quotes</string>
     <string name="package_name">com.rstream.dailyquotes</string>-->
+    <!--<string name="imagelink">http://riafyme.com/app/quotes/</string>-->
 
     //Bible quotes app
     <string name="app_name">Bible Quotes</string>
     <string name="package_name">com.rstream.biblequotes</string>
+    <string name="imagelink">http://riafyme.com/app/biblequotes/</string>
 
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorites</string>
@@ -14,7 +16,8 @@
 
 
     <string name="quotes">Quotes</string>
-    <string name="imagelink">http://riafyme.com/app/quotes/</string>
+
+
 
     <string name="title_activity_swipe_quote">SwipeQuoteActivity</string>
     <string name="AdUnitId">ca-app-pub-3940256099942544/1033173712</string>

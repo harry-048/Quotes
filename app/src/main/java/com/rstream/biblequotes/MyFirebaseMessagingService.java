@@ -14,7 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -68,7 +68,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
   };
 
   private void parseData() {
-    InputStream in = getResources().openRawResource(R.raw.data);
+      InputStream in = null;
+      if (getResources().getString(R.string.app_name).contains("Bible"))
+          in = getResources().openRawResource(R.raw.bibledata);
+      else
+          in = getResources().openRawResource(R.raw.data);
     Writer writer = new StringWriter();
     char[] buffer = new char[1024];
     try {
