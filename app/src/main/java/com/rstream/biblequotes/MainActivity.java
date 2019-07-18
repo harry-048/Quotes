@@ -62,6 +62,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements PurchasesUpdatedListener,NavigationView.OnNavigationItemSelectedListener {
 
     public static ArrayList<String> images;
+    public static ArrayList<String> thumbsImages;
     public static String motivationName = "";
     JSONObject data;
     ArrayList<String> listItems;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     HomeFragment homeFragment = new HomeFragment();
     Fragment favoriteFragment = new FavoriteFragment();
     SearchFragment searchFragment = new SearchFragment();
-    Fragment selectedFragment = homeFragment;
+    Fragment selectedFragment = searchFragment;
     ArrayList<QuotesNames> quotesNames;
     BottomNavigationView navigation;
     private DrawerLayout drawerLayout;
@@ -310,7 +311,12 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
+        // for selecting an item
+        navigation.getMenu().findItem(R.id.navigation_notifications).setChecked(true);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -400,10 +406,13 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         String jsonString = writer.toString();
         try {
             data = new JSONObject(jsonString);
+
+            //Log.d("jsonobjectdata", data.length()+" is length , ");
             Iterator<String> iter = data.keys();
             while (iter.hasNext()) {
+                //Log.d("jsonobjectdata", " key is "+ iter.next());
                 String key = iter.next();
-
+                Log.d("jsonobjectdata", " key is "+ key);
                 try {
                     String[] words = key.split(" ");
                     StringBuilder sb = new StringBuilder();
@@ -418,7 +427,8 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                     quoteskeyvalue.add(new QuotesKeyVal(name, key));
                     Object value = data.get(key);
                     listItems.add(name);
-                    Log.d("categoryin", key + "," + motivationName);
+
+                    Log.d("categoryin", key + "," + motivationName+ ",name: " +name);
                     Log.d(key, data.get(key).toString());
                     Log.d("motivationinparse", motivationName);
                     motivationName = quoteskeyvalue.get(0).quoteKey;
@@ -444,8 +454,10 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 try {
                     imagesArray[0] = data.getJSONArray(motivationName);
                     images = new ArrayList();
+                    thumbsImages = new ArrayList();
                     for (int i = 0; i < imagesArray[0].length(); i++) {
                         images.add(getString(R.string.imagelink)+motivationName+"/"+imagesArray[0].getString(i));
+                        thumbsImages.add(getString(R.string.imagelink)+motivationName+"/thumbs/"+imagesArray[0].getString(i));
                         //images.add(imagesArray[0].getString(i));
                     }
                 } catch (JSONException e) {

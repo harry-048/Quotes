@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
 
     private ArrayList<String> quotesImages;
+    private ArrayList<String> quotesThumbImages;
     Context mContext;
     String motivationName;
     SharedPreferences preferences;
@@ -37,9 +40,10 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
 
 
 
-    public QuotesTypes(Context mContext, ArrayList<String> quotesImages, String motivationName, InterstitialAd mInterstitialAd, int width) {
+    public QuotesTypes(Context mContext, ArrayList<String> quotesImages,ArrayList<String> quotesThumbImages, String motivationName, InterstitialAd mInterstitialAd, int width) {
         this.mContext = mContext;
         this.quotesImages=quotesImages;
+        this.quotesThumbImages=quotesThumbImages;
         this.motivationName=motivationName;
         this.mInterstitialAd = mInterstitialAd;
         this.width=width;
@@ -65,7 +69,8 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
     public void onBindViewHolder(@NonNull final QuotesViewHolder quotesViewHolder, final int i) {
         final boolean[] imageload = {false};
         //final String imgUrl=mContext.getString(R.string.imagelink)+motivationName+"/"+ quotesImages.get(i);
-        final String imgUrl= quotesImages.get(i);
+        Log.d("imageurlis ",quotesThumbImages.get(i));
+        final String imgUrl= quotesThumbImages.get(i);
         quotesViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +138,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
             int h = (width/2)-16;
             LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,h);
             quotesViewHolder.imageView.setLayoutParams(parms);
-            Picasso.get().load(imgUrl).placeholder(mContext.getResources().getDrawable(R.drawable.loadinganimation)).into(quotesViewHolder.imageView, new Callback() {
+            Picasso.get().load(quotesThumbImages.get(i)).placeholder(mContext.getResources().getDrawable(R.drawable.loadinganimation)).into(quotesViewHolder.imageView, new Callback() {
                 @Override
                 public void onSuccess() {
                     imageload[0] =true;

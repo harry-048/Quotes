@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:weightSum="2"
+             tools:context=".First_Fragment">
+
+
+
+    <ImageView
+            android:layout_weight="1"
+            android:id="@+id/bibleImageView"
+            android:src="@drawable/bible_one"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:id="@+id/bibleTextView"
+
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="walk with Jesus Christ everyday by reading his words"
+                android:paddingTop="32dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        <Button
+                android:id="@+id/continueButton"
+                android:background="@drawable/rounded_button"
+                android:textColor="@color/Textselectcolor"
+                android:fontFamily="@font/roboto_regular"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:letterSpacing="0.1"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:text="CONTINUE"
+                android:layout_above="@+id/termaAndprivacyTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?android:attr/borderlessButtonStyle"/>
+
+        <TextView
+                android:id="@+id/termaAndprivacyTextView"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="By continuing you accept our Terms of use &amp; Privacy policy."
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="56dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="12dp"
+                android:textColor="@color/PremiumTextColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+
+
+
+</LinearLayout>

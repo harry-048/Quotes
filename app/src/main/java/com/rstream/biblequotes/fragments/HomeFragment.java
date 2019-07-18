@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
 
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
-        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),MainActivity.images, MainActivity.motivationName,mInterstitialAd,MainActivity.width);
+        final QuotesTypes quotesTypes = new QuotesTypes(getActivity(),MainActivity.images,MainActivity.thumbsImages, MainActivity.motivationName,mInterstitialAd,MainActivity.width);
         recyclerView.setAdapter(quotesTypes);
     }
 

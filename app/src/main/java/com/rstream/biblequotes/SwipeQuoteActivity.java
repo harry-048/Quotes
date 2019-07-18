@@ -40,6 +40,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private LinearLayoutManager layoutManager;
     ArrayList<String> quotesImages;
+    ArrayList<String> quotesThumbImages;
     String motivationType="";
     int imagePosition=0;
     String intentClassName="";
@@ -88,91 +89,31 @@ public class SwipeQuoteActivity extends AppCompatActivity {
             super.onBackPressed();
     }
 
-    private void parseData() {
-        InputStream in = getResources().openRawResource(R.raw.data);
-        Writer writer = new StringWriter();
-        char[] buffer = new char[1024];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
+    private void parseThumbnail(ArrayList<String> quotesImage) {
+        int j=0;
+        String s;
+        String thumb;
+        for (j=0;j<quotesImage.size();j++){
+            s = quotesImage.get(j);
+            String[] str = s.split(motivationType);
+            if (str.length>2){
+                Log.d("stringsplit",str.length+" , "+str[0]+" , "+str[1]+" , "+str[2]);
+                //thumb=str[0]+motivationType+"/thumbs"+str[1];
+                thumb=str[0]+motivationType+"/thumbs"+str[1]+motivationType+str[2];
             }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            else {
+                Log.d("stringsplit",str.length+" , "+str[0]+" , "+str[1]);
+                thumb=str[0]+motivationType+"/thumbs"+str[1];
             }
+
+            quotesThumbImages.add(thumb);
+            thumb="";
+            s="";
+
         }
-
-        String jsonString = writer.toString();
-        try {
-            data = new JSONObject(jsonString);
-            /*Intent intent = new Intent(this,MyFirebaseMessagingService.class);
-            intent.putExtra("jsonfile",data+"");*/
-            Iterator<String> iter = data.keys();
-            while (iter.hasNext()) {
-                String key = iter.next();
-
-                try {
-                    String[] words = key.split(" ");
-                    StringBuilder sb = new StringBuilder();
-                    if (words[0].length() > 0) {
-                        sb.append(Character.toUpperCase(words[0].charAt(0)) + words[0].subSequence(1, words[0].length()).toString().toLowerCase());
-                        for (int i = 1; i < words.length; i++) {
-                            sb.append(" ");
-                            sb.append(Character.toUpperCase(words[i].charAt(0)) + words[i].subSequence(1, words[i].length()).toString().toLowerCase());
-                        }
-                    }
-                    String name = sb.toString();
-                    /*if (clicked){
-
-                        clicked=false;
-                    }*/
-                    //  String[] imgurl=data.get("happy").toString();
-                    //String[] imgurl = Arrays.copyOf(data.get("happy"), data.get("happy").l, String[].class);
-                    // quoteskeyvalue.add(new QuotesKeyVal(name, key));
-                    //quotesImages.add(new QuotesImages(data.get("happy")));
-
-                    Object value = data.get(key);
-                    //listItems.add(name);
-                    //motivationName = quoteskeyvalue.get(0).quoteKey;
-                    putImagetoArray();
-                } catch (JSONException ee) {
-                    // Something went wrong!
-                    ee.printStackTrace();
-                }
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        for (int k=0;k<quotesThumbImages.size();k++){
+            Log.d("stringnameis",quotesThumbImages.get(k)+" , "+quotesImage.get(k));
         }
-
-    }
-
-    private void putImagetoArray() {
-        final JSONArray[] imagesArray = {null};
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    imagesArray[0] = data.getJSONArray(motivationType);
-                    images = new ArrayList();
-                    for (int i = 0; i < imagesArray[0].length(); i++) {
-                        images.add(imagesArray[0].getString(i));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).run();
-
     }
 
 
@@ -180,6 +121,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_quote);
+        quotesThumbImages = new ArrayList<>();
         quotesImages = getIntent().getStringArrayListExtra("imageslist");
         motivationType = getIntent().getStringExtra("Type");
         imagePosition = Integer.parseInt(getIntent().getStringExtra("clickedImage"));
@@ -195,6 +137,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
 
         Log.d("heightandwidth",height+","+width);
 
+        parseThumbnail(quotesImages);
        // parseData();
         showSwipeQuotes(quotesImages,motivationType,imagePosition);
 
@@ -210,15 +153,15 @@ public class SwipeQuoteActivity extends AppCompatActivity {
 
     public void showSwipeQuotes(ArrayList<String> quotesImages, String motivationType, int imagePosition){
         if (intentClassName.equals("QuotesTypes")){
-            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,motivationType,imagePosition,scrollView,height,width);
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,quotesThumbImages,motivationType,imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
         }
         if (intentClassName.equals("FavoriteQuotes")){
-            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,"",imagePosition,scrollView,height,width);
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,quotesThumbImages,"",imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
         }
         if (intentClassName.equals("MyFirebaseMessaging")){
-            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,"",imagePosition,scrollView,height,width);
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,quotesThumbImages,"",imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
 
             if (!purchased){

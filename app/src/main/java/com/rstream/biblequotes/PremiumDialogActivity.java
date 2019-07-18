@@ -3,6 +3,7 @@ package com.rstream.biblequotes;
 import android.app.Activity;
 import android.app.Dialog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
@@ -48,7 +50,8 @@ public class PremiumDialogActivity extends Dialog {
             @Override
             public void onClick(View v) {
                 //purchase(skuDetails);
-                swipeQuoteAdapter.launchIAP();
+                //swipeQuoteAdapter.launchIAP();
+                launchIAP();
                 PremiumDialogActivity.this.dismiss();
             }
         });
@@ -90,7 +93,37 @@ public class PremiumDialogActivity extends Dialog {
         }
     }
 
+    public void launchIAP() {
+        if (billingClient.isReady()){
+            List<String> skuList = new ArrayList<> ();
+            skuList.add(getContext().getString(R.string.premium_sku));
+            SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+            params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+            billingClient.querySkuDetailsAsync(params.build(),
+                    new SkuDetailsResponseListener() {
+                        @Override
+                        public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
+                            // Process the result.
+                            if (responseCode == BillingClient.BillingResponse.OK
+                                    && skuDetailsList != null) {
+                                for (SkuDetails skuDetails : skuDetailsList) {
+                                    String sku = skuDetails.getSku();
+                                    String price = skuDetails.getPrice();
+                                    if (getContext().getString(R.string.premium_sku).equals(sku)) {
 
+                                        BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                                                .setSkuDetails(skuDetails)
+                                                .build();
+                                        int responseCode1 = billingClient.launchBillingFlow(getOwnerActivity(), flowParams);
+
+                                    }
+                                }
+
+                            }
+                        }
+                    });
+        }
+    }
 
     public void purchase(SkuDetails skuDetails) {
     Toast.makeText(getContext(), "working", Toast.LENGTH_SHORT).show();
@@ -100,6 +133,8 @@ public class PremiumDialogActivity extends Dialog {
                 .build();
         int responseCode1 = billingClient.launchBillingFlow(getOwnerActivity(), flowParams);
     }
+
+
 
     public void setBillingClient(BillingClient billingClient) {
         this.billingClient = billingClient;

@@ -13,4 +13,22 @@
     <color name="premium_color">#ffff9800</color>
     <color name="black_overlay">#66000000</color>
     <color name="selected_color">#B20081FF</color>
+
+
+    <color name="FirstColor">#4CAF50</color>
+    <color name="SecondColor">#4F7DA2</color>
+
+    <color name="Textcolor">#5a5a5a</color>
+    <color name="TextDarkcolor">#000000</color>
+    <color name="PremiumTextColor">#8b8b8b</color>
+    <color name="PremiumValuecolor">#efe1fb</color>
+    <color name="TextBackgroundcolor">#e4e4e4</color>
+
+    <color name="Buttoncolor">#ab92c9</color>
+    <color name="DarkButtoncolor">#999999</color>
+    <color name="ButtonBackgroundcolor">#DBDBDB</color>
+
+    <color name="Textselectcolor">#FFFFFF</color>
+    <color name="TextselectBackgroundcolor">#fd525a</color>
+
 </resources>

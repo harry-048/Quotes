@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -33,6 +34,7 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -54,9 +56,10 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
 
 
-    public SwipeQuoteAdapter(Activity mContext, ArrayList<String> quotesImages, String motivationType, int imagePosition, DiscreteScrollView scrollView,int height, int width) {
+    public SwipeQuoteAdapter(Activity mContext, ArrayList<String> quotesImages,ArrayList<String> quoteThumbImages, String motivationType, int imagePosition, DiscreteScrollView scrollView,int height, int width) {
         this.mContext = mContext;
         this.quotesImages = quotesImages;
+        this.quoteThumbImages=quoteThumbImages;
         this.motivationType = motivationType;
         this.imagePosition = imagePosition;
         this.scrollView = scrollView;
@@ -73,9 +76,11 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
     Activity mContext;
     ArrayList<String> quotesImages;
+    ArrayList<String> quoteThumbImages;
     String motivationType;
     int imagePosition;
     String imgUrl;
+    String thumbImgUrl;
     DiscreteScrollView scrollView;
     boolean save = false;
 
@@ -98,6 +103,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
     private BillingClient billingClient;
 
+    ProgressBar progressBar;
+    Snackbar snackbar;
 
 
     @NonNull
@@ -107,7 +114,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         final swipeViewHolder viewHolder = new swipeViewHolder(view);
 
 
-
+        progressBar = view.findViewById(R.id.progressBar2);
         sharedPreferences = mContext.getSharedPreferences("prefs.xml",MODE_PRIVATE);
         purchased = sharedPreferences.getBoolean("purchased",false);
         set = new HashSet<String>();
@@ -151,16 +158,64 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     public void onBindViewHolder(@NonNull final swipeViewHolder swipeViewHolder, final int i) {
 
         imgUrl=quotesImages.get(i);
+        thumbImgUrl=quoteThumbImages.get(i);
+        Log.d("selectedthumbnail",quoteThumbImages.get(i) + " , image: "+quotesImages.get(i));
        /* if (motivationType=="")
             imgUrl=quotesImages.get(i);
         else
             imgUrl=mContext.getString(R.string.imagelink)+motivationType+"/"+ quotesImages.get(i);*/
 
-       Picasso.get().load(quotesImages.get(i))
+        swipeViewHolder.downloadImageView.setEnabled(false);
+        swipeViewHolder.likeImageView.setEnabled(false);
+        swipeViewHolder.wallpaperImageView.setEnabled(false);
+        swipeViewHolder.shareImageView.setEnabled(false);
+
+       Picasso.get().load(quoteThumbImages.get(i))
                .transform(new BlurTransformation(mContext))
                .into(swipeViewHolder.blurImageView);
+        Log.d("showsnackbar"," before "+quotesImages.get(i)+"");
+         snackbar = Snackbar.make(mContext.findViewById(android.R.id.content), "Image is loading please wait...", Snackbar.LENGTH_LONG);
+        snackbar.show();
+        Log.d("showsnackbar"," after "+quotesImages.get(i)+"");
+        //Picasso.get().load(quotesImages.get(i)).into(swipeViewHolder.imageView);
 
-        Picasso.get().load(quotesImages.get(i)).into(swipeViewHolder.imageView);
+
+        try {
+            Log.d("imagecrashproblem",quotesImages.get(i)+"");
+            Picasso.get().load(quotesImages.get(i)).noPlaceholder().into(swipeViewHolder.imageView, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                    swipeViewHolder.downloadImageView.setEnabled(true);
+                    swipeViewHolder.likeImageView.setEnabled(true);
+                    swipeViewHolder.wallpaperImageView.setEnabled(true);
+                    swipeViewHolder.shareImageView.setEnabled(true);
+                    if (snackbar.isShown()){
+                        snackbar.dismiss();
+                        Log.d("showsnackbar"," middle "+quotesImages.get(i)+"");
+                    }
+                    else
+                        Log.d("showsnackbar","No snackbar "+quotesImages.get(i)+"");
+                   /* if (snackbar.isShown())
+                        Log.d("imagecrashproblem","snackbar "+quotesImages.get(i)+"");
+                    else
+                        Log.d("imagecrashproblem","No snackbar "+quotesImages.get(i)+"");*/
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Toast.makeText(mContext, "Image failed loading!", Toast.LENGTH_SHORT).show();
+                }
+
+            });
+        }
+        catch (OutOfMemoryError ome){
+            Toast.makeText(mContext, "Image failed loading!", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(mContext, "Image failed loading!", Toast.LENGTH_SHORT).show();
+        }
 
 
         checkLike(swipeViewHolder);
@@ -388,7 +443,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                 }
                             });
 
-                    Picasso.get().load(quotesImages.get(i))
+                    Picasso.get().load(quoteThumbImages.get(i))
                             .transform(new BlurTransformation(mContext))
                             .into(new Target() {
                                 @Override

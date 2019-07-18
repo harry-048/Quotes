@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    <TextView
+            android:id="@+id/PersonaliseText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:text="PERSONALISE" />
+
+    <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/PersonaliseText"
+            android:paddingTop="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="left"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:text="You will be shown more quotes frome the collections you choose" />
+
+    <TextView
+            android:id="@+id/categoryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/descriptionText"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:text="CATEGORIES" />
+
+    <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/categoryList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/categoryText"
+            android:layout_above="@+id/catregoryCountText"
+            android:padding="8dp"
+            app:alignContent="flex_start"
+            app:alignItems="flex_start"
+            app:flexWrap="wrap"
+            app:showDivider="beginning|middle"
+            app:dividerDrawable="@drawable/divider" >
+
+        <TextView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_textview"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/Textcolor"
+                android:text="" />
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </com.google.android.flexbox.FlexboxLayout>
+    <TextView
+            android:id="@+id/catregoryCountText"
+            android:text="Select atleast 3 collections from above"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_above="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <Button
+            android:text="NEXT"
+            android:background="@drawable/round_button"
+            android:textColor="@color/Textselectcolor"
+            android:fontFamily="@font/roboto_regular"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:letterSpacing="0.1"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/nextButton"/>
+
+
+
+</RelativeLayout>

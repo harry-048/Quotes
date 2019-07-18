@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/welcome_nav_graph"
+            app:startDestination="@id/first_Fragment">
+
+    <fragment android:id="@+id/first_Fragment" android:name="com.rstream.biblequotes.First_Fragment"
+              android:label="fragment_first_" tools:layout="@layout/fragment_first_">
+        <action android:id="@+id/action_first_Fragment_to_second" app:destination="@id/second"/>
+        <action android:id="@+id/action_first_Fragment_to_termsAndPolicy" app:destination="@id/termsAndPolicy"/>
+    </fragment>
+    <fragment android:id="@+id/second" android:name="com.rstream.biblequotes.Second" android:label="fragment_second"
+              tools:layout="@layout/fragment_second">
+        <action android:id="@+id/action_second_to_thirdFragment" app:destination="@id/thirdFragment"/>
+    </fragment>
+    <fragment android:id="@+id/thirdFragment" android:name="com.rstream.biblequotes.ThirdFragment"
+              android:label="fragment_third" tools:layout="@layout/fragment_third"/>
+    <fragment android:id="@+id/termsAndPolicy" android:name="com.rstream.biblequotes.termsAndPolicy"
+              android:label="fragment_terms_and_policy" tools:layout="@layout/fragment_terms_and_policy"/>
+</navigation>

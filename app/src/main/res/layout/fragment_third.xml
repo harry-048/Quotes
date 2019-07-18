@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:weightSum="2"
+             tools:context=".ThirdFragment">
+
+    <ImageView
+            android:id="@+id/bibleImageView"
+            android:src="@drawable/bible_two"
+            android:scaleType="centerCrop"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:id="@+id/quoteText"
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="48dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:paddingBottom="48dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="left"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:text="Come to me, all you who are weary burdened, and I will give you rest." />
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/purchaseCardView"
+                app:cardBackgroundColor="@color/Buttoncolor"
+                android:layout_below="@id/quoteText"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:layout_gravity="center_horizontal"
+                        android:text="PREMIUM"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textStyle="bold"
+                        android:textColor="@color/Textselectcolor"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/lifeTimePrice"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/PremiumValuecolor"
+                        android:text="₹ 100"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+
+        </androidx.cardview.widget.CardView>
+
+
+
+        <LinearLayout
+                android:id="@+id/inappbuttonLayout"
+                android:layout_below="@+id/purchaseCardView"
+                android:layout_above="@id/getPremiumLater"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_width="match_parent" android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/Textselectcolor"
+                    app:cardCornerRadius="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <LinearLayout
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_gravity="center_horizontal"
+                            android:text="Remove Ads"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textStyle="bold"
+                            android:textColor="@color/TextDarkcolor"
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:visibility="gone"
+                            android:id="@+id/monthlyPrice"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/Textcolor"
+                            android:text="Cancel any time."
+                            android:fontFamily="@font/worksans_medium"
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                    android:layout_weight="1"
+                    android:layout_above="@+id/inappbuttonLayout"
+                    app:cardBackgroundColor="@color/Textselectcolor"
+                    app:cardCornerRadius="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                        android:gravity="center"
+                            android:layout_gravity="center_horizontal"
+                            android:text="UNLIMITED DOWNLOADS"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textStyle="bold"
+                        android:textColor="@color/TextDarkcolor"
+                        android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:visibility="gone"
+                            android:id="@+id/sevenDayPrice"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/Textcolor"
+                            android:text="Cancel any time."
+                            android:fontFamily="@font/worksans_medium"
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+        <Button
+                android:text="NEXT"
+                android:visibility="gone"
+                android:background="@drawable/rounded_button"
+                android:textColor="@color/Textselectcolor"
+                android:fontFamily="@font/roboto_regular"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:letterSpacing="0.1"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_above="@+id/getPremiumLater"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?android:attr/borderlessButtonStyle"
+                android:id="@+id/nextButton"/>
+
+        <TextView
+                android:id="@+id/getPremiumLater"
+                android:text="Get premium later"
+                android:padding="16dp"
+                android:textColor="@color/PremiumTextColor"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>
