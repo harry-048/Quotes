@@ -4,16 +4,22 @@ import android.app.Activity;
 import android.app.Dialog;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
@@ -21,20 +27,25 @@ import com.android.billingclient.api.SkuDetailsResponseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PremiumDialogActivity extends Dialog {
+import static android.content.Context.MODE_PRIVATE;
+
+public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedListener {
 
 
     private BillingClient billingClient;
 
 
-    public PremiumDialogActivity(Activity context, SwipeQuoteAdapter swipeQuoteAdapter) {
+    public PremiumDialogActivity(Activity context) {
         super(context);
-        this.swipeQuoteAdapter=swipeQuoteAdapter;
+       // this.swipeQuoteAdapter=swipeQuoteAdapter;
+        sharedPreferences = context.getSharedPreferences("prefs.xml",MODE_PRIVATE);
     }
-    SwipeQuoteAdapter swipeQuoteAdapter;
+   // SwipeQuoteAdapter swipeQuoteAdapter;
     TextView priceTextView;
+    SharedPreferences sharedPreferences;
 
     SkuDetails skuDetails;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +69,26 @@ public class PremiumDialogActivity extends Dialog {
 
     }
 
+    public void initializeBillingClient(){
+        billingClient = BillingClient.newBuilder(getContext()).setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
+                if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+                    setBillingClient(billingClient);
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+    }
+
     private void getPurchaseDetails(){
-
-
         if (billingClient.isReady()){
 
             List<String> skuList = new ArrayList<>();
@@ -91,6 +119,84 @@ public class PremiumDialogActivity extends Dialog {
                         }
                     });
         }
+    }
+
+    public void settingBillingClient(final TextView textView){
+        billingClient = BillingClient.newBuilder(getContext()).setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
+                if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+                    getPrice(textView);
+                   // setBillingClient(billingClient);
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+    }
+
+    public void getPrice(final TextView textView){
+        if (billingClient.isReady()){
+            Log.d("thepricevalis","ready");
+            List<String> skuList = new ArrayList<>();
+            skuList.add(getContext().getString(R.string.premium_sku));
+            SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+            params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+            billingClient.querySkuDetailsAsync(params.build(),
+                    new SkuDetailsResponseListener() {
+                        @Override
+                        public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
+                            // Process the result.
+                            if (responseCode == BillingClient.BillingResponse.OK
+                                    && skuDetailsList != null) {
+                                for (SkuDetails
+                                        skuDetails : skuDetailsList) {
+                                    String sku = skuDetails.getSku();
+                                    String price = skuDetails.getPrice();
+                                    textView.setText(price);
+                                    Log.d("thepricevalis",price);
+                                    if (getContext().getString(R.string.premium_sku).equals(sku)) {
+
+
+                                        PremiumDialogActivity.this.skuDetails = skuDetails;
+
+                                    }
+                                }
+
+                            }
+                        }
+                    });
+
+        }
+        else
+            Log.d("thepricevalis","not ready");
+    }
+
+    public void callIap(){
+        billingClient = BillingClient.newBuilder(getContext()).setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
+                if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+
+                    launchIAP();
+                    // setBillingClient(billingClient);
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
     }
 
     public void launchIAP() {
@@ -134,9 +240,26 @@ public class PremiumDialogActivity extends Dialog {
         int responseCode1 = billingClient.launchBillingFlow(getOwnerActivity(), flowParams);
     }
 
+    private void refreshPurchaseList() {
+        Purchase.PurchasesResult purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
+        List<Purchase> purchasedList = purchasesResult.getPurchasesList();
+        for(Purchase purchase: purchasedList){
+            if (purchase.getSku().equals(getContext().getString(R.string.premium_sku)))
+            {
+                Boolean purchased=true;
+                sharedPreferences.edit().putBoolean("purchased",purchased).apply();
+            }
 
+        }
+    }
 
     public void setBillingClient(BillingClient billingClient) {
         this.billingClient = billingClient;
+       // getPrice();
+    }
+
+    @Override
+    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+        refreshPurchaseList();
     }
 }

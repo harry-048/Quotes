@@ -65,7 +65,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         this.scrollView = scrollView;
         this.height= height;
         this.width=width;
-        premiumDialogActivity=new PremiumDialogActivity(mContext,this);
+        premiumDialogActivity=new PremiumDialogActivity(mContext);
         initializeBillingClient();
 
     }

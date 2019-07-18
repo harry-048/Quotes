@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
         sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
         purchased=sharedPreferences.getBoolean("purchased",false);
-
+        sharedPreferences.edit().putBoolean("appOpened", true).apply();
         initializeBillingClient();
 
 

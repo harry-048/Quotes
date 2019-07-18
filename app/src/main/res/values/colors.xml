@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4CAF50</color>
-    <color name="colorPrimaryDark">#388E3C</color>
-    <color name="colorAccent">#4CAF50</color>
+    <color name="colorPrimary">#95141e</color>
+    <color name="colorPrimaryDark">#600000</color>
+    <color name="colorAccent">#57c6bb</color>
 
     <color name="primary_light">#C8E6C9</color>
     <color name="primary_text">#212121</color>
@@ -12,10 +12,10 @@
 
     <color name="premium_color">#ffff9800</color>
     <color name="black_overlay">#66000000</color>
-    <color name="selected_color">#B20081FF</color>
+    <color name="selected_color">#F73E47</color>
 
 
-    <color name="FirstColor">#4CAF50</color>
+    <color name="FirstColor">#95141e</color>
     <color name="SecondColor">#4F7DA2</color>
 
     <color name="Textcolor">#5a5a5a</color>
@@ -24,7 +24,7 @@
     <color name="PremiumValuecolor">#efe1fb</color>
     <color name="TextBackgroundcolor">#e4e4e4</color>
 
-    <color name="Buttoncolor">#ab92c9</color>
+    <color name="Buttoncolor">#95141e</color>
     <color name="DarkButtoncolor">#999999</color>
     <color name="ButtonBackgroundcolor">#DBDBDB</color>
 

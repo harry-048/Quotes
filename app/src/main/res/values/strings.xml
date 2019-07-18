@@ -16,8 +16,8 @@
     <string name="privacyPolicyText">By continuing you accept our Privacy policy.</string>
 
     <string name="AdUnitId">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="AdUnitIdProduct">ca-app-pub-8059732698195520/2165008777</string>
-    <string name="AppId">ca-app-pub-8059732698195520~2356580465</string>
+    <string name="AdUnitIdProduct">ca-app-pub-8059732698195520/7825734189</string>
+    <string name="AppId">ca-app-pub-8059732698195520~2764979198</string>
 
 
 
@@ -32,8 +32,8 @@
 
 
 
-    <!--<string name="premium_sku">rstream_premium__iap</string>-->
-    <string name="premium_sku">android.test.purchased</string>
+    <string name="premium_sku">rstream_premium__iap</string>
+   <!-- <string name="premium_sku">android.test.purchased</string>-->
     <string name="remove_fullscreen_ads">Remove fullscreen ads</string>
     <string name="unlimited_favorites_and_downloads">Unlimited favorites and downloads</string>
     <string name="and_all_other_premium_features">and all other premium features</string>

@@ -40,7 +40,7 @@ class termsAndPolicy : Fragment() {
         val webSettings = webView.settings
         webSettings.javaScriptEnabled = true
         try{
-            webView.loadUrl("http://riafy.me/wellness/$termsAndPrivacy.php?appname=Walking workouts")
+            webView.loadUrl("http://cookbookrecipes.in/otherapps/videoFeeds/privacy_general/Privacy_Policy.php?appname=Bible%20Quotes&fbclid=IwAR0O-XIuzqz6qQ3I7cZoFLh0_eXJ-hTltGwMd32uQnM74e-wMa9tlucRKDo")
 
         }
         catch (e: Exception){

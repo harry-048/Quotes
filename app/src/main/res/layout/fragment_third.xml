@@ -216,6 +216,7 @@
         <TextView
                 android:id="@+id/getPremiumLater"
                 android:text="Get premium later"
+                android:visibility="invisible"
                 android:padding="16dp"
                 android:textColor="@color/PremiumTextColor"
                 android:layout_centerHorizontal="true"

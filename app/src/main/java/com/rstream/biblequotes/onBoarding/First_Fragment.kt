@@ -68,7 +68,7 @@ class First_Fragment : Fragment() {
         val privacypolicy = object : ClickableSpan() {
             override fun onClick(textView: View) {
                 Log.d("linkclick","$ss is clicked")
-                termsAndPrivacy = "privacy"
+                //termsAndPrivacy = "privacy"
                 activity?.findNavController(R.id.nav_host_fragment)?.navigate(R.id.action_first_Fragment_to_termsAndPolicy)
                 //startActivity(Intent(context, NextActivity::class.java))
             }
