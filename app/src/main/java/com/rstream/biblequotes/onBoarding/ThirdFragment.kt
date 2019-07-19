@@ -81,6 +81,7 @@ class ThirdFragment : Fragment() {
         premiumDialogActivity.settingBillingClient(lifeTimePrice)
       //  premiumDialogActivity.getPrice(lifeTimePrice)
         purchaseCardView.setOnClickListener {
+            Log.d("getpremiumiscalled","before")
             premiumDialogActivity.callIap()
             //premiumDialogActivity.show()
         }

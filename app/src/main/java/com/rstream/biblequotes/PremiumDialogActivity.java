@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
@@ -38,13 +39,17 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
     public PremiumDialogActivity(Activity context) {
         super(context);
        // this.swipeQuoteAdapter=swipeQuoteAdapter;
+        this.context=context;
         sharedPreferences = context.getSharedPreferences("prefs.xml",MODE_PRIVATE);
     }
    // SwipeQuoteAdapter swipeQuoteAdapter;
     TextView priceTextView;
     SharedPreferences sharedPreferences;
+    Activity context;
+
 
     SkuDetails skuDetails;
+    SwipeQuoteAdapter swipeQuoteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,7 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
         setContentView(R.layout.activity_premium_dialog);
 
         priceTextView = findViewById(R.id.MoneyTextView);
-
+        //swipeQuoteAdapter = new SwipeQuoteAdapter()
 
         getPurchaseDetails();
 
@@ -70,11 +75,28 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
     }
 
     public void initializeBillingClient(){
-        billingClient = BillingClient.newBuilder(getContext()).setListener(this).build();
+        /*billingClient = BillingClient.newBuilder(getContext()).setListener(this).build();
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
                 if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+                    setBillingClient(billingClient);
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });*/
+
+        billingClient = BillingClient.newBuilder(getContext()).enablePendingPurchases().setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
                     refreshPurchaseList();
                     setBillingClient(billingClient);
@@ -90,7 +112,7 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
 
     private void getPurchaseDetails(){
         if (billingClient.isReady()){
-
+            Log.d("billingresponseis","ready");
             List<String> skuList = new ArrayList<>();
             skuList.add(getContext().getString(R.string.premium_sku));
             SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
@@ -98,7 +120,26 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
             billingClient.querySkuDetailsAsync(params.build(),
                     new SkuDetailsResponseListener() {
                         @Override
-                        public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
+                        public void onSkuDetailsResponse(BillingResult billingResult,
+                                                         List<SkuDetails> skuDetailsList) {
+                            Log.d("billingresponseis",billingResult.getResponseCode()+" , "+skuDetailsList);
+                            // Process the result.
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
+                                for (SkuDetails skuDetails : skuDetailsList) {
+                                    String sku = skuDetails.getSku();
+                                    String price = skuDetails.getPrice();
+                                    priceTextView.setText(price);
+                                    Log.d("billingresponseisare",skuDetails+" , "+price+" , "+skuDetails.getPrice()+" , "+skuDetails.getSku());
+                                    if (getContext().getString(R.string.premium_sku).equals(sku)) {
+
+
+                                        PremiumDialogActivity.this.skuDetails = skuDetails;
+
+                                    }
+                                }
+                            }
+                        }
+                       /* public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
                             // Process the result.
                             if (responseCode == BillingClient.BillingResponse.OK
                                     && skuDetailsList != null) {
@@ -116,14 +157,14 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
                                 }
 
                             }
-                        }
+                        }*/
                     });
         }
     }
 
     public void settingBillingClient(final TextView textView){
-        billingClient = BillingClient.newBuilder(getContext()).setListener(this).build();
-        billingClient.startConnection(new BillingClientStateListener() {
+        billingClient = BillingClient.newBuilder(getContext()).enablePendingPurchases().setListener(this).build();
+       /* billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
                 if (billingResponseCode == BillingClient.BillingResponse.OK) {
@@ -131,6 +172,22 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
                     refreshPurchaseList();
                     getPrice(textView);
                    // setBillingClient(billingClient);
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });*/
+
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+                    getPrice(textView);
                 }
             }
             @Override
@@ -151,7 +208,26 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
             billingClient.querySkuDetailsAsync(params.build(),
                     new SkuDetailsResponseListener() {
                         @Override
-                        public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
+
+                        public void onSkuDetailsResponse(BillingResult billingResult,
+                                                         List<SkuDetails> skuDetailsList) {
+                            // Process the result.
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
+                                for (SkuDetails skuDetails : skuDetailsList) {
+                                    String sku = skuDetails.getSku();
+                                    String price = skuDetails.getPrice();
+                                    textView.setText(price);
+                                    if (getContext().getString(R.string.premium_sku).equals(sku)) {
+
+
+                                        PremiumDialogActivity.this.skuDetails = skuDetails;
+
+                                    }
+                                }
+                            }
+                        }
+
+                       /* public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
                             // Process the result.
                             if (responseCode == BillingClient.BillingResponse.OK
                                     && skuDetailsList != null) {
@@ -170,7 +246,7 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
                                 }
 
                             }
-                        }
+                        }*/
                     });
 
         }
@@ -179,7 +255,26 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
     }
 
     public void callIap(){
-        billingClient = BillingClient.newBuilder(getContext()).setListener(this).build();
+        Log.d("getpremiumiscalled","after");
+        billingClient = BillingClient.newBuilder(getContext()).enablePendingPurchases().setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+
+                    launchIAP();
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+
+       /* billingClient = BillingClient.newBuilder(getContext()).setListener(this).build();
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
@@ -196,11 +291,12 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
             }
-        });
+        });*/
     }
 
     public void launchIAP() {
         if (billingClient.isReady()){
+            Log.d("getpremiumiscalled","launchiap");
             List<String> skuList = new ArrayList<> ();
             skuList.add(getContext().getString(R.string.premium_sku));
             SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
@@ -208,11 +304,13 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
             billingClient.querySkuDetailsAsync(params.build(),
                     new SkuDetailsResponseListener() {
                         @Override
-                        public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
+                        public void onSkuDetailsResponse(BillingResult billingResult,
+                                                         List<SkuDetails> skuDetailsList) {
                             // Process the result.
-                            if (responseCode == BillingClient.BillingResponse.OK
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
                                     && skuDetailsList != null) {
                                 for (SkuDetails skuDetails : skuDetailsList) {
+                                    Log.d("getpremiumiscalled","sku price "+ skuDetails.getPrice() +" , "+skuDetails.getSku()+" , "+skuDetails);
                                     String sku = skuDetails.getSku();
                                     String price = skuDetails.getPrice();
                                     if (getContext().getString(R.string.premium_sku).equals(sku)) {
@@ -220,7 +318,8 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
                                         BillingFlowParams flowParams = BillingFlowParams.newBuilder()
                                                 .setSkuDetails(skuDetails)
                                                 .build();
-                                        int responseCode1 = billingClient.launchBillingFlow(getOwnerActivity(), flowParams);
+                                         billingClient.launchBillingFlow(context,flowParams);
+                                        //int responseCode1 = billingClient.launchBillingFlow(getOwnerActivity(), flowParams);
 
                                     }
                                 }
@@ -237,13 +336,15 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
         BillingFlowParams flowParams = BillingFlowParams.newBuilder()
                 .setSkuDetails(skuDetails)
                 .build();
-        int responseCode1 = billingClient.launchBillingFlow(getOwnerActivity(), flowParams);
+         billingClient.launchBillingFlow(context, flowParams);
     }
 
     private void refreshPurchaseList() {
         Purchase.PurchasesResult purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
         List<Purchase> purchasedList = purchasesResult.getPurchasesList();
+        Log.d("getpremiumiscalled","purchase result is :"+purchasedList);
         for(Purchase purchase: purchasedList){
+            Log.d("getpremiumiscalled","purchase is :"+purchase);
             if (purchase.getSku().equals(getContext().getString(R.string.premium_sku)))
             {
                 Boolean purchased=true;
@@ -258,8 +359,13 @@ public class PremiumDialogActivity extends Dialog implements PurchasesUpdatedLis
        // getPrice();
     }
 
-    @Override
+  /*  @Override
     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+        refreshPurchaseList();
+    }*/
+
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
         refreshPurchaseList();
     }
 }

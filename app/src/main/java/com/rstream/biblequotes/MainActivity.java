@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.android.billingclient.api.BillingResult;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.app.ActivityCompat;
@@ -163,7 +165,24 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     }
 
     private void initializeBillingClient(){
-        billingClient = BillingClient.newBuilder(this).setListener(this).build();
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+
+      /*  billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
@@ -177,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
             }
-        });
+        });*/
     }
 
     @Override
@@ -468,13 +487,18 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
     }
 
-    @Override
+    /*@Override
     public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
 
-    }
+    }*/
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         return false;
+    }
+
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
+
     }
 }

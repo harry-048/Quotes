@@ -8,8 +8,8 @@ android {
         applicationId "com.rstream.biblequotes"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 8
-        versionName "1.7"
+        versionCode 9
+        versionName "1.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
     }
@@ -27,7 +27,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.billingclient:billing:1.2.2'
+    implementation 'com.android.billingclient:billing:2.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.6.0'
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'jp.wasabeef:blurry:3.0.0'

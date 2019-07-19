@@ -15,6 +15,8 @@ import android.net.Uri;
 import android.os.Environment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.android.billingclient.api.BillingResult;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -599,11 +601,28 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     }
 
     private void initializeBillingClient(){
-        billingClient = BillingClient.newBuilder(mContext).setListener(this).build();
+        /*billingClient = BillingClient.newBuilder(mContext).setListener(this).build();
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
                 if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    refreshPurchaseList();
+                    premiumDialogActivity.setBillingClient(billingClient);
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });*/
+
+        billingClient = BillingClient.newBuilder(mContext).enablePendingPurchases().setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
                     refreshPurchaseList();
                     premiumDialogActivity.setBillingClient(billingClient);
@@ -626,9 +645,10 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
             billingClient.querySkuDetailsAsync(params.build(),
                     new SkuDetailsResponseListener() {
                         @Override
-                        public void onSkuDetailsResponse(int responseCode, List<SkuDetails> skuDetailsList) {
+                        public void onSkuDetailsResponse(BillingResult billingResult,
+                                                         List<SkuDetails> skuDetailsList) {
                             // Process the result.
-                            if (responseCode == BillingClient.BillingResponse.OK
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
                                     && skuDetailsList != null) {
                                 for (SkuDetails skuDetails : skuDetailsList) {
                                     String sku = skuDetails.getSku();
@@ -638,7 +658,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                         BillingFlowParams flowParams = BillingFlowParams.newBuilder()
                                                 .setSkuDetails(skuDetails)
                                                 .build();
-                                        int responseCode1 = billingClient.launchBillingFlow(mContext, flowParams);
+                                        billingClient.launchBillingFlow(mContext,flowParams);
+                                        //int responseCode1 = billingClient.launchBillingFlow(getOwnerActivity(), flowParams);
 
                                     }
                                 }
@@ -668,7 +689,12 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     }
 
     @Override
-    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
         refreshPurchaseList();
     }
+
+   /* @Override
+    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+        refreshPurchaseList();
+    }*/
 }
