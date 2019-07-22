@@ -50,6 +50,8 @@ public class SwipeQuoteActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
     boolean adshow=false;
     boolean purchased =false;
+    boolean sixmonths = false;
+    boolean threeDayTrial = false;
     SharedPreferences sharedPreferences;
     Intent i;
     int width=0;
@@ -129,6 +131,8 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.picker);
         sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
         purchased=sharedPreferences.getBoolean("purchased",false);
+        sixmonths = sharedPreferences.getBoolean("sixMonthSubscribed",false);
+        threeDayTrial = sharedPreferences.getBoolean("monthlySubscribed",false);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -164,7 +168,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
             final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,quotesThumbImages,"",imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
 
-            if (!purchased){
+            if (!purchased && !sixmonths && !threeDayTrial){
                 Log.d("Tokenmessagedsas", "haha message!" );
                 adshow=true;
                 mInterstitialAd = new InterstitialAd(this);

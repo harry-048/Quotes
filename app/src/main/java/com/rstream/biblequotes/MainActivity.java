@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     SharedPreferences sharedPreferences;
     boolean isFirstOpen = true;
     boolean purchased =false;
+    boolean sixmonths = false;
+    boolean threeDayTrial = false;
     public static int width=0;
     public static int height=0;
 
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 navigation.setSelectedItemId(R.id.navigation_home);
             }
             else if (selectedFragment==homeFragment){
-                if (!purchased)
+                if (!purchased && !sixmonths && !threeDayTrial)
                     mInterstitialAd.show();
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Are you sure to exit app?");
@@ -276,6 +278,8 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
         sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
         purchased=sharedPreferences.getBoolean("purchased",false);
+        sixmonths = sharedPreferences.getBoolean("sixMonthSubscribed",false);
+        threeDayTrial = sharedPreferences.getBoolean("monthlySubscribed",false);
         sharedPreferences.edit().putBoolean("appOpened", true).apply();
         initializeBillingClient();
 

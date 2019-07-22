@@ -35,6 +35,8 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
     public boolean adShowingFlag = true;
     private InterstitialAd mInterstitialAd;
     boolean purchased =false;
+    boolean sixmonths = false;
+    boolean threeDayTrial = false;
     int width;
 
 
@@ -59,6 +61,8 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
         preferences = mContext.getSharedPreferences("prefs.xml",MODE_PRIVATE);
         adShowingFlag= preferences.getBoolean("adShowingFlag",true);
         purchased = preferences.getBoolean("purchased",false);
+        sixmonths = preferences.getBoolean("sixMonthSubscribed",false);
+        threeDayTrial = preferences.getBoolean("monthlySubscribed",false);
 
 
 
@@ -82,7 +86,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
                 intent.putExtra("Type",motivationName);
                 intent.putExtra("className","QuotesTypes");
 
-                if (!purchased){
+                if (!purchased && !sixmonths && !threeDayTrial){
                     if (mInterstitialAd.isLoaded()) {
                         if (adShowingFlag){
                             mInterstitialAd.show();

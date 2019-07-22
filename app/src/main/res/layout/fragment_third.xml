@@ -7,40 +7,60 @@
               android:weightSum="2"
              tools:context=".ThirdFragment">
 
-    <ImageView
+
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
             android:id="@+id/bibleImageView"
             android:src="@drawable/bible_two"
             android:scaleType="centerCrop"
-            android:layout_weight="1"
+            android:layout_above="@id/quoteText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/quoteText"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="24dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="left"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:text="Come to me, all you who are weary burdened, and I will give you rest." />
+    </RelativeLayout>
 
     <RelativeLayout
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <TextView
+       <!-- <TextView
                 android:id="@+id/quoteText"
                 android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="48dp"
+                android:paddingTop="24dp"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
-                android:paddingBottom="48dp"
+                android:paddingBottom="24dp"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="left"
                 android:textColor="#000000"
                 android:textSize="12sp"
-                android:text="Come to me, all you who are weary burdened, and I will give you rest." />
+                android:text="Come to me, all you who are weary burdened, and I will give you rest." />-->
 
         <androidx.cardview.widget.CardView
                 android:id="@+id/purchaseCardView"
                 app:cardBackgroundColor="@color/Buttoncolor"
-                android:layout_below="@id/quoteText"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="24dp"
@@ -59,6 +79,7 @@
                     android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/premiumTextView"
                         android:layout_gravity="center_horizontal"
                         android:text="PREMIUM"
                         android:fontFamily="@font/roboto_regular"
@@ -68,8 +89,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
-                <TextView
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/doublelifeTimePrice"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/PremiumValuecolor"
+                        android:padding="4dp"
+                        android:text="₹ 100"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
                         android:id="@+id/lifeTimePrice"
+                        android:padding="4dp"
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/PremiumValuecolor"
                         android:text="₹ 100"
@@ -77,6 +115,7 @@
                         android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -89,12 +128,13 @@
         <LinearLayout
                 android:id="@+id/inappbuttonLayout"
                 android:layout_below="@+id/purchaseCardView"
-                android:layout_above="@id/getPremiumLater"
+                android:layout_above="@id/nextButton"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 android:layout_width="match_parent" android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
+                    android:id="@+id/sixMonthsCardView"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/Textselectcolor"
                     app:cardCornerRadius="10dp"
@@ -116,8 +156,9 @@
                         android:layout_height="wrap_content">
 
                     <TextView
+                            android:id="@+id/sixmonthTextView"
                             android:layout_gravity="center_horizontal"
-                            android:text="Remove Ads"
+                            android:text="6 MONTH"
                             android:fontFamily="@font/roboto_regular"
                             android:textStyle="bold"
                             android:textColor="@color/TextDarkcolor"
@@ -126,8 +167,7 @@
                             android:layout_height="wrap_content"/>
 
                     <TextView
-                        android:visibility="gone"
-                            android:id="@+id/monthlyPrice"
+                            android:id="@+id/sixMonthPrice"
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/Textcolor"
                             android:text="Cancel any time."
@@ -144,6 +184,7 @@
 
             <androidx.cardview.widget.CardView
                     android:layout_weight="1"
+                android:id="@+id/sevendayCardView"
                     android:layout_above="@+id/inappbuttonLayout"
                     app:cardBackgroundColor="@color/Textselectcolor"
                     app:cardCornerRadius="10dp"
@@ -165,18 +206,18 @@
                         android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/sevendayTextView"
                         android:gravity="center"
-                            android:layout_gravity="center_horizontal"
-                            android:text="UNLIMITED DOWNLOADS"
+                        android:layout_gravity="center_horizontal"
+                        android:text="3 DAY FREE TRIAL"
                         android:fontFamily="@font/roboto_regular"
                         android:textStyle="bold"
                         android:textColor="@color/TextDarkcolor"
                         android:textSize="12sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                     <TextView
-                            android:visibility="gone"
                             android:id="@+id/sevenDayPrice"
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/Textcolor"
@@ -196,8 +237,7 @@
         </LinearLayout>
 
         <Button
-                android:text="NEXT"
-                android:visibility="gone"
+                android:text="Start"
                 android:background="@drawable/rounded_button"
                 android:textColor="@color/Textselectcolor"
                 android:fontFamily="@font/roboto_regular"
@@ -213,6 +253,8 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:id="@+id/nextButton"/>
 
+
+
         <TextView
                 android:id="@+id/getPremiumLater"
                 android:text="Get premium later"
@@ -224,6 +266,8 @@
                 android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+
 
     </RelativeLayout>
 

@@ -97,6 +97,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     int likeCount=0;
     int downloadCount=0;
     boolean purchased=false;
+    boolean sixmonths = false;
+    boolean threeDayTrial = false;
     int width=0;
     int height=0;
     WallpaperManager myWallpaperManager;
@@ -119,6 +121,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         progressBar = view.findViewById(R.id.progressBar2);
         sharedPreferences = mContext.getSharedPreferences("prefs.xml",MODE_PRIVATE);
         purchased = sharedPreferences.getBoolean("purchased",false);
+        sixmonths = sharedPreferences.getBoolean("sixMonthSubscribed",false);
+        threeDayTrial = sharedPreferences.getBoolean("monthlySubscribed",false);
         set = new HashSet<String>();
         set= sharedPreferences.getStringSet("likedImages",null);
         f= sharedPreferences.getInt("flag",0);
@@ -227,7 +231,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
             public void onClick(View v) {
                 if (!checkLike(swipeViewHolder)){
 
-                    if (likeCount>=2&& !purchased){
+                    if (likeCount>=2&& (!purchased && !sixmonths && !threeDayTrial)){
                         showPremiumDialog();
                     }
                     else {
@@ -266,7 +270,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                     Toast.makeText(mContext, "No permission!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    if (downloadCount>=2&& !purchased){
+                    if (downloadCount>=2&& (!purchased && !sixmonths && !threeDayTrial)){
                         showPremiumDialog();
                     }
                     else {

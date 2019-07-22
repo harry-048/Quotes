@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 
@@ -21,6 +22,8 @@ class OnBoardingMainActivity : AppCompatActivity() {
 
         setContentView(R.layout.onboarding_activity_main)
 
+
+
         val premiumDialogActivity = PremiumDialogActivity(this)
         premiumDialogActivity.initializeBillingClient()
 
@@ -29,6 +32,42 @@ class OnBoardingMainActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
+
+        val getPremium = GetPremium(this,this)
+
+        getPremium.getPrice(this,"monthly", getString(R.string.premium_sub_monthly)) {
+            Log.d("mothlyprice",it)
+        }
+        getPremium.getPrice(this,"6month", getString(R.string.premium_sub_sixmonth)) {
+            Log.d("mothlyprice",it)
+        }
+
+      /*  if (!sharedPreferences.getBoolean("purchased", false)) {
+            getPremium.getPrice(this, "lifetime", getString(R.string.premium_sku), object : GetPremium.PriceListener() {
+                fun gotPrice(price: String) {
+                                      //webView.loadUrl("javascript:setIAPValues('lifetime','"+ price+"')");
+
+
+
+
+                    Log.d("pricewhensending", "lifetime : $price")
+                }
+            })
+
+            getPremium.getPrice(this, "monthly", getString(R.string.premium_sub_monthly), object : GetPremium.PriceListener() {
+                fun gotPrice(price: String) {
+                    //webView.loadUrl("javascript:setIAPValues('monthly','"+ price+"')");
+
+
+                }
+            })
+
+            getPremium.getPrice(this, "6month", getString(R.string.premium_sub_sixmonth), object : GetPremium.PriceListener() {
+                fun gotPrice(price: String) {
+                    //webView.loadUrl("javascript:setIAPValues('6month','"+ price+"')");
+                }
+            })
+        }*/
 
 
     }
