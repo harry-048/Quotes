@@ -2,14 +2,9 @@ package com.rstream.biblequotes
 
 
 import android.content.Intent
-import android.graphics.Color
-import android.opengl.Visibility
-import android.os.Build
-import android.os.Build.VERSION_CODES.M
 import android.os.Bundle
 import android.os.Handler
 import android.text.SpannableString
-import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
@@ -20,13 +15,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
-import androidx.core.os.HandlerCompat.postDelayed
-
-
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -46,7 +36,7 @@ class ThirdFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_third, container, false)
         val premiumDialogActivity = PremiumDialogActivity(activity)
-
+        val getPremiumLater = view.findViewById<TextView>(R.id.getPremiumLater)
         val ss = SpannableString("Get premium later")
         val cancelPremium = object : ClickableSpan() {
             override fun onClick(textView: View) {
@@ -66,7 +56,7 @@ class ThirdFragment : Fragment() {
         }
 
         ss.setSpan(cancelPremium, 0, ss.length, 0)
-        val getPremiumLater = view.findViewById<TextView>(R.id.getPremiumLater)
+
         getPremiumLater.text = ss
         getPremiumLater.movementMethod = LinkMovementMethod.getInstance()
 
@@ -83,7 +73,7 @@ class ThirdFragment : Fragment() {
         val doubletimePrice = view.findViewById<TextView>(R.id.doublelifeTimePrice)
         val sixMonthPrice = view.findViewById<TextView>(R.id.sixMonthPrice)
         val sevenDayPrice = view.findViewById<TextView>(R.id.sevenDayPrice)
-        val PremiumText = view.findViewById<TextView>(R.id.premiumTextView)
+        val premiumText = view.findViewById<TextView>(R.id.premiumTextView)
         val sixMonthText = view.findViewById<TextView>(R.id.sixmonthTextView)
         val sevenDayText = view.findViewById<TextView>(R.id.sevendayTextView)
         val getPremium = GetPremium(context,activity)
@@ -118,22 +108,19 @@ class ThirdFragment : Fragment() {
             Log.d("getpremiumiscalled","before")
             iapName = "lifetime"
             doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off_white, context?.theme)
-          //  purchaseCardView.setCardBackgroundColor(Color.)
-            if (Build.VERSION.SDK_INT >= M) {
-                purchaseCardView.setCardBackgroundColor(resources.getColor(R.color.Buttoncolor, context?.theme))
-                sixMonthsCardView.setCardBackgroundColor(resources.getColor(R.color.Textselectcolor, context?.theme))
-                sevendayCardView.setCardBackgroundColor(resources.getColor(R.color.Textselectcolor, context?.theme))
+            context?.run{
+                purchaseCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Buttoncolor))
+                sixMonthsCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Textselectcolor))
+                sevendayCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Textselectcolor))
 
-                lifeTimePrice.setTextColor(resources.getColor(R.color.PremiumValuecolor, context?.theme))
-                doubletimePrice.setTextColor(resources.getColor(R.color.PremiumValuecolor, context?.theme))
-                sixMonthPrice.setTextColor(resources.getColor(R.color.Textcolor, context?.theme))
-                sevenDayPrice.setTextColor(resources.getColor(R.color.Textcolor, context?.theme))
-                PremiumText.setTextColor(resources.getColor(R.color.Textselectcolor, context?.theme))
-                sixMonthText.setTextColor(resources.getColor(R.color.TextDarkcolor, context?.theme))
-                sevenDayText.setTextColor(resources.getColor(R.color.TextDarkcolor, context?.theme))
+                lifeTimePrice.setTextColor(ContextCompat.getColor(this,R.color.PremiumValuecolor))
+                doubletimePrice.setTextColor(ContextCompat.getColor(this,R.color.PremiumValuecolor))
+                sixMonthPrice.setTextColor(ContextCompat.getColor(this,R.color.Textcolor))
+                sevenDayPrice.setTextColor(ContextCompat.getColor(this,R.color.Textcolor))
+                premiumText.setTextColor(ContextCompat.getColor(this,R.color.Textselectcolor))
+                sixMonthText.setTextColor(ContextCompat.getColor(this,R.color.TextDarkcolor))
+                sevenDayText.setTextColor(ContextCompat.getColor(this,R.color.TextDarkcolor))
             }
-
-
 
             //premiumDialogActivity.callIap()
             //premiumDialogActivity.show()
@@ -143,19 +130,20 @@ class ThirdFragment : Fragment() {
             iapName = "6month"
             iapType = getString(R.string.premium_sub_sixmonth)
             doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off, context?.theme)
-            if (Build.VERSION.SDK_INT >= M) {
-                purchaseCardView.setCardBackgroundColor(resources.getColor(R.color.Textselectcolor, context?.theme))
-                sixMonthsCardView.setCardBackgroundColor(resources.getColor(R.color.Buttoncolor, context?.theme))
-                sevendayCardView.setCardBackgroundColor(resources.getColor(R.color.Textselectcolor, context?.theme))
+            context?.run{
+                purchaseCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Textselectcolor))
+                sixMonthsCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Buttoncolor))
+                sevendayCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Textselectcolor))
 
-                lifeTimePrice.setTextColor(resources.getColor(R.color.Textcolor, context?.theme))
-                doubletimePrice.setTextColor(resources.getColor(R.color.Textcolor, context?.theme))
-                sixMonthPrice.setTextColor(resources.getColor(R.color.PremiumValuecolor, context?.theme))
-                sevenDayPrice.setTextColor(resources.getColor(R.color.Textcolor, context?.theme))
-                PremiumText.setTextColor(resources.getColor(R.color.TextDarkcolor, context?.theme))
-                sixMonthText.setTextColor(resources.getColor(R.color.Textselectcolor, context?.theme))
-                sevenDayText.setTextColor(resources.getColor(R.color.TextDarkcolor, context?.theme))
+                lifeTimePrice.setTextColor(ContextCompat.getColor(this,R.color.Textcolor))
+                doubletimePrice.setTextColor(ContextCompat.getColor(this,R.color.Textcolor))
+                sixMonthPrice.setTextColor(ContextCompat.getColor(this,R.color.PremiumValuecolor))
+                sevenDayPrice.setTextColor(ContextCompat.getColor(this,R.color.Textcolor))
+                premiumText.setTextColor(ContextCompat.getColor(this,R.color.TextDarkcolor))
+                sixMonthText.setTextColor(ContextCompat.getColor(this,R.color.Textselectcolor))
+                sevenDayText.setTextColor(ContextCompat.getColor(this,R.color.TextDarkcolor))
             }
+
             //getPremium.callIAP(context,getString(R.string.premium_sub_sixmonth),"6month")
         }
 
@@ -163,19 +151,22 @@ class ThirdFragment : Fragment() {
             iapName = "monthly"
             iapType = getString(R.string.premium_sub_monthly)
             doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off, context?.theme)
-            if (Build.VERSION.SDK_INT >= M) {
-                purchaseCardView.setCardBackgroundColor(resources.getColor(R.color.Textselectcolor, context?.theme))
-                sixMonthsCardView.setCardBackgroundColor(resources.getColor(R.color.Textselectcolor, context?.theme))
-                sevendayCardView.setCardBackgroundColor(resources.getColor(R.color.Buttoncolor, context?.theme))
 
-                lifeTimePrice.setTextColor(resources.getColor(R.color.Textcolor, context?.theme))
-                doubletimePrice.setTextColor(resources.getColor(R.color.Textcolor, context?.theme))
-                sixMonthPrice.setTextColor(resources.getColor(R.color.Textcolor, context?.theme))
-                sevenDayPrice.setTextColor(resources.getColor(R.color.PremiumValuecolor, context?.theme))
-                PremiumText.setTextColor(resources.getColor(R.color.TextDarkcolor, context?.theme))
-                sixMonthText.setTextColor(resources.getColor(R.color.TextDarkcolor, context?.theme))
-                sevenDayText.setTextColor(resources.getColor(R.color.Textselectcolor, context?.theme))
+            context?.run{
+                purchaseCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Textselectcolor))
+                sixMonthsCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Textselectcolor))
+                sevendayCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Buttoncolor))
+
+                lifeTimePrice.setTextColor(ContextCompat.getColor(this,R.color.Textcolor))
+                doubletimePrice.setTextColor(ContextCompat.getColor(this,R.color.Textcolor))
+                sixMonthPrice.setTextColor(ContextCompat.getColor(this,R.color.Textcolor))
+                sevenDayPrice.setTextColor(ContextCompat.getColor(this,R.color.PremiumValuecolor))
+                premiumText.setTextColor(ContextCompat.getColor(this,R.color.TextDarkcolor))
+                sixMonthText.setTextColor(ContextCompat.getColor(this,R.color.TextDarkcolor))
+                sevenDayText.setTextColor(ContextCompat.getColor(this,R.color.Textselectcolor))
             }
+
+
            // getPremium.callIAP(context,getString(R.string.premium_sub_monthly),"monthly")
         }
 

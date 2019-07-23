@@ -16,8 +16,8 @@
     <string name="privacyPolicyText">By continuing you accept our Privacy policy.</string>
 
     <string name="AdUnitId">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="AdUnitIdProduct">ca-app-pub-3940256099942544/1033173712</string>
-    <!--<string name="AdUnitIdProduct">ca-app-pub-8059732698195520/7825734189</string>-->
+    <!--<string name="AdUnitIdProduct">ca-app-pub-3940256099942544/1033173712</string>-->
+    <string name="AdUnitIdProduct">ca-app-pub-8059732698195520/7825734189</string>
     <string name="AppId">ca-app-pub-8059732698195520~2764979198</string>
 
 
