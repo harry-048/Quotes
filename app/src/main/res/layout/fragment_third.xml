@@ -34,7 +34,7 @@
             android:gravity="left"
             android:textColor="#000000"
             android:textSize="12sp"
-            android:text="Come to me, all you who are weary burdened, and I will give you rest." />
+            android:text="Come to me, all you who are weary burdened, and I will give you rest.\n\t Matthew 11:28" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -61,6 +61,7 @@
                 android:id="@+id/sevendayCardView"
                 app:cardBackgroundColor="@color/Buttoncolor"
                 app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="24dp"
@@ -121,6 +122,7 @@
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/Textselectcolor"
                     app:cardCornerRadius="10dp"
+                    app:cardElevation="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="24dp"
@@ -131,8 +133,8 @@
                 <LinearLayout
                         android:layout_gravity="center"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:layout_width="wrap_content"
@@ -171,6 +173,7 @@
                     android:layout_above="@+id/inappbuttonLayout"
                     app:cardBackgroundColor="@color/Textselectcolor"
                     app:cardCornerRadius="10dp"
+                    app:cardElevation="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
@@ -181,8 +184,8 @@
                 <LinearLayout
                         android:layout_gravity="center"
                         android:orientation="vertical"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:layout_width="wrap_content"
@@ -206,17 +209,17 @@
 
                         <TextView
                             android:id="@+id/doublelifeTimePrice"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_width="wrap_content"
 
-                            android:textColor="@color/Textcolor"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/roboto_regular"
+                            android:foreground="@drawable/strike_off"
                             android:paddingStart="2dp"
                             android:paddingEnd="2dp"
                             android:text="₹ 400"
-                            android:background="@drawable/strike_off"
-                            android:fontFamily="@font/roboto_regular"
-                            android:textSize="12sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:textColor="@color/Textcolor"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/lifeTimePrice"

@@ -2,6 +2,7 @@ package com.rstream.biblequotes
 
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.*
@@ -23,6 +24,12 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_first_.*
 import android.text.SpannableStringBuilder
 import com.rstream.biblequotes.R
+import android.text.Spannable
+import android.text.style.StyleSpan
+import androidx.core.content.res.ResourcesCompat
+import android.text.SpannableString
+
+import android.content.Context
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -103,9 +110,13 @@ class First_Fragment : Fragment() {
             }
         }*/
 
-
+        val font = Typeface.createFromAsset(context?.assets, "roboto_medium.ttf")
         val quoteText = SpannableStringBuilder(context?.resources?.getString(R.string.firstPageQuote))
-        quoteText.setSpan( android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 10, 22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        quoteText.setSpan( StyleSpan(Typeface.BOLD), 10, 22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+       //  quoteText.setSpan( StyleSpan(R.font.roboto_black), 10, 22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+       // val string = setCustomFontTypeSpan(context,"Walk with Jesus Christ everyday by reading his words",10,22,R.font.roboto_medium)
+
+
 
         val quoteTextView = view.findViewById(R.id.bibleTextView) as TextView
         quoteTextView.text=quoteText
@@ -122,5 +133,12 @@ class First_Fragment : Fragment() {
 
     }
 
+    fun setCustomFontTypeSpan(context: Context, source: String, startIndex: Int, endIndex: Int, font: Int): SpannableString {
+        val spannableString = SpannableString(source)
+        val typeface = ResourcesCompat.getFont(context, font)
+        spannableString.setSpan(StyleSpan(typeface!!.style),
+                startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return spannableString
+    }
 
 }

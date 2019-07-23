@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -78,8 +79,13 @@ class ThirdFragment : Fragment() {
         val sevenDayText = view.findViewById<TextView>(R.id.sevendayTextView)
         val getPremium = GetPremium(context,activity)
 
-        var iapName = "lifetime"
-        var iapType = ""
+
+
+        val animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
+        nextButton.startAnimation(animation)
+
+        var iapName = "monthly"
+        var iapType = getString(R.string.premium_sub_monthly)
 
         getPremium.getPrice(context,"monthly", getString(R.string.premium_sub_monthly)) {
             Log.d("mothlyprice",it)
@@ -107,7 +113,7 @@ class ThirdFragment : Fragment() {
         purchaseCardView.setOnClickListener {
             Log.d("getpremiumiscalled","before")
             iapName = "lifetime"
-            doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off_white, context?.theme)
+          //  doubletimePrice.foreground = context?.resources?.getDrawable(R.drawable.strike_off, context?.theme)
             context?.run{
                 purchaseCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Buttoncolor))
                 sixMonthsCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Textselectcolor))
@@ -129,7 +135,7 @@ class ThirdFragment : Fragment() {
         sixMonthsCardView.setOnClickListener {
             iapName = "6month"
             iapType = getString(R.string.premium_sub_sixmonth)
-            doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off, context?.theme)
+           // doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off, context?.theme)
             context?.run{
                 purchaseCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Textselectcolor))
                 sixMonthsCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Buttoncolor))
@@ -150,7 +156,7 @@ class ThirdFragment : Fragment() {
         sevendayCardView.setOnClickListener {
             iapName = "monthly"
             iapType = getString(R.string.premium_sub_monthly)
-            doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off, context?.theme)
+          //  doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off, context?.theme)
 
             context?.run{
                 purchaseCardView.setCardBackgroundColor(ContextCompat.getColor(this,R.color.Textselectcolor))
