@@ -58,7 +58,7 @@
                 android:text="Come to me, all you who are weary burdened, and I will give you rest." />-->
 
         <androidx.cardview.widget.CardView
-                android:id="@+id/purchaseCardView"
+                android:id="@+id/sevendayCardView"
                 app:cardBackgroundColor="@color/Buttoncolor"
                 app:cardCornerRadius="16dp"
                 android:layout_marginTop="16dp"
@@ -79,44 +79,26 @@
                     android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/premiumTextView"
-                        android:layout_gravity="center_horizontal"
-                        android:text="PREMIUM"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textStyle="bold"
-                        android:textColor="@color/Textselectcolor"
-                        android:textSize="20sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                <LinearLayout
-                    android:layout_gravity="center"
+                    android:id="@+id/sevendayTextView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="3 DAY FREE TRIAL"
+                    android:textColor="@color/Textselectcolor"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/doublelifeTimePrice"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/PremiumValuecolor"
-                        android:padding="4dp"
-                        android:text="₹ 400"
-                        android:background="@drawable/strike_off_white"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:id="@+id/lifeTimePrice"
-                        android:padding="4dp"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/PremiumValuecolor"
-                        android:text="₹ 200"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/sevenDayPrice"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/PremiumValuecolor"
+                    android:text="Cancel any time. ₹50 / 6 month"
+                    android:fontFamily="@font/worksans_medium"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -128,7 +110,7 @@
 
         <LinearLayout
                 android:id="@+id/inappbuttonLayout"
-                android:layout_below="@+id/purchaseCardView"
+                android:layout_below="@+id/sevendayCardView"
                 android:layout_above="@id/nextButton"
                 android:orientation="horizontal"
                 android:weightSum="2"
@@ -144,7 +126,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                 <LinearLayout
                         android:layout_gravity="center"
@@ -159,11 +141,11 @@
                     <TextView
                             android:id="@+id/sixmonthTextView"
                             android:layout_gravity="center_horizontal"
-                            android:text="6 MONTH"
+                            android:text="MONTHLY"
                             android:fontFamily="@font/roboto_regular"
                             android:textStyle="bold"
                             android:textColor="@color/TextDarkcolor"
-                            android:textSize="12sp"
+                            android:textSize="18sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
@@ -171,7 +153,7 @@
                             android:id="@+id/sixMonthPrice"
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/Textcolor"
-                            android:text="₹ 100"
+                            android:text="₹ 100 /month"
                             android:fontFamily="@font/worksans_medium"
                             android:textSize="12sp"
                             android:layout_width="wrap_content"
@@ -185,7 +167,7 @@
 
             <androidx.cardview.widget.CardView
                     android:layout_weight="1"
-                android:id="@+id/sevendayCardView"
+                android:id="@+id/purchaseCardView"
                     android:layout_above="@+id/inappbuttonLayout"
                     app:cardBackgroundColor="@color/Textselectcolor"
                     app:cardCornerRadius="10dp"
@@ -194,7 +176,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="24dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                 <LinearLayout
                         android:layout_gravity="center"
@@ -207,26 +189,49 @@
                         android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/sevendayTextView"
-                        android:gravity="center"
+                        android:id="@+id/premiumTextView"
                         android:layout_gravity="center_horizontal"
-                        android:text="3 DAY FREE TRIAL"
+                        android:text="LIFETIME"
                         android:fontFamily="@font/roboto_regular"
                         android:textStyle="bold"
                         android:textColor="@color/TextDarkcolor"
-                        android:textSize="12sp"
+                        android:textSize="18sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
-                    <TextView
-                            android:id="@+id/sevenDayPrice"
+                    <LinearLayout
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/doublelifeTimePrice"
                             android:layout_gravity="center_horizontal"
+
                             android:textColor="@color/Textcolor"
-                            android:text="₹ 50"
-                            android:fontFamily="@font/worksans_medium"
+                            android:paddingStart="2dp"
+                            android:paddingEnd="2dp"
+                            android:text="₹ 400"
+                            android:background="@drawable/strike_off"
+                            android:fontFamily="@font/roboto_regular"
                             android:textSize="12sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:id="@+id/lifeTimePrice"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/Textcolor"
+                            android:paddingStart="2dp"
+                            android:paddingEnd="2dp"
+                            android:text="₹ 200"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+
 
                 </LinearLayout>
 

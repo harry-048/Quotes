@@ -83,12 +83,12 @@ class ThirdFragment : Fragment() {
 
         getPremium.getPrice(context,"monthly", getString(R.string.premium_sub_monthly)) {
             Log.d("mothlyprice",it)
-            sevenDayPrice.text = it
+            sevenDayPrice.text = "Cancel any time. $it / 6 month"
         }
 
         getPremium.getPrice(context,"6month", getString(R.string.premium_sub_sixmonth)) {
             Log.d("mothlyprice",it)
-            sixMonthPrice.text = it
+            sixMonthPrice.text = "$it /month"
         }
 
         getPremium.getPrice(context,"lifetime", getString(R.string.premium_sku)) {
@@ -96,7 +96,7 @@ class ThirdFragment : Fragment() {
             val doublePrice = "${it[0]}${it[1]}${d.split(".")[0]}.${if (d.split(".")[1].toInt() == 0) "00" else d.split(".")[1]}"
             Log.d("totalprice","$it new price is $doublePrice")
             doubletimePrice.text = doublePrice
-            doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off_white, context?.theme)
+            doubletimePrice.background = context?.resources?.getDrawable(R.drawable.strike_off, context?.theme)
             lifeTimePrice.text = it
         }
 
