@@ -8,6 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
@@ -28,6 +30,7 @@ public class GetPremium implements PurchasesUpdatedListener {
     Context mContext;
     Activity activity;
     SharedPreferences sharedPreferences;
+    AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener;
    // String price;
 
     public GetPremium(Context mContext, Activity activity) {
@@ -48,6 +51,23 @@ public class GetPremium implements PurchasesUpdatedListener {
         boolean flag = true;
         if (openPurchase)
         if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+
+            acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
+                @Override
+                public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
+                    Log.d("itempurchased",billingResult + "");
+                }
+            };
+
+            if (!purchase.isAcknowledged()) {
+                Log.d("itempurchased", "isAcknowledged");
+                AcknowledgePurchaseParams acknowledgePurchaseParams =
+                        AcknowledgePurchaseParams.newBuilder()
+                                .setPurchaseToken(purchase.getPurchaseToken())
+                                .build();
+                billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
+                Log.d("itempurchased", "isAcknowledged token" + acknowledgePurchaseParams.getPurchaseToken());
+            }
 
             if (IAPtype!=null && IAPtype.trim().equals("premiumIAP"))
                 sharedPreferences.edit().putBoolean("purchased",true).apply();
