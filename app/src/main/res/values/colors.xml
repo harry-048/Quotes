@@ -9,8 +9,8 @@
     <color name="colorAccent">#DAB7A3</color>-->
 
     <color name="colorPrimary">#3fbac2</color>
-    <color name="colorPrimaryDark">#ca925d</color>
-    <color name="colorAccent">#8BC8FF</color>
+    <color name="colorPrimaryDark">#008a92</color>
+    <color name="colorAccent">#C2473F</color>
 
     <color name="primary_light">#C8E6C9</color>
     <color name="primary_text">#212121</color>
