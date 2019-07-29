@@ -253,12 +253,12 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
                     }
                 });*/
-        //FirebaseMessaging.getInstance().subscribeToTopic("messagecheckdailyquotes")
-        FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes")
+       // FirebaseMessaging.getInstance().subscribeToTopic("messagecheckdailyquotes")
+        //FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.dailyquotes")
+        FirebaseMessaging.getInstance().subscribeToTopic("com.rstream.biblequotes")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
 
                     }
                 });

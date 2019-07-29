@@ -98,6 +98,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         for (j=0;j<quotesImage.size();j++){
             s = quotesImage.get(j);
             String[] str = s.split(motivationType);
+            Log.d("stringsplit",str.length+" , motivation type: "+motivationType+" ,str= "+str[0]+" ,s= "+s);
             if (str.length>2){
                 Log.d("stringsplit",str.length+" , "+str[0]+" , "+str[1]+" , "+str[2]);
                 //thumb=str[0]+motivationType+"/thumbs"+str[1];
@@ -140,8 +141,10 @@ public class SwipeQuoteActivity extends AppCompatActivity {
         width = displayMetrics.widthPixels;
 
         Log.d("heightandwidth",height+","+width);
-
-        parseThumbnail(quotesImages);
+        if (intentClassName.equals("MyFirebaseMessaging"))
+            Log.d("stringsplit","from firebase");
+        else
+            parseThumbnail(quotesImages);
        // parseData();
         showSwipeQuotes(quotesImages,motivationType,imagePosition);
 
@@ -165,7 +168,7 @@ public class SwipeQuoteActivity extends AppCompatActivity {
             scrollView.setAdapter(swipeQuotes);
         }
         if (intentClassName.equals("MyFirebaseMessaging")){
-            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,quotesThumbImages,"",imagePosition,scrollView,height,width);
+            final SwipeQuoteAdapter swipeQuotes = new SwipeQuoteAdapter(this,quotesImages,quotesImages,"",imagePosition,scrollView,height,width);
             scrollView.setAdapter(swipeQuotes);
 
             if (!purchased && !sixmonths && !threeDayTrial){
