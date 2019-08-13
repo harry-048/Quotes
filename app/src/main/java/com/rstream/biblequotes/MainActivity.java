@@ -277,6 +277,8 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
 
 
         sharedPreferences = getSharedPreferences("prefs.xml",MODE_PRIVATE);
+        sharedPreferences.edit().putInt("screenWidth",width).apply();
+        sharedPreferences.edit().putInt("screenHeight",height).apply();
         purchased=sharedPreferences.getBoolean("purchased",false);
         sixmonths = sharedPreferences.getBoolean("sixMonthSubscribed",false);
         threeDayTrial = sharedPreferences.getBoolean("monthlySubscribed",false);
