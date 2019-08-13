@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     public static ArrayList<String> thumbsImages;
     public static String motivationName = "";
     JSONObject data;
-    ArrayList<String> listItems;
-    ArrayAdapter<String> adapter;
+    public static ArrayList<String> listItems;
+    public static ArrayAdapter<String> adapter;
     ListView listView;
     boolean clicked = false;
     HomeFragment homeFragment = new HomeFragment();
@@ -461,6 +461,14 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                 }
             }
             searchFragment.setListItems(listItems);
+            if (sharedPreferences.getBoolean("setDailyWallpaper",false)){
+                int x = sharedPreferences.getInt("wallpaperPosition",1);
+                String cstr = listItems.get(x)+"  -  wallpaper";
+                // MainActivity.listItems.get(i).concat("  -  wallpaper");
+                listItems.set(x,cstr);
+                // MainActivity.listItems.get(i).replace(MainActivity.listItems.get(i),MainActivity.listItems.get(i)+"  -  wallpaper");
+                searchFragment.setListItems(MainActivity.listItems);
+            }
             motivationName = quoteskeyvalue.get(0).quoteKey;
 
         } catch (JSONException e) {
