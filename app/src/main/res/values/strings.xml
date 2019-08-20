@@ -9,9 +9,22 @@
     <string name="AppId">ca-app-pub-8059732698195520~2356580465</string>-->
 
     //Bible quotes app
-    <string name="app_name">Bible Quotes</string>
+ <!--   <string name="app_name">Bible Quotes</string>
     <string name="package_name">com.rstream.biblequotes</string>
     <string name="imagelink">http://riafyme.com/app/biblequotes/</string>
+    <string name="firstPageQuote">Walk with Jesus Christ everyday by reading his words</string>
+    <string name="privacyPolicyText">By continuing you accept our Privacy policy.</string>
+
+    <string name="AdUnitId">ca-app-pub-3940256099942544/1033173712</string>
+    &lt;!&ndash;<string name="AdUnitIdProduct">ca-app-pub-3940256099942544/1033173712</string>&ndash;&gt;
+    <string name="AdUnitIdProduct">ca-app-pub-8059732698195520/7825734189</string>
+    <string name="AppId">ca-app-pub-8059732698195520~2764979198</string>
+-->
+
+    //Teen Wallpapers
+    <string name="app_name">Teen Wallpapers</string>
+    <string name="package_name">com.rstream.biblequotes</string>
+    <string name="imagelink">http://riafyme.com/app/teenwallpapers/</string>
     <string name="firstPageQuote">Walk with Jesus Christ everyday by reading his words</string>
     <string name="privacyPolicyText">By continuing you accept our Privacy policy.</string>
 
@@ -19,7 +32,6 @@
     <!--<string name="AdUnitIdProduct">ca-app-pub-3940256099942544/1033173712</string>-->
     <string name="AdUnitIdProduct">ca-app-pub-8059732698195520/7825734189</string>
     <string name="AppId">ca-app-pub-8059732698195520~2764979198</string>
-
 
 
     <string name="title_home">Home</string>

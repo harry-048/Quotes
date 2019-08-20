@@ -35,6 +35,8 @@ public class ParseJsonData {
         InputStream in = null;
         if (mContext.getResources().getString(R.string.app_name).contains("Bible"))
             in = mContext.getResources().openRawResource(R.raw.bibledata);
+        else if (mContext.getResources().getString(R.string.app_name).contains("Teen"))
+            in = mContext.getResources().openRawResource(R.raw.teenwallpaper);
         else
             in = mContext.getResources().openRawResource(R.raw.data);
         Writer writer = new StringWriter();

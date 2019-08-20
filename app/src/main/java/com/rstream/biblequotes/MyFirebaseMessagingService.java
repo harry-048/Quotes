@@ -71,6 +71,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
       InputStream in = null;
       if (getResources().getString(R.string.app_name).contains("Bible"))
           in = getResources().openRawResource(R.raw.bibledata);
+      else if (getResources().getString(R.string.app_name).contains("Teen"))
+        in = getResources().openRawResource(R.raw.teenwallpaper);
       else
           in = getResources().openRawResource(R.raw.data);
     Writer writer = new StringWriter();

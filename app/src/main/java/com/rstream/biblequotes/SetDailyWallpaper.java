@@ -112,6 +112,8 @@ SharedPreferences sharedPreferences;
         InputStream in = null;
         if (context.getResources().getString(R.string.app_name).contains("Bible"))
             in = context.getResources().openRawResource(R.raw.bibledata);
+        else if (context.getResources().getString(R.string.app_name).contains("Teen"))
+            in = context.getResources().openRawResource(R.raw.teenwallpaper);
         else
             in = context.getResources().openRawResource(R.raw.data);
         Writer writer = new StringWriter();
