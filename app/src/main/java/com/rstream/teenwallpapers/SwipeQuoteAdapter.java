@@ -2,6 +2,7 @@ package com.rstream.teenwallpapers;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,6 +54,7 @@ import java.util.Set;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 import static android.content.Context.MODE_PRIVATE;
+import static java.lang.Thread.sleep;
 
 public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> implements PurchasesUpdatedListener {
 
@@ -108,6 +110,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
     private BillingClient billingClient;
 
     ProgressBar progressBar;
+    ProgressDialog progress;
     Snackbar snackbar;
 
 
@@ -117,7 +120,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
         view = LayoutInflater.from(mContext).inflate(R.layout.swipe_content, viewGroup, false);
         final swipeViewHolder viewHolder = new swipeViewHolder(view);
 
-
+        progress = new ProgressDialog(mContext);
         progressBar = view.findViewById(R.id.progressBar2);
         sharedPreferences = mContext.getSharedPreferences("prefs.xml",MODE_PRIVATE);
         purchased = sharedPreferences.getBoolean("purchased",false);
@@ -191,7 +194,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
             Picasso.get().load(quotesImages.get(i)).noPlaceholder().into(swipeViewHolder.imageView, new Callback() {
                 @Override
                 public void onSuccess() {
-
+                    Log.d("imagecrashproblem","success top");
                     swipeViewHolder.downloadImageView.setEnabled(true);
                     swipeViewHolder.likeImageView.setEnabled(true);
                     swipeViewHolder.wallpaperImageView.setEnabled(true);
@@ -202,23 +205,23 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                     }
                     else
                         Log.d("showsnackbar","No snackbar "+quotesImages.get(i)+"");
-                   /* if (snackbar.isShown())
-                        Log.d("imagecrashproblem","snackbar "+quotesImages.get(i)+"");
-                    else
-                        Log.d("imagecrashproblem","No snackbar "+quotesImages.get(i)+"");*/
+                    Log.d("imagecrashproblem","succes after");
                 }
 
                 @Override
                 public void onError(Exception e) {
+                    Log.d("imagecrashproblem","error is "+e.getMessage());
                     Toast.makeText(mContext, "Image failed loading!", Toast.LENGTH_SHORT).show();
                 }
 
             });
         }
         catch (OutOfMemoryError ome){
+            Log.d("imagecrashproblem","OutOfMemoryError is "+ome.getMessage());
             Toast.makeText(mContext, "Image failed loading!", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){
+            Log.d("imagecrashproblem","final error is "+e.getMessage());
             e.printStackTrace();
             Toast.makeText(mContext, "Image failed loading!", Toast.LENGTH_SHORT).show();
         }
@@ -295,6 +298,8 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                             MediaScannerConnection.scanFile(mContext, new String[]{file.toString()}, null,
                                                     new MediaScannerConnection.OnScanCompletedListener() {
                                                         public void onScanCompleted(String path, Uri uri) {
+                                                            if(progress.isShowing())
+                                                                progress.dismiss();
                                                             galleryPath=uri+"";
                                                         }
                                                     });
@@ -328,6 +333,32 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
                             @Override
                             public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                progress.setMessage("Downloading");
+                                progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                progress.setIndeterminate(true);
+                                progress.setProgress(0);
+                                progress.setCancelable(false);
+                                progress.show();
+
+                                final int totalProgressTime = 100;
+                                final Thread t= new Thread() {
+                                    @Override
+                                    public void run() {
+                                        int jumpTime = 0;
+
+                                        while(jumpTime < totalProgressTime) {
+                                            try {
+                                                sleep(200);
+                                                jumpTime += 5;
+                                                progress.setProgress(jumpTime);
+                                            } catch (InterruptedException e) {
+                                                // TODO Auto-generated catch block
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                                };
+                                t.start();
                             }
                         });
                     }
@@ -348,6 +379,82 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                 }
                 else {
                     try {
+
+
+                        Picasso.get().load(quotesImages.get(i)).noPlaceholder().into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                File root = Environment.getExternalStorageDirectory();
+                                File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+
+                                try {
+                                    cachePath.createNewFile();
+                                    FileOutputStream ostream = new FileOutputStream(cachePath);
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                                    ostream.close();
+
+
+                                    Log.d("shareimage","bitmap set");
+                                }
+                                catch (Exception e) {
+                                    Log.d("shareimage","bitmap error "+e.getMessage());
+                                    e.printStackTrace();
+                                }
+                                Uri fileUri = FileProvider.getUriForFile(mContext, mContext.getResources().getString(R.string.file_provider), cachePath);
+                                Intent share = new Intent(Intent.ACTION_SEND);
+                                share.putExtra(Intent.EXTRA_TEXT, R.string.sendfromapp);
+                                share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                share.setType("image/*");
+                                share.putExtra(Intent.EXTRA_STREAM, fileUri);
+                                mContext.startActivity(Intent.createChooser(share,"Share via"));
+                                if(progress.isShowing())
+                                    progress.dismiss();
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                if(progress.isShowing())
+                                    progress.dismiss();
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                progress.setMessage("Downloading");
+                                progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                progress.setIndeterminate(true);
+                                progress.setProgress(0);
+                                progress.setCancelable(false);
+                                progress.show();
+
+                                final int totalProgressTime = 100;
+                                final Thread t= new Thread() {
+                                    @Override
+                                    public void run() {
+                                        int jumpTime = 0;
+
+                                        while(jumpTime < totalProgressTime) {
+                                            try {
+                                                sleep(200);
+                                                jumpTime += 5;
+                                                progress.setProgress(jumpTime);
+                                            } catch (InterruptedException e) {
+                                                // TODO Auto-generated catch block
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                                };
+                                t.start();
+                            }
+                        });
+
+
+
+
+
+/*
+
+                        Log.d("shareimage","before image");
                         URL url = new URL(quotesImages.get(i));
                         View content = swipeViewHolder.imageView;
                         content.setDrawingCacheEnabled(true);
@@ -360,20 +467,22 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                             FileOutputStream ostream = new FileOutputStream(cachePath);
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
                             ostream.close();
+                            Log.d("shareimage","bitmap set");
                         } catch (Exception e) {
+                            Log.d("shareimage","bitmap error "+e.getMessage());
                             e.printStackTrace();
                         }
-                        Uri fileUri = FileProvider.getUriForFile(mContext, "com.myfileprovider", cachePath);
+                        Uri fileUri = FileProvider.getUriForFile(mContext, mContext.getResources().getString(R.string.file_provider), cachePath);
                         Intent share = new Intent(Intent.ACTION_SEND);
                         share.putExtra(Intent.EXTRA_TEXT, R.string.sendfromapp);
                         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         share.setType("image/*");
                         share.putExtra(Intent.EXTRA_STREAM, fileUri);
                         mContext.startActivity(Intent.createChooser(share,"Share via"));
-                    } catch(IOException e) {
-                        e.printStackTrace();
+                        Log.d("shareimage","after image width "+ bitmap.getWidth()+" height "+bitmap.getHeight());*/
                     }
                     catch (Exception e){
+                        Log.d("shareimage","error "+e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -406,10 +515,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                     File file = new File(path);
                                     if (file.exists()) file.delete();
                                     try {
-                                       /* cachePath.createNewFile();
-                                        FileOutputStream ostream = new FileOutputStream(cachePath);
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-                                        ostream.close();*/
+
 
                                         file.createNewFile();
                                         FileOutputStream ostream = new FileOutputStream(file);
@@ -436,6 +542,130 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                                         Log.d("heightofimagefffs",",qazxcfg,   ");
                                     bitmapfront[0] =btm;
                                     bitfront=btm;
+
+
+
+                                    Picasso.get().load(quoteThumbImages.get(i))
+                                            .transform(new BlurTransformation(mContext))
+                                            .into(new Target() {
+                                                @Override
+                                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                                    Bitmap btm=null;
+
+                                                    long t = System.currentTimeMillis();
+                                                    final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
+                                                    File file = new File(path);
+                                                    if (file.exists()) file.delete();
+                                                    try {
+
+
+                                                        file.createNewFile();
+                                                        FileOutputStream ostream = new FileOutputStream(file);
+                                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
+                                                        ostream.flush();
+                                                        ostream.close();
+
+
+
+
+                                                    } catch (IOException e) {
+                                                        Log.d("heightofimagees",","+e.getMessage());
+                                                        // TODO Auto-generated catch block
+                                                        e.printStackTrace();
+                                                    }
+                                                    catch (Exception ee){
+                                                        Log.d("heightofimageesqwwee",","+ee.getMessage());
+                                                    }
+                                                    btm= Bitmap.createScaledBitmap(bitmap, width, height, false);
+                                                    if (btm==null)
+                                                        Log.d("heightofimagees",",qwerty");
+                                                    bitmapback[0]=btm;
+                                                    bitback=btm;
+
+
+
+
+                                                    if (bitfront==null)
+                                                        Log.d("heightofimage",",bvgshbghabsgs");
+                                                    //Log.d("heightofimage",","+bitback.getHeight()+","+bitback.getConfig());
+                                                    Bitmap bmOverlay = Bitmap.createBitmap(bitback.getWidth(), bitback.getHeight(), bitback.getConfig());
+                                                    Canvas canvas = new Canvas(bmOverlay);
+                                                    canvas.drawBitmap(bitmapback[0], new Matrix(), null);
+                                                    int h=height/2-bitmapfront[0].getHeight()/2;
+                                                    //Log.d("heightofimage",h+","+height+","+bitmapfront[0].getHeight());
+                                                    canvas.drawBitmap(bitmapfront[0], 0, h, null);
+
+
+                                                    try {
+                                                        URL url = new URL(quotesImages.get(i));
+                                                        View content = swipeViewHolder.imageView;
+                                                        content.setDrawingCacheEnabled(true);
+                                                        Bitmap bitmap1 = content.getDrawingCache();
+
+                                                        File root = Environment.getExternalStorageDirectory();
+                                                        File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+                                                        // String cpath= root.getAbsolutePath() + "/DCIM/Camera/image.jpg";
+
+                                                        long t1 = System.currentTimeMillis();
+                                                        final String path1 = Environment.getExternalStorageDirectory()+File.separator + t1 + "temporary_file.jpg";
+                                                        File filef = new File(path1);
+                                                        if (filef.exists()) filef.delete();
+
+                                                        try {
+
+                                                            filef.createNewFile();
+                                                            FileOutputStream ostream = new FileOutputStream(filef);
+                                                            bmOverlay.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
+                                                            ostream.flush();
+                                                            ostream.close();
+
+                                                            MediaScannerConnection.scanFile(mContext, new String[]{filef.toString()}, null,
+                                                                    new MediaScannerConnection.OnScanCompletedListener() {
+                                                                        public void onScanCompleted(String path, Uri uri) {
+                                                                            galleryPath=uri+"";
+                                                                            if(progress.isShowing())
+                                                                                progress.dismiss();
+                                                                            Log.d("errorwhenwallpaperqwer", galleryPath);
+                                                                            Intent intent = new Intent(Intent.ACTION_ATTACH_DATA,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                                                            intent.addCategory(Intent.CATEGORY_DEFAULT);
+                                                                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                                                            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                                                            intent.setDataAndType(Uri.parse(galleryPath),"image/*");
+                                                                            intent.putExtra("mimeType", "image/*");
+                                                                            mContext.startActivity(Intent.createChooser(intent,"Set as"));
+
+                                                                        }
+                                                                    });
+
+                                                        } catch (Exception e) {
+                                                            Log.d("errorwhenwallpaperqwer",e.getMessage());
+                                                            e.printStackTrace();
+                                                        }
+
+
+
+
+
+                                                    } catch(IOException e) {
+                                                        Log.d("errorwhenwallpaper",e.getMessage());
+                                                        e.printStackTrace();
+                                                    }
+                                                    catch (Exception e){
+                                                        Log.d("errorwhenwallpapers",e.getMessage()+ " "+ galleryPath);
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                                                }
+
+                                                @Override
+                                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                                }
+                                            });
                                 }
 
                                 @Override
@@ -445,146 +675,66 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
                                 @Override
                                 public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                    progress = new ProgressDialog(mContext);
+                                    progress.setMessage("Setting Wallpaper");
+                                    progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                    progress.setIndeterminate(true);
+                                    progress.setProgress(0);
+                                    progress.setCancelable(false);
+                                    progress.setMax(100);
+                                    progress.show();
 
-                                }
-                            });
+                                    final int totalProgressTime = 100;
 
-                    Picasso.get().load(quoteThumbImages.get(i))
-                            .transform(new BlurTransformation(mContext))
-                            .into(new Target() {
-                                @Override
-                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                    Bitmap btm=null;
-                                   /* long t = System.currentTimeMillis();
-                                    File root = Environment.getExternalStorageDirectory();
-                                    File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
-*/
-                                    long t = System.currentTimeMillis();
-                                    final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
-                                    File file = new File(path);
-                                    if (file.exists()) file.delete();
-                                    try {
-                                       /* cachePath.createNewFile();
-                                        FileOutputStream ostream = new FileOutputStream(cachePath);
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-                                        ostream.close();*/
+                                    final Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            int jumpTime = 0;
 
-                                        file.createNewFile();
-                                        FileOutputStream ostream = new FileOutputStream(file);
-                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
-                                        ostream.flush();
-                                        ostream.close();
+                                            Log.d("jumpTime",jumpTime+" is the time "+totalProgressTime);
+                                            while(jumpTime < totalProgressTime) {
+                                                try {
+                                                    Log.d("jumpTime",jumpTime+" is the time");
+                                                    Thread.sleep(200);//sleep(200);
+                                                    jumpTime += 5;
 
-
-
-
-                                    } catch (IOException e) {
-                                        Log.d("heightofimagees",","+e.getMessage());
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    }
-                                    catch (Exception ee){
-                                        Log.d("heightofimageesqwwee",","+ee.getMessage());
-                                    }
-                                    btm= Bitmap.createScaledBitmap(bitmap, width, height, false);
-                                    if (btm==null)
-                                        Log.d("heightofimagees",",qwerty");
-                                    bitmapback[0]=btm;
-                                    bitback=btm;
-                                }
-
-                                @Override
-                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                                }
-
-                                @Override
-                                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                                }
-                            });
-                    if (bitfront==null)
-                        Log.d("heightofimage",",bvgshbghabsgs");
-                    //Log.d("heightofimage",","+bitback.getHeight()+","+bitback.getConfig());
-                    Bitmap bmOverlay = Bitmap.createBitmap(bitback.getWidth(), bitback.getHeight(), bitback.getConfig());
-                    Canvas canvas = new Canvas(bmOverlay);
-                    canvas.drawBitmap(bitmapback[0], new Matrix(), null);
-                    int h=height/2-bitmapfront[0].getHeight()/2;
-                    //Log.d("heightofimage",h+","+height+","+bitmapfront[0].getHeight());
-                    canvas.drawBitmap(bitmapfront[0], 0, h, null);
-
-
-
-
-              /*  Android.Webkit.MimeTypeMap mp = Android.Webkit.MimeTypeMap.Singleton;
-                Intent intent = new Intent(Intent.ActionAttachData);
-                intent.AddCategory(Intent.CategoryDefault);
-                intent.SetDataAndType(path, mp.GetMimeTypeFromExtension("jpg"));
-                intent.PutExtra("mimeType", mp.GetMimeTypeFromExtension("jpg"));
-                intent.AddFlags(ActivityFlags.GrantReadUriPermission);
-                this.StartActivityForResult(Intent.CreateChooser(intent,"Set as"),42);*/
-
-
-                    try {
-                        URL url = new URL(quotesImages.get(i));
-                        View content = swipeViewHolder.imageView;
-                        content.setDrawingCacheEnabled(true);
-                        Bitmap bitmap = content.getDrawingCache();
-
-                        File root = Environment.getExternalStorageDirectory();
-                        File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
-                        // String cpath= root.getAbsolutePath() + "/DCIM/Camera/image.jpg";
-
-                        long t = System.currentTimeMillis();
-                        final String path = Environment.getExternalStorageDirectory()+File.separator + t + "temporary_file.jpg";
-                        File file = new File(path);
-                        if (file.exists()) file.delete();
-
-                        try {
-
-                            file.createNewFile();
-                            FileOutputStream ostream = new FileOutputStream(file);
-                            bmOverlay.compress(Bitmap.CompressFormat.JPEG, 75, ostream);
-                            ostream.flush();
-                            ostream.close();
-
-                            MediaScannerConnection.scanFile(mContext, new String[]{file.toString()}, null,
-                                    new MediaScannerConnection.OnScanCompletedListener() {
-                                        public void onScanCompleted(String path, Uri uri) {
-                                            galleryPath=uri+"";
-                                            Log.d("errorwhenwallpaperqwer", galleryPath);
-                                            Intent intent = new Intent(Intent.ACTION_ATTACH_DATA,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                            intent.addCategory(Intent.CATEGORY_DEFAULT);
-                                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                            intent.setDataAndType(Uri.parse(galleryPath),"image/*");
-                                            intent.putExtra("mimeType", "image/*");
-                                            mContext.startActivity(Intent.createChooser(intent,"Set as"));
-
+                                                    progress.setProgress(jumpTime);
+                                                } catch (InterruptedException e) {
+                                                    Log.d("jumpTime"," error is "+e.getMessage());
+                                                    // TODO Auto-generated catch block
+                                                    e.printStackTrace();
+                                                }
+                                            }
                                         }
                                     });
+                                    thread.start();
 
-                         /*   cachePath.createNewFile();
-                            FileOutputStream ostream = new FileOutputStream(cachePath);
-                            bmOverlay.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-                            ostream.close();*/
-                        } catch (Exception e) {
-                            Log.d("errorwhenwallpaperqwer",e.getMessage());
-                            e.printStackTrace();
-                        }
+                                  /*  final Thread t= new Thread() {
+                                        @Override
+                                        public void run() {
+                                            int jumpTime = 0;
+                                            Log.d("jumpTime",jumpTime+" is the time");
+                                            while(jumpTime < totalProgressTime) {
+                                                try {
+                                                    Log.d("jumpTime",jumpTime+" is the time");
+                                                    sleep(200);
+                                                    jumpTime += 5;
+
+                                                    progress.setProgress(25);
+                                                } catch (InterruptedException e) {
+                                                    Log.d("jumpTime"," error is "+e.getMessage());
+                                                    // TODO Auto-generated catch block
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    };
+                                    t.start();*/
+                                }
+                            });
 
 
 
-
-
-                    } catch(IOException e) {
-                        Log.d("errorwhenwallpaper",e.getMessage());
-                        e.printStackTrace();
-                    }
-                    catch (Exception e){
-                        Log.d("errorwhenwallpapers",e.getMessage()+ " "+ galleryPath);
-                        e.printStackTrace();
-                    }
 
                 }
 
