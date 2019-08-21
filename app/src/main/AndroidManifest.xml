@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.rstream.biblequotes">
+    package="com.rstream.teenwallpapers">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -35,7 +35,7 @@
             </intent-filter>
         </service>
         <receiver
-            android:name="com.rstream.biblequotes.SetDailyWallpaper"
+            android:name="com.rstream.teenwallpapers.SetDailyWallpaper"
             android:enabled="true"
             android:exported="false" >
         </receiver>
@@ -50,7 +50,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.myfileprovider"
+            android:authorities="com.rstream.teenwallpapers"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -62,7 +62,7 @@
             android:name=".SwipeQuoteActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="com.rstream.dailyquotes.SwipeQuoteActivity" />
+                <action android:name="com.rstream.teenwallpapers.SwipeQuoteActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

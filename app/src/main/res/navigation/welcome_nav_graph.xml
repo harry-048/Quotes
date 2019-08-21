@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/first_Fragment"
-        android:name="com.rstream.biblequotes.First_Fragment"
+        android:name="com.rstream.teenwallpapers.First_Fragment"
         android:label="fragment_first_"
         tools:layout="@layout/fragment_first_">
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/second"
-        android:name="com.rstream.biblequotes.Second"
+        android:name="com.rstream.teenwallpapers.Second"
         android:label="fragment_second"
         tools:layout="@layout/fragment_second">
         <action
@@ -40,12 +40,12 @@
     </fragment>
     <fragment
         android:id="@+id/thirdFragment"
-        android:name="com.rstream.biblequotes.ThirdFragment"
+        android:name="com.rstream.teenwallpapers.ThirdFragment"
         android:label="fragment_third"
         tools:layout="@layout/fragment_third" />
     <fragment
         android:id="@+id/termsAndPolicy"
-        android:name="com.rstream.biblequotes.termsAndPolicy"
+        android:name="com.rstream.teenwallpapers.termsAndPolicy"
         android:label="fragment_terms_and_policy"
         tools:layout="@layout/fragment_terms_and_policy" />
 </navigation>

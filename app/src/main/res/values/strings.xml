@@ -10,7 +10,7 @@
 
     //Bible quotes app
  <!--   <string name="app_name">Bible Quotes</string>
-    <string name="package_name">com.rstream.biblequotes</string>
+    <string name="package_name">com.rstream.teenwallpapers</string>
     <string name="imagelink">http://riafyme.com/app/biblequotes/</string>
     <string name="firstPageQuote">Walk with Jesus Christ everyday by reading his words</string>
     <string name="privacyPolicyText">By continuing you accept our Privacy policy.</string>
@@ -19,11 +19,13 @@
     &lt;!&ndash;<string name="AdUnitIdProduct">ca-app-pub-3940256099942544/1033173712</string>&ndash;&gt;
     <string name="AdUnitIdProduct">ca-app-pub-8059732698195520/7825734189</string>
     <string name="AppId">ca-app-pub-8059732698195520~2764979198</string>
+    <string name="file_provider">com.myfileprovider</string>
+    <string name="sendfromapp">Send From Bible Quotes</string>
 -->
 
     //Teen Wallpapers
     <string name="app_name">Teen Wallpapers</string>
-    <string name="package_name">com.rstream.biblequotes</string>
+    <string name="package_name">com.rstream.teenwallpapers</string>
     <string name="imagelink">http://riafyme.com/app/teenwallpapers/</string>
     <string name="firstPageQuote">Walk with Jesus Christ everyday by reading his words</string>
     <string name="privacyPolicyText">By continuing you accept our Privacy policy.</string>
@@ -32,7 +34,8 @@
     <!--<string name="AdUnitIdProduct">ca-app-pub-3940256099942544/1033173712</string>-->
     <string name="AdUnitIdProduct">ca-app-pub-8059732698195520/7825734189</string>
     <string name="AppId">ca-app-pub-8059732698195520~2764979198</string>
-
+    <string name="file_provider">com.rstream.teenwallpapers</string>
+    <string name="sendfromapp">Send From Teen Wallpapers</string>
 
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorites</string>
@@ -56,6 +59,7 @@
     <string name="title_activity_btmnav">btmnav</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
 
 
     <!-- TODO: Remove or change this placeholder text -->
