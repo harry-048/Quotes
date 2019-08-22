@@ -79,7 +79,7 @@ public class QuotesTypes extends RecyclerView.Adapter<QuotesViewHolder> {
             @Override
             public void onClick(View v) {
 
-
+                Log.d("imageurlclick ",quotesThumbImages.get(i));
                 final Intent intent = new Intent(mContext,SwipeQuoteActivity.class);
                 intent.putExtra("imageslist",quotesImages);
                 intent.putExtra("clickedImage",i+"");

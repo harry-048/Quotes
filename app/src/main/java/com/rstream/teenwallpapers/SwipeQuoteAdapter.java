@@ -194,7 +194,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
             Picasso.get().load(quotesImages.get(i)).noPlaceholder().into(swipeViewHolder.imageView, new Callback() {
                 @Override
                 public void onSuccess() {
-                    Log.d("imagecrashproblem","success top");
+                   // Log.d("imagecrashproblem","success top");
                     swipeViewHolder.downloadImageView.setEnabled(true);
                     swipeViewHolder.likeImageView.setEnabled(true);
                     swipeViewHolder.wallpaperImageView.setEnabled(true);
@@ -215,6 +215,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
                 }
 
             });
+            Log.d("imagecrashproblem","succes end");
         }
         catch (OutOfMemoryError ome){
             Log.d("imagecrashproblem","OutOfMemoryError is "+ome.getMessage());
