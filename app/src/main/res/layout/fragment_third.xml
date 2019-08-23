@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/bibleImageView"
-            android:src="@drawable/bible_two"
+            android:src="@drawable/onboarding_image_second"
             android:scaleType="centerCrop"
             android:layout_above="@id/quoteText"
             android:layout_width="match_parent"

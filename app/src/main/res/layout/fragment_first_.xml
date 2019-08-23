@@ -12,10 +12,10 @@
     <ImageView
             android:layout_weight="1"
             android:id="@+id/bibleImageView"
-            android:src="@drawable/bible_one"
+            android:src="@drawable/onboarding_image_first"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
 
     <RelativeLayout
             android:layout_weight="1"
@@ -24,7 +24,6 @@
 
         <TextView
                 android:id="@+id/bibleTextView"
-
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:text="walk with Jesus Christ everyday by reading his words"
