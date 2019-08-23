@@ -191,7 +191,7 @@ public class SwipeQuoteAdapter extends RecyclerView.Adapter<swipeViewHolder> imp
 
         try {
             Log.d("imagecrashproblem",quotesImages.get(i)+"");
-            Picasso.get().load(quotesImages.get(i)).fit().centerCrop().noPlaceholder().into(swipeViewHolder.imageView, new Callback() {
+            Picasso.get().load(quotesImages.get(i)).fit().centerInside().noPlaceholder().into(swipeViewHolder.imageView, new Callback() {
                 @Override
                 public void onSuccess() {
                    // Log.d("imagecrashproblem","success top");
