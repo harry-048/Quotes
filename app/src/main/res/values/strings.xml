@@ -13,7 +13,9 @@
     <string name="package_name">com.rstream.teenwallpapers</string>
     <string name="imagelink">http://riafyme.com/app/biblequotes/</string>
     <string name="firstPageQuote">Walk with Jesus Christ everyday by reading his words</string>
+    <string name="thirdpagequote">Come to me, all you who are weary burdened, and I will give you rest.\n\t Matthew 11:28</string>
     <string name="privacyPolicyText">By continuing you accept our Privacy policy.</string>
+
 
     <string name="AdUnitId">ca-app-pub-3940256099942544/1033173712</string>
     &lt;!&ndash;<string name="AdUnitIdProduct">ca-app-pub-3940256099942544/1033173712</string>&ndash;&gt;
@@ -27,7 +29,8 @@
     <string name="app_name">Teen Wallpapers</string>
     <string name="package_name">com.rstream.teenwallpapers</string>
     <string name="imagelink">http://riafyme.com/app/teenwallpapers/</string>
-    <string name="firstPageQuote">Walk with Jesus Christ everyday by reading his words</string>
+    <string name="firstPageQuote">This wallpaper is dreadful, one of us will have to go.</string>
+    <string name="thirdpagequote">A photograph shouldn\'t be just a picture, it should be a philosophy.</string>
     <string name="privacyPolicyText">By continuing you accept our Privacy policy.</string>
 
     <string name="AdUnitId">ca-app-pub-3940256099942544/1033173712</string>

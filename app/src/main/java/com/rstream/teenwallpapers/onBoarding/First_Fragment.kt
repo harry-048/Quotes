@@ -112,7 +112,8 @@ class First_Fragment : Fragment() {
 
         val font = Typeface.createFromAsset(context?.assets, "roboto_medium.ttf")
         val quoteText = SpannableStringBuilder(context?.resources?.getString(R.string.firstPageQuote))
-        quoteText.setSpan( StyleSpan(Typeface.BOLD), 10, 22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        //quoteText.setSpan( StyleSpan(Typeface.BOLD), 10, 22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)    bible quotes
+        quoteText.setSpan( StyleSpan(Typeface.BOLD), 5, 14, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
        //  quoteText.setSpan( StyleSpan(R.font.roboto_black), 10, 22, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
        // val string = setCustomFontTypeSpan(context,"Walk with Jesus Christ everyday by reading his words",10,22,R.font.roboto_medium)
 
