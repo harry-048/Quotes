@@ -263,8 +263,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     if (data.get("imageUrl")!=null && !data.get("imageUrl").trim().equals(""))
       Config.imageUrl = data.get("imageUrl");
     else
-      Config.imageUrl = "http://riafyme.com/app/biblequotes/believe/believe15.webp";
-
+      Config.imageUrl = this.getString(R.string.imagelink)+"colourfull/art-art-materials-bright-627901.webp";
+//Config.imageUrl = this.getString(R.string.imagelink)+"believe/believe15.webp";
     //Config.imageUrl = "http://riafyme.com/app/quotes/motivational/do-something-today-that-your-future-self-with-thank-you-for-quote-1.jpg";
    // Config.imageUrl = data.get("imageUrl");
 
