@@ -33,10 +33,10 @@
     <string name="thirdpagequote">A photograph shouldn\'t be just a picture, it should be a philosophy.</string>
     <string name="privacyPolicyText">By continuing you accept our Privacy policy.</string>
 
-    <string name="AdUnitId">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="AdUnitId">ca-app-pub-8059732698195520/6267620212</string>
     <!--<string name="AdUnitIdProduct">ca-app-pub-3940256099942544/1033173712</string>-->
-    <string name="AdUnitIdProduct">ca-app-pub-8059732698195520/7825734189</string>
-    <string name="AppId">ca-app-pub-8059732698195520~2764979198</string>
+    <string name="AdUnitIdProduct">ca-app-pub-8059732698195520/6267620212</string>
+    <string name="AppId">ca-app-pub-8059732698195520~9810638776</string>
     <string name="file_provider">com.rstream.teenwallpapers</string>
     <string name="sendfromapp">Send From Teen Wallpapers</string>
 
