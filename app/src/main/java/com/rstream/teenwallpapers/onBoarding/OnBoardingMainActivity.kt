@@ -42,32 +42,7 @@ class OnBoardingMainActivity : AppCompatActivity() {
             Log.d("mothlyprice",it)
         }
 
-      /*  if (!sharedPreferences.getBoolean("purchased", false)) {
-            getPremium.getPrice(this, "lifetime", getString(R.string.premium_sku), object : GetPremium.PriceListener() {
-                fun gotPrice(price: String) {
-                                      //webView.loadUrl("javascript:setIAPValues('lifetime','"+ price+"')");
 
-
-
-
-                    Log.d("pricewhensending", "lifetime : $price")
-                }
-            })
-
-            getPremium.getPrice(this, "monthly", getString(R.string.premium_sub_monthly), object : GetPremium.PriceListener() {
-                fun gotPrice(price: String) {
-                    //webView.loadUrl("javascript:setIAPValues('monthly','"+ price+"')");
-
-
-                }
-            })
-
-            getPremium.getPrice(this, "6month", getString(R.string.premium_sub_sixmonth), object : GetPremium.PriceListener() {
-                fun gotPrice(price: String) {
-                    //webView.loadUrl("javascript:setIAPValues('6month','"+ price+"')");
-                }
-            })
-        }*/
 
 
     }
