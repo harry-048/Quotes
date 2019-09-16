@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="colorPrimary">#95141e</color>
+    //Bible
+    <color name="colorPrimary">#95141e</color>
     <color name="colorPrimaryDark">#600000</color>
-    <color name="colorAccent">#57c6bb</color>-->
+    <color name="colorAccent">#57c6bb</color>
+    <color name="FirstColor">#95141e</color>
+    <color name="Buttoncolor">#95141e</color>
 
  <!--   <color name="colorPrimary">#a3c6da</color>
     <color name="colorPrimaryDark">#7395a8</color>
-    <color name="colorAccent">#DAB7A3</color>-->
+    <color name="colorAccent">#DAB7A3</color>
+    <color name="FirstColor">#a3c6da</color>
+    <color name="Buttoncolor">#a3c6da</color>
+    -->
 
-    <color name="colorPrimary">#3fbac2</color>
+    //Teenwallpaper
+<!--    <color name="colorPrimary">#3fbac2</color>
     <color name="colorPrimaryDark">#008a92</color>
     <color name="colorAccent">#C2473F</color>
+    <color name="FirstColor">#3fbac2</color>
+    <color name="Buttoncolor">#3fbac2</color>-->
 
     <color name="primary_light">#C8E6C9</color>
     <color name="primary_text">#212121</color>
@@ -23,7 +32,7 @@
     <color name="selected_color">#F73E47</color>
 
 
-    <color name="FirstColor">#3fbac2</color>
+
     <color name="SecondColor">#4F7DA2</color>
 
     <color name="Textcolor">#5a5a5a</color>
@@ -33,7 +42,7 @@
     <color name="PremiumValuecolor">#FFFFFF</color>
     <color name="TextBackgroundcolor">#e4e4e4</color>
 
-    <color name="Buttoncolor">#3fbac2</color>
+
     <color name="DarkButtoncolor">#999999</color>
     <color name="ButtonBackgroundcolor">#DBDBDB</color>
 

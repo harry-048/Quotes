@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.rstream.teenwallpapers">
+    package="com.rstream.biblequotes">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -22,20 +22,20 @@
 
 
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name="com.rstream.biblequotes.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name=".MyFirebaseInstanceService">
+            android:name="com.rstream.biblequotes.MyFirebaseInstanceService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
         <receiver
-            android:name="com.rstream.teenwallpapers.SetDailyWallpaper"
+            android:name="com.rstream.biblequotes.SetDailyWallpaper"
             android:enabled="true"
             android:exported="false" >
         </receiver>
@@ -50,7 +50,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.rstream.teenwallpapers"
+            android:authorities="com.rstream.biblequotes"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -59,7 +59,7 @@
         </provider>
 
         <activity
-            android:name=".SwipeQuoteActivity"
+            android:name="com.rstream.biblequotes.SwipeQuoteActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.rstream.teenwallpapers.SwipeQuoteActivity" />
@@ -69,13 +69,13 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.rstream.biblequotes.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
 
-        <activity android:name=".OnBoardingMainActivity"
+        <activity android:name="com.rstream.biblequotes.OnBoardingMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
