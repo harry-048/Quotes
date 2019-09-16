@@ -81,6 +81,8 @@ class ThirdFragment : Fragment() {
 
 
 
+
+
         val animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
         nextButton.startAnimation(animation)
 
@@ -96,6 +98,53 @@ class ThirdFragment : Fragment() {
             Log.d("mothlyprice",it)
             sixMonthPrice.text = "$it /month"
         }
+
+        getPremium.getSubsPeriod(context,"monthly", getString(R.string.premium_sub_monthly)) {
+            Log.d("thetimegot","subscription period : $it")
+            if (it=="P1M") {
+              //  document.querySelector("#opt-6month .subscDetails").innerHTML= document.querySelector("#opt-6month .subscDetails").innerHTML.replace("6 month","1 month");
+                getPremium.getPrice(context,"monthly", getString(R.string.premium_sub_monthly)) {
+                    sevenDayPrice.text = "Cancel any time. $it / 1 month"
+                }
+            }
+            else if(it=="P1W")
+            {
+               // document.querySelector("#opt-6month .subscDetails").innerHTML= document.querySelector("#opt-6month .subscDetails").innerHTML.replace("6 month","1 week");
+                getPremium.getPrice(context,"monthly", getString(R.string.premium_sub_monthly)) {
+                    sevenDayPrice.text = "Cancel any time. $it / 1 week"
+                }
+            }
+
+        }
+
+        getPremium.getSubsPeriod(context,"6month", getString(R.string.premium_sub_sixmonth)) {
+            if (it=="P1M") {
+                sixMonthText.text= "MONTHLY"
+            }
+            else if(it=="P1W")
+            {
+                sixMonthText.text= "WEEKLY"
+            }
+            Log.d("thetimegot","subs period : $it")
+        }
+
+        getPremium.getTrialPeriod(context,"monthly", getString(R.string.premium_sub_monthly)) {
+            Log.d("thetimegot","trial period : $it")
+            if (it=="P1W") {
+                sevenDayText.text= "7 DAY FREE TRIAL"
+
+            }
+            else if(it=="P3D")
+            {
+                sevenDayText.text= "3 DAY FREE TRIAL"
+            }
+            else{
+                sevenDayText.text= "GET PREMIUM"
+            }
+        }
+
+
+
 
         getPremium.getPrice(context,"lifetime", getString(R.string.premium_sku)) {
             val d = it.split(it[1])[1].toDouble().times(2).toString()

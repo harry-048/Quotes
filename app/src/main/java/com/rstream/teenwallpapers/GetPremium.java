@@ -348,6 +348,207 @@ public class GetPremium implements PurchasesUpdatedListener {
         void gotPrice(String price);
     }
 
+
+    public interface SubscriptionPeriodListener{
+        void gotSubsPeriod(String subsPeriod);
+    }
+
+    public interface FreeTrialPeriod{
+        void gotTrialPeriod(String trialPeriod);
+    }
+
+
+    public void getTrialPeriod(final Context context, final String iapName , final String premiumSku, final FreeTrialPeriod freeTrialPeriod){
+        // final String[] price = {""};
+
+        billingClient = BillingClient.newBuilder(context).enablePendingPurchases().setListener(this).build();
+
+        billingClient.startConnection(new BillingClientStateListener() {
+
+
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                Log.d("billingresoponse",billingResult.getResponseCode()+""+BillingClient.BillingResponseCode.OK);
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    //    Log.d("pricesofvals","here");
+                    Purchase.PurchasesResult purchasesResult;
+                    if (iapName!=null && iapName.trim().equals("lifetime"))
+                        purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
+                    else
+                        purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                    try {
+                        getTrialDetails(premiumSku,iapName,freeTrialPeriod);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
+                    //  Log.d("pricesofvals",price[0]);
+                    try {
+                        refreshPurchaseList(context,iapName);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
+                    // Log.d("billingclient","price = "+ price);
+                    //launchIAP();
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+
+    }
+
+    public String getTrialDetails(final String premiumSku,String iapName,final FreeTrialPeriod freeTrialPeriod ){
+        final String[] price = {""};
+
+        Log.d("billingclient","not ready");
+        if (billingClient.isReady()){
+            Log.d("billingclient","ready");
+            List<String> skuList = new ArrayList<>();
+            skuList.add(premiumSku);
+            SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+            if (iapName!=null && iapName.trim().equals("lifetime"))
+                params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+            else
+                params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS);
+
+            billingClient.querySkuDetailsAsync(params.build(),
+                    new SkuDetailsResponseListener() {
+                        @Override
+                        public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> skuDetailsList) {
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
+                                for (SkuDetails skuDetails : skuDetailsList) {
+                                    String sku = skuDetails.getSku();
+                                    Log.d("skudatapresent"," time : "+ skuDetails.getFreeTrialPeriod());
+                                    Log.d("skudatapresent"," data : "+ skuDetails);
+                                    price[0] = skuDetails.getPrice();
+
+                                    // subscriptionPeriodListener.gotSubsPeriod(skuDetails.getSubscriptionPeriod());
+                                    freeTrialPeriod.gotTrialPeriod(skuDetails.getFreeTrialPeriod());
+
+                                    if (premiumSku.equals(sku)) {
+
+                                    }
+
+                                }
+
+                            }
+                        }
+                    });
+        }
+        Log.d("billingclient"," price == "+ price[0]);
+        return price[0];
+    }
+
+
+
+
+    public void getSubsPeriod(final Context context, final String iapName , final String premiumSku, final SubscriptionPeriodListener subscriptionPeriodListener){
+        // final String[] price = {""};
+
+        billingClient = BillingClient.newBuilder(context).enablePendingPurchases().setListener(this).build();
+
+        billingClient.startConnection(new BillingClientStateListener() {
+
+
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                Log.d("billingresoponse",billingResult.getResponseCode()+""+BillingClient.BillingResponseCode.OK);
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    //    Log.d("pricesofvals","here");
+                    Purchase.PurchasesResult purchasesResult;
+                    if (iapName!=null && iapName.trim().equals("lifetime"))
+                        purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
+                    else
+                        purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                    try {
+                        getSubscriptionDetails(premiumSku,iapName,subscriptionPeriodListener);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
+                    //  Log.d("pricesofvals",price[0]);
+                    try {
+                        refreshPurchaseList(context,iapName);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
+                    // Log.d("billingclient","price = "+ price);
+                    //launchIAP();
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+
+    }
+
+    public String getSubscriptionDetails(final String premiumSku,String iapName,final SubscriptionPeriodListener subscriptionPeriodListener){
+        final String[] price = {""};
+
+        Log.d("billingclient","not ready");
+        if (billingClient.isReady()){
+            Log.d("billingclient","ready");
+            List<String> skuList = new ArrayList<>();
+            skuList.add(premiumSku);
+            SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+            if (iapName!=null && iapName.trim().equals("lifetime"))
+                params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+            else
+                params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS);
+
+            billingClient.querySkuDetailsAsync(params.build(),
+                    new SkuDetailsResponseListener() {
+                        @Override
+                        public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> skuDetailsList) {
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
+                                for (SkuDetails skuDetails : skuDetailsList) {
+                                    String sku = skuDetails.getSku();
+                                    Log.d("skudatapresent"," time : "+ skuDetails.getFreeTrialPeriod());
+                                    Log.d("skudatapresent"," data : "+ skuDetails);
+                                    price[0] = skuDetails.getPrice();
+
+                                    subscriptionPeriodListener.gotSubsPeriod(skuDetails.getSubscriptionPeriod());
+                                    // freeTrialPeriod.gotTrialPeriod(skuDetails.getFreeTrialPeriod());
+
+                                    if (premiumSku.equals(sku)) {
+
+                                    }
+
+                                }
+
+                            }
+                        }
+                    });
+        }
+        Log.d("billingclient"," price == "+ price[0]);
+        return price[0];
+    }
+
+
+
 public String getPurchaseDetails(final String premiumSku, final PriceListener priceListener,String iapName){
     final String[] price = {""};
 

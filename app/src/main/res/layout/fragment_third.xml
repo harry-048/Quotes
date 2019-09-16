@@ -86,7 +86,7 @@
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
-                    android:text="3 DAY FREE TRIAL"
+                    android:text="7 DAY FREE TRIAL"
                     android:textColor="@color/Textselectcolor"
                     android:textSize="18sp"
                     android:textStyle="bold" />
